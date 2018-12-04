@@ -1,0 +1,74 @@
+.container {
+  overflow: scroll;
+  height: 900px;
+}
+
+#left {
+  display: inline-block;
+  width: 40vw;
+}
+
+#right {
+  display: inline-block;
+  background-color: red;
+  width: 60vw;
+}
+
+nav {
+  position: sticky;
+  display: block;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 50px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.3);
+  background-color: #0072F1;
+  font-family: "PT Sans",sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  color: white;
+}
+
+.burgerLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  width: 50px;
+}
+
+.burgerRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-flex;
+  vertical-align: top;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  height: 50px;
+  width: 50px;
+}
+
+.navigator {
+  display: inline-flex;
+  vertical-align: top;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10%;
+  padding: 0;
+  height: 50px;
+  width: 600px;
+}
+
+a {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+

@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  height: 50px;
+  width: 50px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transform: scale(0.8);
+}
+
+.bar1, .bar2, .bar3 {
+  width: 26px;
+  height: 3px;
+  background-color: white;
+  margin: 2.5px 0;
+  padding: 0;
+  transition: 0.3s;
+}
+
+/* Rotate first bar */
+.expand .bar1 {
+  width: 28px;
+  transform: rotate(-45deg) translate(-20%, 190%);
+}
+
+/* Fade out the second bar */
+.expand .bar2 {
+  opacity: 0;
+}
+
+/* Rotate last bar */
+.expand .bar3 {
+  width: 28px;
+  transform: rotate(45deg) translate(-20%, -190%) ;
+}

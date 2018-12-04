@@ -1,0 +1,54 @@
+#itemContainer {
+  font-family: 'Quicksand', sans-serif;
+  border: transparent solid 1px;
+  display: block;
+  width: auto;
+  height: 100px;
+  transition: all .3s;
+  cursor: pointer;
+}
+
+#itemContainer:hover {
+  border-color: #2B85E7;
+  border-radius: 4px;
+  box-shadow: 0 8px 8px rgba(1, 67, 163, .24), 0 0 8px rgba(1, 67, 163, .12), 0 6px 18px rgba(43, 133, 231, .12);
+  transform: translateY(-2px);
+}
+
+#infoContainer {
+  padding-left: 16px;
+  display: block;
+  height: 40%;
+}
+
+#comment {
+  padding-left: 16px;
+  padding-right: 16px;
+  margin: 0;
+  font-size: small;
+}
+
+#entry {
+  display: inline-flex;
+  vertical-align: top;
+  align-items: center;
+  font-weight: bold;
+  width: 60%;
+  height: 100%;
+}
+
+#miscellaneous {
+  display: inline-flex;
+  vertical-align: top;
+  width: 40%;
+  height: 100%;
+  font-size: small;
+}
+
+#miscellaneous div {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+}

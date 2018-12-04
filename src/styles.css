@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+.clickable {
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.clickable:hover div {
+  background-color: #FF5900;
+}
+
+.clickable:hover {
+  color: #FF5900;
+}
