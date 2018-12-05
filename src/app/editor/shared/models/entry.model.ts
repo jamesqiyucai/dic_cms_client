@@ -4,11 +4,19 @@ export abstract class Entry {
   // single source of truth
   private _name = '';
   private _pos: number = null;
-  private _phonetics: List<Phonetic> = List([]);
-  private _spellings: List<Spelling> = List([]);
-  private _senses: List<Sense> = List([]);
-  private _examples: List<Example> = List([]);
-  private _stories: List<Story> = List([]);
+  private _phonetics: List<Phonetic> = List();
+  private _senses: List<Sense> = List();
+  private _examples: List<Example> = List();
+  private _stories: List<Story> = List();
+  constructor(name: string, pos: number, phonetics: Array<Phonetic>, senses: Array<Sense>, examples: Array<Example>, stories: Array<Story>) {
+    this._name = name;
+    this._pos = pose;
+    this._phonetics = List.of(phonetics);
+    this._senses = List.of(senses);
+    this._examples = List.of(examples);
+    this._stories = List.of(stories);
+  }
+  constructor() {}
   // helper functions
   private changeListElementOrder<T>(list: List<T>, from: number, to: number): List<T> {
     // check validity of from and to values
@@ -57,35 +65,11 @@ export abstract class Entry {
   public changePhoneticsOrder(from: number, to: number) {
     this._phonetics = this.changeListElementOrder<Phonetic>(this._phonetics, from, to);
   }
-  // spellings APIs
-  get spellings() {
-    return this._spellings;
-  }
-  public addSpelling(newSpelling: Spelling) {
-    this._spellings = this._spellings.push(newSpelling);
-  }
-  public deleteSpelling(index: number) {
-    this._spellings = this._spellings.delete(index);
-  }
-  public insertSpelling(newSpelling: Spelling, index: number) {
-    this._spellings = this._spellings.insert(index, newSpelling);
-  }
-  public updateSpelling(newSpelling: Spelling, index: number) {
-    this._spellings = this._spellings.set(index, newSpelling);
-  }
-  public changeSpellingsOrder(from: number, to: number) {
-    this._spellings = this.changeListElementOrder<Spelling>(this._spellings, from, to);
-  }
 }
 
 export interface Phonetic {
   region: number;
   symbol: string;
-}
-
-export interface Spelling {
-  type: number;
-  text: string;
 }
 
 export interface Sense {
