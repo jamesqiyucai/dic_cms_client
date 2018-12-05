@@ -1,7 +1,7 @@
-import {Entry} from './entry.model';
 import {List} from 'immutable';
+import {logging} from 'selenium-webdriver';
 
-export class WordEntry extends Entry {
+export abstract class Entry implements Entry {
   private _spellings: List<Spelling> = List([]);
   constructor() {
     super();
