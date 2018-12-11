@@ -7,6 +7,10 @@ export class PhoneticImpl {
   get symbol() {
     return this._symbol;
   }
+  constructor(region: number, symbol: string) {
+    this._region = region;
+    this._symbol = symbol;
+  }
   public changeRegion(newRegion: number) {
     this._region = newRegion;
   }

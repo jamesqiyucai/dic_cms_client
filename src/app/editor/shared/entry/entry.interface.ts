@@ -1,15 +1,12 @@
 import {List, Map, OrderedMap} from 'immutable';
-import {Translation} from './translation/translation.interface';
-import {Example} from './example/example.interface';
 import {Phonetic} from './phonetic/phonetic.interface';
-import {Story} from './story/story.interface';
 import {Sense} from './sense/sense.interface';
 
 export interface Entry {
   name: string;
   pos: number;
   phonetics: List<Phonetic>;
-  senses: OrderedMap<string, Sense>;
+  senses: Map<string, Sense>;
   // sensesOrder: OrderedMap<string, List<number>>;
   // translations: List<Translation>;
   // examples: List<Example>;
@@ -23,12 +20,12 @@ export interface Entry {
   deletePhonetic(index: number): List<Phonetic>;
   insertPhonetic(newPhonetic: Phonetic, index: number): List<Phonetic>;
   updatePhonetic(newPhonetic: Phonetic, index: number): List<Phonetic>;
-  changePhoneticsOrder(from: number, to: number): List<Phonetic>;
+  movePhonetic(from: number, to: number): List<Phonetic>;
   // Sense methods
   getSenseByID(senseID: number): Sense;
   addSense(newSense: Sense): OrderedMap<string, Sense>;
   deleteSenseByID(senseID: number): OrderedMap<string, Sense>;
-  updateSense(newSense: Sense, index: number): OrderedMap<string, Sense>;
+  updateSenseByID(newSense: Sense, ID: number): OrderedMap<string, Sense>;
   moveSense(from: number, to: number): OrderedMap<string, Sense>;
   // Translation methods
   // addTranslation(newTranslation: Translation): List<Translation>;

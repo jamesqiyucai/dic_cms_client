@@ -1,7 +1,8 @@
-import {List, Map, OrderedMap} from 'immutable';
+import {List, OrderedMap} from 'immutable';
 import {Entry} from './entry.interface';
 import {Phonetic} from './phonetic/phonetic.interface';
 import {Sense} from './sense/sense.interface';
+import {changeElementOrder} from '../../../../helpers/changeElementOrder.function';
 
 export abstract class EntryImpl implements Entry {
   // single source of truth
@@ -15,7 +16,7 @@ export abstract class EntryImpl implements Entry {
     name: string,
     pos: number | null,
     phonetics: Array<Phonetic>,
-    senses: Sense[],
+    senses: Array<Sense>,
     // examples: Array<Example>,
     // stories: Array<Story>
   ) {
@@ -59,8 +60,8 @@ export abstract class EntryImpl implements Entry {
     this._phonetics = this._phonetics.set(index, newPhonetic);
     return this._phonetics;
   }
-  public changePhoneticsOrder(from: number, to: number) {
-    this._phonetics = this.changeListElementOrder<Phonetic>(this._phonetics, from, to);
+  public movePhonetic(from: number, to: number) {
+    this._phonetics = changeElementOrder<Phonetic>(this._phonetics, from, to);
     return this._phonetics;
   }
   // senses APIs
@@ -77,48 +78,16 @@ export abstract class EntryImpl implements Entry {
     return this._senses;
   }
   public deleteSenseByID(senseID: number) {
-    if (this._senses.get(senseID.toString()).level === 1) {
-      this._sensesOrder.get(senseID.toString()).forEach(id => {
-        this._sensesOrder.set(id.toString(), List());
-      });
-      this._sensesOrder.delete(senseID.toString());
-    } else if (this._senses.get(senseID.toString()).level === 2) {
-      this._sensesOrder.forEach((list, key) => {
-        if (list.includes(senseID)) {
-          this._sensesOrder.update(key, value => value.delete(senseID));
-        }
-      });
-    }
     this._senses = this._senses.delete(senseID.toString());
     return this._senses;
   }
-  public updateSense(newSense: Sense, index: number) {
-    return this._senses.update(index.toString(), () => newSense);
+  public updateSenseByID(newSense: Sense, ID: number) {
+    this._senses = this._senses.update(ID.toString(), () => newSense);
+    return this._senses;
   }
-  // sensesOrder APIs
-  get sensesOrder() {
-    return this._sensesOrder;
-  }
-  public moveChildSenseWithinParent(parentSenseID: number, currentIndex: number, newIndex: number) {
-    this._sensesOrder = this._sensesOrder.update(
-      parentSenseID.toString(),
-        senses => this.changeListElementOrder<number>(senses[currentIndex], currentIndex, newIndex)
-    );
-  }
-  public moveChildSenseToNewParent(
-    senseID: number,
-    currentParentSenseID: number,
-    newParentSenseID: number,
-    currentIndex: number,
-    newIndex: number
-  ): void {
-    this._sensesOrder = this._sensesOrder.update(
-      currentParentSenseID.toString(),
-      senses => senses.delete(currentIndex)
-      ).update(
-        newParentSenseID.toString(),
-        senses => senses.insert(newIndex, senseID)
-      );
+  public moveSense(from: number, to: number): OrderedMap<string, Sense> {
+    this._senses = changeElementOrder<Sense>(this._senses, from, to);
+    return this._senses;
   }
 }
 
