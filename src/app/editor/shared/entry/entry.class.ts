@@ -7,9 +7,8 @@ import {changeElementOrder} from '../../../../helpers/changeElementOrder.functio
 export abstract class EntryImpl implements Entry {
   // single source of truth
   private _name;
-  private _pos: number;
   private _phonetics: List<Phonetic>;
-  private _senses: Map<string, Sense>;
+  private _senses: Map<number, Sense>;
   // util functions
   // private _sortSenses(senses: Map<string, Sense>): Map<string, Sense> {
   //   return senses.sort((a, b) => {
@@ -22,10 +21,10 @@ export abstract class EntryImpl implements Entry {
   //     }
   //   });
   // }
-  private turnSensesArrayIntoMap(array: Array<Sense>): Map<string, Sense> {
-    const tuplesArray: Array<[string, Sense]> = array.map(sense => {
-      const tuple: [string, Sense] = [null, null];
-      tuple[0] = sense.id.toString();
+  private turnSensesArrayIntoMap(array: Array<Sense>): Map<number, Sense> {
+    const tuplesArray: Array<[number, Sense]> = array.map(sense => {
+      const tuple: [number, Sense] = [null, null];
+      tuple[0] = sense.id;
       tuple[1] = sense;
       return tuple;
     });
@@ -35,14 +34,12 @@ export abstract class EntryImpl implements Entry {
   // private _stories: List<Story>;
   constructor(
     name: string,
-    pos: number | null,
     phonetics: Array<Phonetic>,
     senses: Array<Sense>,
     // examples: Array<Example>,
     // stories: Array<Story>
   ) {
     this._name = name;
-    this._pos = pos;
     this._phonetics = List(phonetics);
     this._senses = this.turnSensesArrayIntoMap(senses);
   }
@@ -52,14 +49,11 @@ export abstract class EntryImpl implements Entry {
     return this._name;
   }
   set name(newName: string) {
-    this._name = newName;
-  }
-  // pos APIs
-  get pos() {
-    return this._pos;
-  }
-  set pos(newPos: number) {
-    this._pos = newPos;
+    if (/ /.test(newName)) {
+      console.log('tried to set a phrase or something else to be a word entry name');
+    } else {
+      this._name = newName;
+    }
   }
   // phonetics APIs
   get phonetics() {
@@ -95,15 +89,15 @@ export abstract class EntryImpl implements Entry {
     });
   }
   public addSense(newSense: Sense) {
-    this._senses = this._senses.set(newSense.id.toString(), newSense);
+    this._senses = this._senses.set(newSense.id, newSense);
     return this.senses;
   }
   public deleteSenseByID(senseID: number) {
-    this._senses = this._senses.delete(senseID.toString());
+    this._senses = this._senses.delete(senseID);
     return this.senses;
   }
   public updateSenseByID(newSense: Sense, ID: number) {
-    this._senses = this._senses.update(ID.toString(), () => newSense);
+    this._senses = this._senses.update(ID, () => newSense);
     return this.senses;
   }
 }

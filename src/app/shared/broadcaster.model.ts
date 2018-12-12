@@ -1,7 +1,8 @@
-export class Broadcaster<T> {
-  private handlers: Array<(T) => any> = [];
-  constructor(readonly name: string) {}
-  public subscribe(functor: (T) => any): void {
+import {Broadcaster} from './broadcaster.interface';
+
+export class BroadcasterImpl<T> implements Broadcaster {
+  private handlers: Array<(event: T) => any> = [];
+  public subscribe(functor: (event: T) => any) {
     this.handlers.push(functor);
   }
   public broadcast(data: T) {

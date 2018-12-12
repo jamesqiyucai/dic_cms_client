@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {EditEntryComponent} from './pages/editEntry/edit-entry.component';
 import {NewEntryComponent} from './pages/newEntry/new-entry.component';
 import {EntryNameComponent} from './components/entryBasicInfo/entry-name.component';
-import {NewEntryService} from './shared/new-entry.service';
+import {EntryService} from './shared/service/entry-service.class';
 
 @NgModule({
   imports: [CommonModule],
@@ -11,6 +11,6 @@ import {NewEntryService} from './shared/new-entry.service';
     NewEntryComponent,
     EditEntryComponent,
   ],
-  providers: [NewEntryService]
+  providers: [EntryService]
 })
 export class EditorModule {}

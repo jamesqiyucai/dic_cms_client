@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NewEntryService} from '../../shared/new-entry.service';
+import {EntryService} from '../../shared/service/entry-service.class';
 
 @Component({
   selector: 'app-new-entry',
@@ -7,7 +7,7 @@ import {NewEntryService} from '../../shared/new-entry.service';
 })
 export class NewEntryComponent implements OnInit{
   private _name: string;
-  constructor(private newEntryService: NewEntryService) {}
+  constructor(private newEntryService: EntryService) {}
   ngOnInit() {
     const nameChangeHandler = (newName: string) => this.name = newName;
     this.newEntryService.entryDocument.eventBroadcaster.subscribe('nameChange', nameChangeHandler);
