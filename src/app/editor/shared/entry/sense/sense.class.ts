@@ -1,19 +1,24 @@
 import {Sense} from './sense.interface';
 import {List} from 'immutable';
-import {changeListElementOrder} from '../../../../../helpers/changeElementOrder.function';
+import {changeElementOrder} from '../../../../../helpers/changeElementOrder.function';
 
 export class SenseImpl implements Sense {
   readonly id: number;
+  private _pos: number;
   private _firstLevel: number;
   private _secondLevel: number;
   private _tags: List<number>;
   private _text: string;
-  constructor(id: number, firstLevel: number, secondLevel: number, tags: number[], text: string) {
+  constructor(id: number, pos: number, firstLevel: number, secondLevel: number, tags: number[], text: string) {
     this.id = id;
+    this._pos = pos;
     this._firstLevel = firstLevel;
     this._secondLevel = secondLevel;
     this._tags = List(tags);
     this._text = text;
+  }
+  get pos() {
+    return this._pos;
   }
   get firstLevel() {
     return this._firstLevel;
@@ -33,28 +38,31 @@ export class SenseImpl implements Sense {
   get text() {
     return this._text;
   }
+  public changePos(newPos: number): number {
+    this._pos = newPos;
+    return this.pos;
+  }
+
   public changeFirstLevel(newLevel: number): number {
     this._firstLevel = newLevel;
-    return this._firstLevel;
+    return this.firstLevel;
   }
   public changeSecondLevel(newLevel: number): number {
     this._secondLevel = newLevel;
-    return this._secondLevel;
+    return this.secondLevel;
   }
   public changeText(newText: string): string {
     this._text = newText;
-    return this._text;
+    return this.text;
   }
   public addTag(tag: number): List<number> {
-    this._tags.push(tag);
-    return this._tags;
+    return this._tags.push(tag);
   }
   public deleteTag(tag: number): List<number> {
-    this._tags.delete(tag);
-    return this._tags;
+    return this._tags.delete(tag);
   }
   public moveTag(from: number, to: number): List<number> {
-    this._tags = changeListElementOrder(this._tags, from, to);
-    return this._tags;
+    this._tags = changeElementOrder(this._tags, from, to);
+    return this.tags;
   }
 }
