@@ -2,9 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {BurgerIconModule} from './ui/burger-icon';
+import {BurgerIconModule} from './toolkit/burger-icon';
 import {ProposalListModule} from './proposal-list/proposal-list.module';
-import {SidebarModule} from './ui/sidebar';
+import {SidebarModule} from './toolkit/sidebar';
 
 @NgModule({
   declarations: [

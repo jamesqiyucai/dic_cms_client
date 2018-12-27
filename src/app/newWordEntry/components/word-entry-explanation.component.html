@@ -1,0 +1,12 @@
+<div cdkDropListGroup>
+  <div cdkDropList>
+    <!--// each drag is a baseSense-->
+    <div cdkDrag *ngFor="let baseSense of baseSenses">
+      <div cdkDropList>
+        <!--// each drag is a subSense-->
+        <div cdkDrag *ngFor="let subSense of getSubSensesForBaseSense(baseSense.id)">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
