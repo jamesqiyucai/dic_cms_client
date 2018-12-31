@@ -1,6 +1,6 @@
 import {Sense} from './sense.interface';
 import {List} from 'immutable';
-import {changeElementOrder} from '../../../../../helpers/changeElementOrder.function';
+import {changeElementOrder} from '../../../../../utils/changeElementOrder.function';
 
 export class SenseImpl implements Sense {
   readonly id: number;

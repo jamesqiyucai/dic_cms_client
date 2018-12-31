@@ -5,7 +5,7 @@ import {Sense} from './models/sense/sense.interface';
 import {EntryFactory} from '../entry-factory.class';
 import {Broadcaster} from '../../broadcaster/broadcaster.interface';
 import {EntryService} from './entry-service.interface';
-import {WordEntry} from '../../newWordEntry/word-entry.interface';
+import {WordEntry} from '../../wordEntry/word-entry.interface';
 import {AppEvent} from '../../events/app-event.interface';
 
 export abstract class EntryServiceImpl implements EntryService {

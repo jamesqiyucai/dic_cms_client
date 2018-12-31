@@ -1,0 +1,29 @@
+<div cdkDropList cdkDropListGroup>
+  <div *ngFor="let senseGroup of senseGroups" cdkDrag>
+    <div>{{ontologyService.getPosByID(senseGroup.pos)}}</div>
+    <div cdkDropList>
+      <ng-container *ngFor="let item of senseGroup.attachments">
+        <div *ngIf="item.type==='BASESENSE'" cdkDrag>
+          <div>{{item.text}}</div>
+          <div cdkDropList>
+            <ng-container *ngFor="let attachment of item.attachments">
+              <div *ngIf="attachment.type==='SUBSENSE'">
+                <div>{{attachment.text}}</div>
+                <div cdkDropList>
+                  <ng-container *ngFor="let attachment of attachment.attachments">
+                    <div *ngIf="attachment.type==='EXAMPLE'" cdkDrag></div>
+                    <div *ngIf="attachment.type==='STORY'" cdkDrag></div>
+                  </ng-container>
+                </div>
+              </div>
+              <div *ngIf="attachment.type==='EXAMPLE'" cdkDrag></div>
+              <div *ngIf="attachment.type==='STORY'" cdkDrag></div>
+            </ng-container>
+          </div>
+        </div>
+        <div *ngIf="item.type==='EXAMPLE'" cdkDrag></div>
+        <div *ngIf="item.type==='STORY'" cdkDrag></div>
+      </ng-container>
+    </div>
+  </div>
+</div>

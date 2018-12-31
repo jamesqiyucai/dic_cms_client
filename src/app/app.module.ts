@@ -2,9 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {BurgerIconModule} from './toolkit/burger-icon';
-import {ProposalListModule} from './proposal-list/proposal-list.module';
-import {SidebarModule} from './toolkit/sidebar';
+import {CoreModule} from './core/core.module';
+import {IDServiceImplementation} from './core/id.service.implementation';
 
 @NgModule({
   declarations: [
@@ -12,11 +11,9 @@ import {SidebarModule} from './toolkit/sidebar';
   ],
   imports: [
     BrowserModule,
-    BurgerIconModule,
-    ProposalListModule,
-    SidebarModule
+    CoreModule,
   ],
-  providers: [],
+  providers: [IDServiceImplementation],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,7 +2,7 @@ import {Phonetic} from '../service/models/phonetic/phonetic.interface';
 import {List} from 'immutable';
 import {EntryService} from '../service/entry-service.interface';
 import {AppEvent} from '../../events/app-event.interface';
-import {changeElementOrder} from '../../../helpers/changeElementOrder.function';
+import {changeElementOrder} from '../../../utils/changeElementOrder.function';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 export abstract class EntryBasicInfoComponent {

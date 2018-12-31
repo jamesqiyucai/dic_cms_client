@@ -1,31 +1,22 @@
 import {List, Map} from 'immutable';
-import {WordEntryService} from '../../newWordEntry/word-entry-service.interface';
-import {OnInit} from '@angular/core';
-import {Item} from './interfaces/item.interface';
-import {SenseGroup} from './interfaces/senseGroup.interface';
-import {DOCUMENT} from '@angular/common';
+import {WordEntryService} from '../../wordEntry/word-entry-service.interface';
+import {SenseGroup} from './models/sense-group.class';
+import {IDService} from '../../core/id.service.interface';
+import {OntologyService} from '../../core/ontology.service.interface';
 
-type senseID = number;
-type baseSenseID = number;
-
-enum ItemType {
-  senseGroup = 'SENSEGROUP',
-  baseSense = 'BASESENSE',
-  subSense = 'SUBSENSE',
-  example = 'EXAMPLE',
-  story = 'STORY',
-}
-
-export abstract class EntryExplanationComponent implements OnInit {
-  protected constructor(protected wordEntryService: WordEntryService) {
+export abstract class EntryExplanationComponent {
+  protected constructor(
+    protected wordEntryService: WordEntryService,
+    protected idService: IDService,
+    protected ontologyService: OntologyService
+  ) {
   }
-  private explanationModel: List<Item> = List();
+  private explanationModel: List<SenseGroup> = List().push(new SenseGroup(this.idService.getID()));
+  get senseGroups() {
+    return this.explanationModel;
+  }
   public addSenseGroup(pos: number) {
-    const newSenseGroup: SenseGroup = {
-      type: ItemType.senseGroup,
-      pos: pos,
-      attachments: List([{type: ItemType.baseSense, text: '', translations: List(), attachments: List()}])
-    };
+    const newSenseGroup: SenseGroup = new SenseGroup(this.idService.getID(), )
     this.explanationModel.push(newSenseGroup);
   }
   // public baseSenses: List<Sense>;

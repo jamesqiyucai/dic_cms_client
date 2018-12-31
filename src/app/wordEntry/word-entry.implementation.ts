@@ -2,7 +2,7 @@ import {EntryImpl} from '../abstractEntry/service/models/entry.implementation';
 import {Spelling} from '../abstractEntry/service/models/spelling/spelling.interface';
 import {List} from 'immutable';
 import {WordEntry} from './word-entry.interface';
-import {changeElementOrder} from '../../helpers/changeElementOrder.function';
+import {changeElementOrder} from '../../utils/changeElementOrder.function';
 
 export class WordEntryImpl extends EntryImpl implements WordEntry {
   private _spellings: List<Spelling>;

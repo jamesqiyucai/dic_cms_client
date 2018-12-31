@@ -2,7 +2,7 @@ import {List, Map} from 'immutable';
 import {Entry} from './entry.interface';
 import {Phonetic} from './phonetic/phonetic.interface';
 import {Sense} from './sense/sense.interface';
-import {changeElementOrder} from '../../../../helpers/changeElementOrder.function';
+import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
 
 type ID = number;
 
