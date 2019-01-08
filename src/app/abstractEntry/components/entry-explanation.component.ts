@@ -3,8 +3,9 @@ import {WordEntryService} from '../../wordEntry/word-entry-service.interface';
 import {SenseGroup} from './models/sense-group.class';
 import {IDService} from '../../core/id.service.interface';
 import {OntologyService} from '../../core/ontology.service.interface';
+import {OnInit} from '@angular/core';
 
-export abstract class EntryExplanationComponent {
+export abstract class EntryExplanationComponent implements OnInit {
   protected constructor(
     protected wordEntryService: WordEntryService,
     protected idService: IDService,

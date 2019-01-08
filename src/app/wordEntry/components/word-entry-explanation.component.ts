@@ -4,6 +4,7 @@ import {WordEntryServiceImpl} from '../word-entry.service.implementation';
 import {IDService} from '../../core/id.service.interface';
 import {IDServiceImplementation} from '../../core/id.service.implementation';
 import {OntologyServiceImplementation} from '../../core/ontology-service.implementation';
+import {WordEntryService} from '../word-entry-service.interface';
 
 @Component({
   selector: 'app-word-entry-explanation',
@@ -11,7 +12,7 @@ import {OntologyServiceImplementation} from '../../core/ontology-service.impleme
   providers: [
     IDServiceImplementation,
     OntologyServiceImplementation,
-    WordEntryServiceImpl
+    {provide: WordEntryService, useClass: WordEntryServiceImpl}
   ]
 })
 export class WordEntryExplanationComponent extends EntryExplanationComponent {
