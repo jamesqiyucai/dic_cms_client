@@ -1,6 +1,3 @@
-import {Injectable} from '@angular/core';
-
-@Injectable()
 export class IDServiceImplementation {
   private _ID = 0;
   public getID() {

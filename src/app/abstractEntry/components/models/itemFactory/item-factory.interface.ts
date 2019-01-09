@@ -32,5 +32,12 @@ export interface ItemFactory {
       ): SubSense;
   getSubSense(id: number): SubSense;
   getSenseGroup(id: number): SenseGroup;
-  getSenseGroup(id: number, pos: number, phonetics: List<Phonetic>, baseSenses: List<BaseSense>, examples: Example[], stories: Story[]): SenseGroup;
+  getSenseGroup(
+    id: number,
+    pos: number,
+    phonetics: List<Phonetic>,
+    baseSenses: List<BaseSense>,
+    examples: List<Example>,
+    stories: List<Story>
+  ): SenseGroup;
 }

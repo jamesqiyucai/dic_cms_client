@@ -11,7 +11,14 @@ export class SenseGroup extends Item {
   baseSenses: List<BaseSense>;
   examples: List<Example>;
   stories: List<Story>;
-  constructor(id: number, pos: number, phonetics: List<Phonetic>, baseSenses: List<BaseSense>, examples: List<Example>, stories: List<Story>) {
+  constructor(
+    id: number,
+    pos: number,
+    phonetics: List<Phonetic>,
+    baseSenses: List<BaseSense>,
+    examples: List<Example>,
+    stories: List<Story>
+  ) {
     super(id);
     this.pos = pos;
     this.phonetics = phonetics;
