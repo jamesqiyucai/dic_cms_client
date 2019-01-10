@@ -1,25 +1,38 @@
-import {List, Map} from 'immutable';
-import {WordEntryService} from '../../wordEntry/word-entry-service.interface';
+import {List} from 'immutable';
 import {SenseGroup} from './models/sense-group.class';
 import {IDService} from '../../core/id.service.interface';
 import {OntologyService} from '../../core/ontology.service.interface';
 import {OnInit} from '@angular/core';
+import {data} from '../../word_entry/fake.data';
 
 export abstract class EntryExplanationComponent implements OnInit {
+  private explanationModel: List<SenseGroup>;
+
+  /** All class extending EntryExplanationComponent shall have IdService and OntologyService. */
   protected constructor(
-    protected wordEntryService: WordEntryService,
     protected idService: IDService,
     protected ontologyService: OntologyService
-  ) {
+  ) {}
+
+  /** After inheriting classes get instantiated assign data to explanation model. */
+  ngOnInit(): void {
+    this.getData();
   }
-  private explanationModel: List<SenseGroup> = List().push(new SenseGroup(this.idService.getID()));
+
+  /** Logic to provide the data from this component's service should be written here. */
+  private getData() {
+    // Currently the data is provided by a fake source but this should be only used for development and testing.
+    this.explanationModel = data;
+  }
+
+  /** Getter to be used in template. */
   get senseGroups() {
     return this.explanationModel;
   }
-  public addSenseGroup(pos: number) {
-    const newSenseGroup: SenseGroup = new SenseGroup(this.idService.getID(), )
-    this.explanationModel.push(newSenseGroup);
-  }
+  // public addSenseGroup(pos: number) {
+  //   const newSenseGroup: SenseGroup = new SenseGroup(this.idService.getID(), )
+  //   this.explanationModel.push(newSenseGroup);
+  // }
   // public baseSenses: List<Sense>;
   // public subSenses: Map<baseSenseID, List<Sense>>;
   // static normalizeSenses(senses: List<Sense>): List<Sense> {

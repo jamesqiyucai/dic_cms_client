@@ -1,10 +1,10 @@
-import {ItemFactoryImplementation} from '../abstractEntry/components/models/itemFactory/item-factory.implementation';
-import {ItemFactory} from '../abstractEntry/components/models/itemFactory/item-factory.interface';
+import {ItemFactoryImplementation} from '../abstract_entry/components/models/itemFactory/item-factory.implementation';
+import {ItemFactory} from '../abstract_entry/components/models/itemFactory/item-factory.interface';
 import {List} from 'immutable';
-import {Story} from '../abstractEntry/components/models/story.class';
-import {Example} from '../abstractEntry/components/models/example.class';
-import {BaseSense} from '../abstractEntry/components/models/baseSense.class';
-import {SenseGroup} from '../abstractEntry/components/models/sense-group.class';
+import {Story} from '../abstract_entry/components/models/story.class';
+import {Example} from '../abstract_entry/components/models/example.class';
+import {BaseSense} from '../abstract_entry/components/models/baseSense.class';
+import {SenseGroup} from '../abstract_entry/components/models/sense-group.class';
 
 const factory: ItemFactory = new ItemFactoryImplementation();
 

@@ -1,5 +1,5 @@
-import {EntryImpl} from '../abstractEntry/service/models/entry.implementation';
-import {Spelling} from '../abstractEntry/service/models/spelling/spelling.interface';
+import {EntryImpl} from '../abstract_entry/service/models/entry.implementation';
+import {Spelling} from '../abstract_entry/service/models/spelling/spelling.interface';
 import {List} from 'immutable';
 import {WordEntry} from './word-entry.interface';
 import {changeElementOrder} from '../../utils/changeElementOrder.function';

@@ -1,5 +1,5 @@
-import {Entry} from '../abstractEntry/service/models/entry.interface';
-import {Spelling} from '../abstractEntry/service/models/spelling/spelling.interface';
+import {Entry} from '../abstract_entry/service/models/entry.interface';
+import {Spelling} from '../abstract_entry/service/models/spelling/spelling.interface';
 import {List} from 'immutable';
 
 export interface WordEntry extends Entry {
