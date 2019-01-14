@@ -1,0 +1,16 @@
+input {
+    margin-top: 10%;
+    margin-left: 41.2%;
+    font-size: 20px;
+    border-style: hidden;
+    text-align: left;
+    max-width: 50ch;
+}
+
+span {
+    visibility: hidden;
+    font-family: monospace;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 10px;
+}

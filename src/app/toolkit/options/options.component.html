@@ -1,0 +1,8 @@
+<div #parentBox class="parentBox">
+    <div #select [@showSelectBox]="clicked ? 'show' : 'hide'" class="selectBox" clickable (click)="isClicked()">part of speech</div>
+    <div *ngIf='clicked' @displayOptions>
+        <div appOption [pos]="noun" [hoverColor]="color" (click)="isSelected($event)" class="optionList" clickable>noun</div>
+        <div appOption [pos]="verb" [hoverColor]="color" (click)="isSelected($event)" class="optionList" clickable>verb</div>
+        <div appOption [pos]="adj" [hoverColor]="color" (click)="isSelected($event)" class="optionList" clickable>adj</div>
+    </div>
+</div>
