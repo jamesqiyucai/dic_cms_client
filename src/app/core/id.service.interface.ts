@@ -1,3 +1,3 @@
 export interface IDService {
-  getID(): number;
+  getID(type: string): number;
 }

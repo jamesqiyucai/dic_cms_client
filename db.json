@@ -1,0 +1,106 @@
+{
+  "poses": [
+    {
+      "id": 1,
+      "name": "un.",
+      "description": "Countable Noun"
+    },
+    {
+      "id": 2,
+      "name": "cn.",
+      "description": "Uncountable Noun"
+    },
+    {
+      "id": 11,
+      "name": "vi.",
+      "description": "Intransitive Verb"
+    },
+    {
+      "id": 12,
+      "name": "vt.",
+      "description": "Transitive Verb"
+    },
+    {
+      "id": 21,
+      "name": "adj.",
+      "description": "Adjective"
+    },
+    {
+      "id": 31,
+      "name": "adv.",
+      "description": "Adverb"
+    },
+    {
+      "id": 41,
+      "name": "prep.",
+      "description": "Preposition"
+    },
+    {
+      "id": 51,
+      "name": "art.",
+      "description": "Article"
+    }
+  ],
+  "variations": [
+    {
+      "id": 1,
+      "name": "(unspec)",
+      "description": "Unspecified",
+      "parent": null
+    },
+    {
+      "id": 11,
+      "name": "BrE",
+      "description": "British English",
+      "parent": 1
+    },
+    {
+      "id": 12,
+      "name": "NAmE",
+      "description": "North American English",
+      "parent": 1
+    }
+  ],
+  "inflections": [
+    {
+      "id": 1,
+      "name": "Singular",
+      "scope": [1, 2]
+    },
+    {
+      "id": 2,
+      "name": "Plural",
+      "scope": [1, 2]
+    },
+    {
+      "id": 11,
+      "name": "3rd-singular Present Agreement",
+      "scope": [11, 12]
+    },
+    {
+      "id": 12,
+      "name": "Past Tense",
+      "scope": [11, 12]
+    },
+    {
+      "id": 13,
+      "name": "Past Participle",
+      "scope": [11, 12]
+    },
+    {
+      "id": 14,
+      "name": "Present Participle",
+      "scope": [11, 12]
+    },
+    {
+      "id": 21,
+      "name": "Comparative",
+      "scope": [21]
+    },
+    {
+      "id": 22,
+      "name": "Superlative",
+      "scope": [21]
+    }
+  ]
+}

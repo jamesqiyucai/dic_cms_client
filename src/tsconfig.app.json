@@ -6,6 +6,11 @@
   },
   "exclude": [
     "test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "src/app/abstract_builder/**",
+    "src/app/broadcaster/*",
+    "src/app/events/*",
+    "src/app/toolkit/*",
+    "src/app/word_builder/*"
   ]
 }
