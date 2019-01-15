@@ -1,0 +1,14 @@
+<input 
+#inputBox
+(focus)="toggle()" 
+[@displayInput]="isDisplay? 'display' : 'input'" 
+type="text"
+value={{value}}
+>
+<span 
+#doneBox
+(click)="toggle()" 
+[@done]="isDisplay? 'hide' : 'show'" 
+(mouseenter)="hoverColor(color, 'white')"
+(mouseleave)="hoverColor(null, 'black')"
+clickable>done</span>
