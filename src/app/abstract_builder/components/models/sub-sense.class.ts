@@ -4,10 +4,10 @@ import {Story} from './story.class';
 import {List} from 'immutable';
 
 export class SubSense extends Sense {
-  summary: string;
-  tags: List<number>;
-  examples: List<Example>;
-  stories: List<Story>;
+  _summary: string;
+  _tags: List<number>;
+  _examples: List<Example>;
+  _stories: List<Story>;
   constructor(
     id: number,
     text: string,
@@ -18,10 +18,10 @@ export class SubSense extends Sense {
     stories: List<Story>
   ) {
     super(id, text, translations);
-    this.type = 'SUBSENSE';
-    this.summary = summary;
-    this.tags = tags;
-    this.examples = examples;
-    this.stories = stories;
+    this._type = 'SUBSENSE';
+    this._summary = summary;
+    this._tags = tags;
+    this._examples = examples;
+    this._stories = stories;
   }
 }

@@ -51,12 +51,4 @@ export class SenseGroup extends Item {
   get stories() {
     return this._stories;
   }
-
-  // public refreshInflections(newPos: number) {
-  //   if (newPos !== this._pos) {
-  //     switch (newPos) {
-  //       case
-  //     }
-  //   }
-  // }
 }

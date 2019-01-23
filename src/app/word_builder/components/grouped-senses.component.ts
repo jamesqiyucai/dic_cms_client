@@ -5,7 +5,7 @@ import {WordBuilderService} from '../word-builder.service.interface';
 import {IDServiceImplementation} from '../../core/id.service.implementation';
 import {OntologyServiceImplementation} from '../../core/ontology/ontology-service.implementation';
 import {WordBuilderServiceImpl} from '../word-builder.service.class';
-import {SenseGroup} from '../../abstract_builder/components/models/sense-group.class';
+// import {SenseGroup} from '../../abstract_builder/components/models/sense-group.class';
 import {List} from 'immutable';
 
 const ID_SERVICE = new InjectionToken<IDService>('IdService');
@@ -23,7 +23,7 @@ const WORD_BUILDER_SERVICE = new InjectionToken<WordBuilderService>('WordBuilder
   ]
 })
 export class GroupedSensesComponent {
-  private model: List<SenseGroup>;
+  // private model: List<SenseGroup>;
   constructor(
     @Inject(ID_SERVICE) private idService: IDService,
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,

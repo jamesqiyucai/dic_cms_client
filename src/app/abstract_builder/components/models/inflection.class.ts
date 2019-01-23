@@ -1,8 +1,8 @@
 export class Inflection {
-  type: number;
-  text: string;
+  private _type: number;
+  private _text: string;
   constructor(type: number, text: string) {
-    this.type = type;
-    this.text = text;
+    this._type = type;
+    this._text = text;
   }
 }

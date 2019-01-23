@@ -23,7 +23,7 @@ const WORD_BUILDER_SERVICE = new InjectionToken<WordBuilderService>('WordBuilder
   ]
 })
 export class ListedSensesComponent {
-  private model: List<BaseSense>;
+  // private model: List<BaseSense>;
   constructor(
     @Inject(ID_SERVICE) private idService: IDService,
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,

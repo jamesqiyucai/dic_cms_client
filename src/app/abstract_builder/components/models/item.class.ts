@@ -1,5 +1,3 @@
-import {List} from 'immutable';
-
 export abstract class Item {
   readonly _id: number;
   protected _type: string;

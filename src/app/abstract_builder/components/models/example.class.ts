@@ -3,11 +3,11 @@ import {Story} from './story.class';
 import {List} from 'immutable';
 
 export class Example extends Item {
-  text: string;
-  translations: List<string>;
-  source: string;
-  location: string;
-  stories: List<Story>;
+  private _text: string;
+  private _translations: List<string>;
+  private _source: string;
+  private _location: string;
+  private _stories: List<Story>;
   constructor(
     id: number,
     text: string,
@@ -17,11 +17,11 @@ export class Example extends Item {
     stories: List<Story>
   ) {
     super(id);
-    this.type = 'EXAMPLE';
-    this.text = text;
-    this.translations = translations;
-    this.source = source;
-    this.location = location;
-    this.stories = stories;
+    this._type = 'EXAMPLE';
+    this._text = text;
+    this._translations = translations;
+    this._source = source;
+    this._location = location;
+    this._stories = stories;
   }
 }

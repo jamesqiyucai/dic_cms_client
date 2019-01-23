@@ -1,8 +1,8 @@
 export class Phonetic {
-  region: number;
-  symbol: string;
+  private _region: number;
+  private _symbol: string;
   constructor(region: number, symbol: string) {
-    this.region = region;
-    this.symbol = symbol;
+    this._region = region;
+    this._symbol = symbol;
   }
 }
