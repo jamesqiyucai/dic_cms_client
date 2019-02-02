@@ -1,14 +1,12 @@
 export abstract class Item {
-  readonly _id: number;
-  protected _type: string;
+  protected constructor(
+    protected readonly _id: number,
+    protected readonly _type: string
+    ) {}
 
-  protected constructor(id: number) {
-    this._id = id;
-  }
-  public getItemType() {
+  get type() {
     return this._type;
   }
-
   get ID() {
     return this._id;
   }

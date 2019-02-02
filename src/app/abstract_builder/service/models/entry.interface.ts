@@ -10,18 +10,18 @@ export interface Entry {
   readonly senses: Map<number, Sense>;
   // sensesOrder: OrderedMap<string, List<number>>;
   // translations: List<Translation>;
-  // examples: List<Example>;
+  // examples: List<AbstractExample>;
   // stories: List<Story>;
   // senseExampleLinks: List<Map<number, List<number>>>;
   // senseTranslationLinks: List<Map<number, List<number>>>;
   // senseStoryLinks: List<Map<number, List<number>>>;
   // exampleStoryLinks: List<Map<number, List<number>>>;
-  // Phonetic methods
-  // addPhonetic(newPhonetic: Phonetic): List<Phonetic>;
-  // deletePhonetic(index: number): List<Phonetic>;
-  // insertPhonetic(newPhonetic: Phonetic, index: number): List<Phonetic>;
-  // updatePhonetic(newPhonetic: Phonetic, index: number): List<Phonetic>;
-  // movePhonetic(from: number, to: number): List<Phonetic>;
+  // AbstractPhonetic methods
+  // addPhonetic(newPhonetic: AbstractPhonetic): List<AbstractPhonetic>;
+  // deletePhonetic(index: number): List<AbstractPhonetic>;
+  // insertPhonetic(newPhonetic: AbstractPhonetic, index: number): List<AbstractPhonetic>;
+  // updatePhonetic(newPhonetic: AbstractPhonetic, index: number): List<AbstractPhonetic>;
+  // movePhonetic(from: number, to: number): List<AbstractPhonetic>;
   updatePhonetics(newPhonetics: List<Phonetic>): any;
   // Sense methods
   // getSenseByID(senseID: number): Sense;
@@ -34,11 +34,11 @@ export interface Entry {
   // deleteTranslation(index: number): List<Translation>;
   // insertTranslation(newTranslation: Translation, index: number): List<Translation>;
   // updateTranslation(newTranslation: Translation, index: number): List<Translation>;
-  // Example methods
-  // addExample(newExample: Example): List<Example>;
-  // deleteExample(index: number): List<Example>;
-  // insertExample(newExample: Example, index: number): List<Example>;
-  // updateExample(newExample: Example, index: number): List<Example>;
+  // AbstractExample methods
+  // addExample(newExample: AbstractExample): List<AbstractExample>;
+  // deleteExample(index: number): List<AbstractExample>;
+  // insertExample(newExample: AbstractExample, index: number): List<AbstractExample>;
+  // updateExample(newExample: AbstractExample, index: number): List<AbstractExample>;
   // Story methods
   // addStory(newStory: Story): List<Story>;
   // deleteStory(index: number): List<Story>;

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-word-entry-explanation',
-  templateUrl: './explanation.component.html',
+  templateUrl: './builder.component.html',
 })
-export class ExplanationComponent {
+export class BuilderComponent {
   constructor() {}
 }

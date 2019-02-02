@@ -32,13 +32,13 @@ export abstract class EntryImpl implements Entry {
     });
     return Map(tuplesArray);
   }
-  // private _examples: List<Example>;
+  // private _examples: List<AbstractExample>;
   // private _stories: List<Story>;
   constructor(
     name: string,
     phonetics: Array<Phonetic>,
     senses: Array<Sense>,
-    // examples: Array<Example>,
+    // examples: Array<AbstractExample>,
     // stories: Array<Story>
   ) {
     this._name = name;
@@ -65,7 +65,7 @@ export abstract class EntryImpl implements Entry {
     this._phonetics = newPhonetics;
   }
 
-  // public addPhonetic(newPhonetic: Phonetic) {
+  // public addPhonetic(newPhonetic: AbstractPhonetic) {
   //   this._phonetics = this._phonetics.push(newPhonetic);
   //   return this.phonetics;
   // }
@@ -73,16 +73,16 @@ export abstract class EntryImpl implements Entry {
   //   this._phonetics = this._phonetics.delete(index);
   //   return this.phonetics;
   // }
-  // public insertPhonetic(newPhonetic: Phonetic, index: number) {
+  // public insertPhonetic(newPhonetic: AbstractPhonetic, index: number) {
   //   this._phonetics = this._phonetics.insert(index, newPhonetic);
   //   return this.phonetics;
   // }
-  // public updatePhonetic(newPhonetic: Phonetic, index: number) {
+  // public updatePhonetic(newPhonetic: AbstractPhonetic, index: number) {
   //   this._phonetics = this._phonetics.set(index, newPhonetic);
   //   return this.phonetics;
   // }
   // public movePhonetic(from: number, to: number) {
-  //   this._phonetics = changeElementOrder<Phonetic>(this._phonetics, from, to);
+  //   this._phonetics = changeElementOrder<AbstractPhonetic>(this._phonetics, from, to);
   //   return this.phonetics;
   // }
   // senses APIs

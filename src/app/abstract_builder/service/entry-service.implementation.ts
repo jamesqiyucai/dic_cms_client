@@ -1,5 +1,5 @@
 // import {BroadcasterImpl} from '../../broadcaster/broadcaster.implementation';
-// import {Phonetic} from './models/phonetic/phonetic.interface';
+// import {AbstractPhonetic} from './models/phonetic/phonetic.interface';
 // import {List, Map} from 'immutable';
 // import {Sense} from './models/sense/sense.interface';
 // import {EntryFactory} from '../entry-factory.class';
@@ -11,7 +11,7 @@
 // export abstract class EntryServiceImpl implements EntryService {
 //   protected entryDocument: WordEntry = new EntryFactory().getWordEntry();
 //   private nameBroadcaster: Broadcaster<string> = new BroadcasterImpl<string>();
-//   private phoneticsBroadcaster: Broadcaster<List<Phonetic>> = new BroadcasterImpl<List<Phonetic>>();
+//   private phoneticsBroadcaster: Broadcaster<List<AbstractPhonetic>> = new BroadcasterImpl<List<AbstractPhonetic>>();
 //   private sensesBroadcaster: Broadcaster<Map<number, Sense>> = new BroadcasterImpl<Map<number, Sense>>();
 //   public onNameChange(event: AppEvent<string>) {
 //     this.entryDocument.name = event.payload;
@@ -22,10 +22,10 @@
 //   public broadcastName() {
 //     this.nameBroadcaster.broadcast(this.entryDocument.name);
 //   }
-//   public onPhoneticsChange(event: AppEvent<List<Phonetic>>): any {
+//   public onPhoneticsChange(event: AppEvent<List<AbstractPhonetic>>): any {
 //     this.entryDocument.updatePhonetics(event.payload);
 //   }
-//   public subscribePhoneticsChange(fn: (phonetics: List<Phonetic>) => any): any {
+//   public subscribePhoneticsChange(fn: (phonetics: List<AbstractPhonetic>) => any): any {
 //     this.phoneticsBroadcaster.subscribe(fn);
 //   }
 //   public broadcastPhonetics(): any {

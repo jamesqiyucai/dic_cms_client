@@ -2,13 +2,13 @@
 // import {ItemFactory} from '../abstract_builder/components/models/itemFactory/item-factory.interface';
 // import {List} from 'immutable';
 // import {Story} from '../abstract_builder/components/models/story.class';
-// import {Example} from '../abstract_builder/components/models/example.class';
+// import {AbstractExample} from '../abstract_builder/components/models/example.class';
 // import {BaseSense} from '../abstract_builder/components/models/base-sense.class';
-// import {SenseGroup} from '../abstract_builder/components/models/sense-group.class';
+// import {AbstractSenseGroup} from '../abstract_builder/components/models/sense-group.class';
 //
 // const factory: ItemFactory = new ItemFactoryImplementation();
 //
-// export const groupedSensesData: List<SenseGroup> = List([
+// export const groupedSensesData: List<AbstractSenseGroup> = List([
 //   factory.getSenseGroup(
 //     1,
 //     1,
@@ -283,7 +283,7 @@
 //         List()
 //       )
 //     ]),
-//     List<Example>([
+//     List<AbstractExample>([
 //       factory.getExample(
 //         24,
 //         'They decided to call the baby Mark.',
