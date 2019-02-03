@@ -28,5 +28,4 @@ export abstract class AbstractExample extends ElaboratedItem {
   set location(newLocation: string) {
     this._location = newLocation;
   }
-
 }
