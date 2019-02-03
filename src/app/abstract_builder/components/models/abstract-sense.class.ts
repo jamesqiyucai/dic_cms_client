@@ -4,11 +4,11 @@ import {AbstractStory} from './abstract-story.class';
 import {AbstractExample} from './abstract-example.class';
 import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
 import {AbstractSensePosition} from './abstract-sense-position.class';
+import {BuilderComponentModelTypes} from './model-types.enum';
 
 export abstract class AbstractSense extends ExemplifiedItem {
   protected constructor(
     id: number,
-    type: string,
     text: string,
     translations: List<string>,
     stories: List<AbstractStory>,
@@ -18,7 +18,7 @@ export abstract class AbstractSense extends ExemplifiedItem {
     protected _summary: string,
     protected _tags: List<number>
   ) {
-    super(id, type, text, translations, stories, examples);
+    super(id, BuilderComponentModelTypes.sense, text, translations, stories, examples);
   }
 
   get pos() {
