@@ -5,9 +5,8 @@ import {WordBuilderService} from '../word-builder.service.interface';
 import {IDServiceImplementation} from '../../core/id.service.implementation';
 import {OntologyServiceImplementation} from '../../core/ontology/ontology-service.implementation';
 import {WordBuilderServiceImpl} from '../word-builder.service.class';
-import {BaseSense} from '../../abstract_builder/components/models/abstract-basesense.class';
-import {List} from 'immutable';
 import {ID_SERVICE, ONTOLOGY_SERVICE, WORD_BUILDER_SERVICE} from './tokens';
+import {ListedSensesModel} from './models/listed-senses/listed-senses-model.interface';
 
 @Component({
   selector: 'app-listed-senses',
@@ -19,8 +18,8 @@ import {ID_SERVICE, ONTOLOGY_SERVICE, WORD_BUILDER_SERVICE} from './tokens';
     {provide: WORD_BUILDER_SERVICE, useClass: WordBuilderServiceImpl}
   ]
 })
-export class ListedSensesComponent implements OnInit {
-  private model: List<BaseSense>;
+export class ListedSensesComponent {
+  private model: ListedSensesModel;
 
   constructor(
     @Inject(ID_SERVICE) private idService: IDService,
@@ -28,8 +27,11 @@ export class ListedSensesComponent implements OnInit {
     @Inject(WORD_BUILDER_SERVICE) private wordBuilderService: WordBuilderService,
   ) {}
 
-  ngOnInit(): void {
-
+  public addSense() {
+    this.model.addNewSense();
+  }
+  public deleteSense(index: number) {
+    this.model.deleteSense(index);
   }
 }
 
