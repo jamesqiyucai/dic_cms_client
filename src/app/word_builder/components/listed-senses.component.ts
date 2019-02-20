@@ -6,7 +6,7 @@ import {IDServiceImplementation} from '../../core/id.service.implementation';
 import {OntologyServiceImplementation} from '../../core/ontology/ontology-service.implementation';
 import {WordBuilderServiceImpl} from '../word-builder.service.class';
 import {ID_SERVICE, ONTOLOGY_SERVICE, WORD_BUILDER_SERVICE} from './tokens';
-import {ListedSensesModel} from './models/listed-senses/listed-senses-model.interface';
+import {WordBuilderListedSensesModel} from './models/listed-senses/word-builder-listed-senses-model.interface';
 
 @Component({
   selector: 'app-listed-senses',
@@ -19,7 +19,7 @@ import {ListedSensesModel} from './models/listed-senses/listed-senses-model.inte
   ]
 })
 export class ListedSensesComponent {
-  private model: ListedSensesModel;
+  private model: WordBuilderListedSensesModel;
 
   constructor(
     @Inject(ID_SERVICE) private idService: IDService,
