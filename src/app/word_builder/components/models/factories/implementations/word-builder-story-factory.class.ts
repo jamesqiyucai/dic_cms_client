@@ -1,10 +1,10 @@
-import {WordBuilderNewStoryFactory} from '../interfaces/word-builder-new-story-factory.interface';
-import {WordBuilderStory} from '../../word-builder-story.class';
+import {NewComponentStoryFactory} from '../interfaces/new-story-factory.interface';
+import {ComponentStory} from '../../component-story.class';
 import {AbstractWordBuilderFactory} from './abstract-word-builder-factory.class';
 
-export class WordBuilderStoryFactoryImpl extends AbstractWordBuilderFactory implements WordBuilderNewStoryFactory {
-  public createNewStory(): WordBuilderStory {
-    const newStory = new WordBuilderStory(this.id, '', '');
+export class WordBuilderStoryFactoryImpl extends AbstractWordBuilderFactory implements NewComponentStoryFactory {
+  public createNewStory(): ComponentStory {
+    const newStory = new ComponentStory(this.id, '', '');
     this.incrementID();
     return newStory;
   }

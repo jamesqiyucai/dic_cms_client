@@ -1,17 +1,17 @@
 import {WordBuilderListedSensesComponentModel} from './word-builder-listed-senses-component-model.interface';
 import {List} from 'immutable';
-import {WordBuilderSense} from '../word-builder-sense.class';
-import {WordBuilderStory} from '../word-builder-story.class';
-import {WordBuilderExample} from '../word-builder-example.class';
+import {ComponentSense} from '../component-sense.class';
+import {ComponentStory} from '../component-story.class';
+import {ComponentExample} from '../component-example.class';
 
 export class WordBuilderListedSensesComponentModelImpl implements WordBuilderListedSensesComponentModel {
-  private _senses: List<WordBuilderSense>;
+  private _senses: List<ComponentSense>;
 
-  constructor(senses: List<WordBuilderSense>) {
+  constructor(senses: List<ComponentSense>) {
     this._senses = senses;
   }
 
-  public get senses(): List<WordBuilderSense> {
+  public get senses(): List<ComponentSense> {
     return this._senses;
   }
 
@@ -36,12 +36,12 @@ export class WordBuilderListedSensesComponentModelImpl implements WordBuilderLis
   deleteStory(id: number): void {
   }
 
-  modifyExample(id: number, newExample: WordBuilderExample): void {
+  modifyExample(id: number, newExample: ComponentExample): void {
   }
 
-  modifySense(index: number, newSense: WordBuilderSense): void {
+  modifySense(index: number, newSense: ComponentSense): void {
   }
 
-  modifyStory(id: number, newStory: WordBuilderStory): void {
+  modifyStory(id: number, newStory: ComponentStory): void {
   }
 }

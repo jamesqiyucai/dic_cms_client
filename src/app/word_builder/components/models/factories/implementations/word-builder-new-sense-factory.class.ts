@@ -1,23 +1,23 @@
-import {WordBuilderNewSenseFactory} from '../interfaces/word-builder-new-sense-factory.interface';
+import {NewComponentSenseFactory} from '../interfaces/new-sense-factory.interface';
 import {AbstractWordBuilderFactory} from './abstract-word-builder-factory.class';
-import {WordBuilderSense} from '../../word-builder-sense.class';
-import {WordBuilderNewSensePositionFactory} from '../interfaces/word-builder-new-sense-position-factory.interface';
+import {ComponentSense} from '../../component-sense.class';
+import {NewComponentSensePositionFactory} from '../interfaces/new-sense-position-factory.interface';
 import {List} from 'immutable';
 import {Injectable} from '@angular/core';
-import {WordBuilderNewExampleFactory} from '../interfaces/word-builder-new-example-factory.interface';
+import {NewComponentExampleFactory} from '../interfaces/new-example-factory.interface';
 
 @Injectable()
-export class WordBuilderNewSenseFactoryImpl extends AbstractWordBuilderFactory implements WordBuilderNewSenseFactory {
+export class WordBuilderNewSenseFactoryImpl extends AbstractWordBuilderFactory implements NewComponentSenseFactory {
   constructor(
-    private sensePositionFactory: WordBuilderNewSensePositionFactory,
-    private newExampleFactory: WordBuilderNewExampleFactory
+    private sensePositionFactory: NewComponentSensePositionFactory,
+    private newExampleFactory: NewComponentExampleFactory
     ) {
     super();
   }
-  public createNewSense(): WordBuilderSense {
+  public createNewSense(): ComponentSense {
     const newPosition = this.sensePositionFactory.createNewSensePosition();
     const newExample = this.newExampleFactory.createNewExample();
-    const newSense = new WordBuilderSense(this.id, 1, newPosition, '', '', List(), List(), List([newExample]), List());
+    const newSense = new ComponentSense(this.id, 1, newPosition, '', '', List(), List(), List([newExample]), List());
     this.incrementID();
     return newSense;
   }

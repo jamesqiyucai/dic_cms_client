@@ -1,11 +1,11 @@
-import {WordBuilderNewExampleFactory} from '../interfaces/word-builder-new-example-factory.interface';
-import {WordBuilderExample} from '../../word-builder-example.class';
+import {NewComponentExampleFactory} from '../interfaces/new-example-factory.interface';
+import {ComponentExample} from '../../component-example.class';
 import {List} from 'immutable';
 import {AbstractWordBuilderFactory} from './abstract-word-builder-factory.class';
 
-export class WordBuilderNewExampleFactoryImpl extends AbstractWordBuilderFactory implements WordBuilderNewExampleFactory {
-  public createNewExample(): WordBuilderExample {
-    const newExample = new WordBuilderExample(this.id, '', List(), List(), '', '');
+export class NewComponentExampleFactoryImpl extends AbstractWordBuilderFactory implements NewComponentExampleFactory {
+  public createNewExample(): ComponentExample {
+    const newExample = new ComponentExample(this.id, '', List(), List(), '', '');
     this.incrementID();
     return newExample;
   }

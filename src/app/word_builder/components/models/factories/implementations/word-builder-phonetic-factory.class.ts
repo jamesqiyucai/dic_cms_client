@@ -1,8 +1,8 @@
-import {WordBuilderNewPhoneticFactory} from '../interfaces/word-builder-new-phonetic-factory.interface';
-import {WordBuilderPhonetic} from '../../word-builder-phonetic.class';
+import {NewComponentPhoneticFactory} from '../interfaces/new-phonetic-factory.interface';
+import {ComponentPhonetic} from '../../component-phonetic.class';
 
-export class WordBuilderPhoneticFactoryImpl implements WordBuilderNewPhoneticFactory {
-  public createNewPhonetic(): WordBuilderPhonetic {
-    return new WordBuilderPhonetic(1, '');
+export class WordBuilderPhoneticFactoryImpl implements NewComponentPhoneticFactory {
+  public createNewPhonetic(): ComponentPhonetic {
+    return new ComponentPhonetic(1, '');
   }
 }

@@ -1,9 +1,9 @@
-import {WordBuilderNewInflectionFactory} from '../interfaces/word-builder-new-inflection-factory.interface';
-import {WordBuilderInflection} from '../../word-builder-inflection.class';
+import {NewComponentInflectionFactory} from '../interfaces/new-inflection-factory.interface';
+import {ComponentInflection} from '../../component-inflection.class';
 
-export class WordBuilderInflectionFactoryImpl implements WordBuilderNewInflectionFactory {
-  public createNewInflection(): WordBuilderInflection {
-    return new WordBuilderInflection(1, '');
+export class NewInflectionFactoryImpl implements NewComponentInflectionFactory {
+  public createNewInflection(): ComponentInflection {
+    return new ComponentInflection(1, '');
   }
 }
 

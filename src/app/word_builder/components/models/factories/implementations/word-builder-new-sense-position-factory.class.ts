@@ -1,8 +1,8 @@
-import {WordBuilderNewSensePositionFactory} from '../interfaces/word-builder-new-sense-position-factory.interface';
-import {WordBuilderSensePosition} from '../../word-builder-sense-position.class';
+import {NewComponentSensePositionFactory} from '../interfaces/new-sense-position-factory.interface';
+import {ComponentSensePosition} from '../../component-sense-position.class';
 
-export class WordBuilderNewSensePositionFactoryImpl implements WordBuilderNewSensePositionFactory {
-  public createNewSensePosition(): WordBuilderSensePosition {
-    return new WordBuilderSensePosition(null, null);
+export class WordBuilderNewSensePositionFactoryImpl implements NewComponentSensePositionFactory {
+  public createNewSensePosition(): ComponentSensePosition {
+    return new ComponentSensePosition(null, null);
   }
 }
