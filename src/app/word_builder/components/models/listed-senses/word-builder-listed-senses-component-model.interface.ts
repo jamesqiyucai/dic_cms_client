@@ -3,6 +3,8 @@ import {WordBuilderExample} from '../word-builder-example.class';
 import {WordBuilderSense} from '../word-builder-sense.class';
 import {List} from 'immutable';
 
+type element =
+
 export interface WordBuilderListedSensesComponentModel {
   senses: List<WordBuilderSense>;
 
