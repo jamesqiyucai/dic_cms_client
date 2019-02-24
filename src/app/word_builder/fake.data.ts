@@ -1,10 +1,10 @@
-// import {ItemFactoryImplementation} from '../abstract_builder/components/models/itemFactory/item-factory.implementation';
-// import {ItemFactory} from '../abstract_builder/components/models/itemFactory/item-factory.interface';
+// import {ItemFactoryImplementation} from '../abstract_builder/components/shared/itemFactory/item-factory.implementation';
+// import {ItemFactory} from '../abstract_builder/components/shared/itemFactory/item-factory.interface';
 // import {List} from 'immutable';
-// import {Story} from '../abstract_builder/components/models/story.class';
-// import {AbstractExample} from '../abstract_builder/components/models/example.class';
-// import {BaseSense} from '../abstract_builder/components/models/base-sense.class';
-// import {AbstractSenseGroup} from '../abstract_builder/components/models/sense-group.class';
+// import {Story} from '../abstract_builder/components/shared/story.class';
+// import {AbstractExample} from '../abstract_builder/components/shared/example.class';
+// import {BaseSense} from '../abstract_builder/components/shared/base-sense.class';
+// import {AbstractSenseGroup} from '../abstract_builder/components/shared/sense-group.class';
 //
 // const factory: ItemFactory = new ItemFactoryImplementation();
 //

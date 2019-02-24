@@ -1,15 +1,15 @@
 import {InjectionToken} from '@angular/core';
 import {IDService} from '../core/id.service.interface';
 import {OntologyService} from '../core/ontology/ontology.service.interface';
-import {WordBuilderService} from './word-builder.service.interface';
+import {WordBuilderService} from './services/word-builder.service.interface';
 import {
   WordBuilderListedSensesComponentModel
-} from './components/models/listed-senses/word-builder-listed-senses-component-model.interface';
-import {NewComponentSenseFactory} from './components/models/factories/interfaces/new-sense-factory.interface';
+} from './components/listed_senses/model/word-builder-listed-senses-component-model.interface';
+import {NewComponentSenseFactory} from './components/shared/factories/new-sense-factory.interface';
 import {
   NewComponentSensePositionFactory
-} from './components/models/factories/interfaces/new-sense-position-factory.interface';
-import {NewComponentExampleFactory} from './components/models/factories/interfaces/new-example-factory.interface';
+} from './components/shared/factories/new-sense-position-factory.interface';
+import {NewComponentExampleFactory} from './components/shared/factories/new-example-factory.interface';
 
 export const LISTED_SENSES_COMPONENT_MODEL_COMPOSER = new InjectionToken<WordBuilderListedSensesComponentModel>('ListedSensesFactory');
 export const NEW_SENSE_FACTORY = new InjectionToken<NewComponentSenseFactory>('newSenseFactory');
