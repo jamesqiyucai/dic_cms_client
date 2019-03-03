@@ -2,7 +2,7 @@ import {ElaboratedItem} from './elaborated-item.class';
 import {List} from 'immutable';
 import {AbstractStory} from './abstract-story.class';
 import {AbstractExample} from './abstract-example.class';
-import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
+import {changeElementOrder} from '../../../../../utils/changeElementOrder.function';
 
 export abstract class ExemplifiedItem extends ElaboratedItem {
   protected constructor(

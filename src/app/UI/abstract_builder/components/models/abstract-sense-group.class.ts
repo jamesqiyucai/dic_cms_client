@@ -4,7 +4,7 @@ import {List} from 'immutable';
 import {AbstractInflection} from './abstract-inflection.class';
 import {BuilderComponentModelTypes} from './model-types.enum';
 import {AbstractSense} from './abstract-sense.class';
-import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
+import {changeElementOrder} from '../../../../../utils/changeElementOrder.function';
 
 export class AbstractSenseGroup extends Item {
   constructor(

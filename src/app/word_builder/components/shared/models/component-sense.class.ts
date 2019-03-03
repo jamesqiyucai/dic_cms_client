@@ -1,4 +1,4 @@
-import {AbstractSense} from '../../../../abstract_builder/components/models/abstract-sense.class';
+import {AbstractSense} from '../../../../UI/abstract_builder/components/models/abstract-sense.class';
 import {ComponentSensePosition} from './component-sense-position.class';
 import {List} from 'immutable';
 import {ComponentExample} from './component-example.class';

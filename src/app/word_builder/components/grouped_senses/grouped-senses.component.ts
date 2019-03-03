@@ -5,7 +5,7 @@ import {WordBuilderService} from '../../services/word-builder.service.interface'
 import {IDServiceImplementation} from '../../../core/id.service.implementation';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
 import {WordBuilderServiceImpl} from '../../services/word-builder.service.class';
-import {AbstractSenseGroup} from '../../../abstract_builder/components/models/abstract-sense-group.class';
+import {AbstractSenseGroup} from '../../../UI/abstract_builder/components/models/abstract-sense-group.class';
 import {List} from 'immutable';
 import {ID_SERVICE, ONTOLOGY_SERVICE, WORD_BUILDER_SERVICE} from '../../tokens';
 

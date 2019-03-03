@@ -1,4 +1,4 @@
-import {AbstractExample} from '../../../../abstract_builder/components/models/abstract-example.class';
+import {AbstractExample} from '../../../../UI/abstract_builder/components/models/abstract-example.class';
 import {List} from 'immutable';
 import {ComponentStory} from './component-story.class';
 

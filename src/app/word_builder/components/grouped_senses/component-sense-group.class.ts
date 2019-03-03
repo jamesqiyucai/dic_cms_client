@@ -1,4 +1,4 @@
-import {AbstractSenseGroup} from '../../../abstract_builder/components/models/abstract-sense-group.class';
+import {AbstractSenseGroup} from '../../../UI/abstract_builder/components/models/abstract-sense-group.class';
 import {ComponentPhonetic} from './component-phonetic.class';
 import {ComponentInflection} from './component-inflection.class';
 import {ComponentSense} from '../shared/models/component-sense.class';

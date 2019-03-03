@@ -1,6 +1,6 @@
 import {TranslatableItem} from './translatable-item.class';
 import {List} from 'immutable';
-import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
+import {changeElementOrder} from '../../../../../utils/changeElementOrder.function';
 import {AbstractStory} from './abstract-story.class';
 
 export abstract class ElaboratedItem extends TranslatableItem {
