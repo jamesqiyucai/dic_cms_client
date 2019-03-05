@@ -1,6 +1,6 @@
 import {Item} from './item.class';
 
-export abstract class TextedItem extends Item {
+export abstract class Textable extends Item {
   protected constructor(
     id: number,
     type: string,

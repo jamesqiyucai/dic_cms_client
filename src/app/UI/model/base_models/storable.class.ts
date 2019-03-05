@@ -1,9 +1,9 @@
-import {TranslatableItem} from './translatable-item.class';
+import {Translatable} from './translatable.class';
 import {List} from 'immutable';
 import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
 import {AbstractStory} from './abstract-story.class';
 
-export abstract class ElaboratedItem extends TranslatableItem {
+export abstract class Storable extends Translatable {
   protected constructor(
     id: number,
     type: string,

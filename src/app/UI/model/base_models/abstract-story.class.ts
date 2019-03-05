@@ -1,7 +1,7 @@
 import {BuilderComponentModelTypes} from './model-types.enum';
-import {TextedItem} from './texted-item.class';
+import {Textable} from './textable.class';
 
-export abstract class AbstractStory extends TextedItem {
+export abstract class AbstractStory extends Textable {
   protected constructor(
     id: number,
     text: string,
@@ -17,7 +17,7 @@ export abstract class AbstractStory extends TextedItem {
     if (newTitle !== '') {
       this._title = newTitle;
     } else {
-      alert('Story Title Shall Not Be Empty');
+      alert('StoryComp Title Shall Not Be Empty');
     }
   }
 }

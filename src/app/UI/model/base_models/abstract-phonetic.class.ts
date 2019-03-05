@@ -1,6 +1,5 @@
 export abstract class AbstractPhonetic {
-  protected constructor(
-    protected _region: number, protected _symbol: string) {
+  protected constructor(protected _region: number, protected _symbol: string) {
   }
 
   get region() {

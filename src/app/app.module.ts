@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
-import {IDServiceImplementation} from './core/id.service.implementation';
+import {IDServiceImpl} from './service/word_builder/id.service.class';
 import { ToolkitModule } from './toolkit/toolkit.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,7 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ToolkitModule,
     BrowserAnimationsModule
   ],
-  providers: [IDServiceImplementation],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

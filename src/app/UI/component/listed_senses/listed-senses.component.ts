@@ -1,43 +1,39 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {IDService} from '../../../core/id.service.interface';
+import {IDService} from '../../../service/word_builder/id.service.interface';
 import {OntologyService} from '../../../core/ontology/ontology.service.interface';
-import {WordBuilderService} from '../../services/word-builder.service.interface';
-import {IDServiceImplementation} from '../../../core/id.service.implementation';
+import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
-import {WordBuilderServiceImpl} from '../../services/word-builder.service.class';
 import {
-  ID_SERVICE,
-  LISTED_SENSES_COMPONENT_MODEL_COMPOSER, NEW_EXAMPLE_FACTORY, NEW_SENSE_FACTORY, NEW_SENSE_POSITION_FACTORY,
+  LISTED_SENSES_COMPONENT_MODEL_COMPOSER, EXAMPLE_FACTORY, SENSE_FACTORY, NEW_SENSE_POSITION_FACTORY,
   ONTOLOGY_SERVICE,
-  WORD_BUILDER_SERVICE
 } from './tokens';
 import {WordBuilderListedSensesComponentModel} from '../../model/items_list/word-builder-listed-senses-component-model.interface';
 import {
   NewListedSensesComponentModelComposer
-} from '../../model/items_list/new-component-model-composer.interface';
-import {ComponentSense} from '../../model/sense/component-sense.class';
-import {ComponentStory} from '../../model/story/component-story.class';
-import {ComponentExample} from '../../model/example/component-example.class';
+} from '../../model/items_list/model-composer.interface';
+import {SenseComp} from '../../model/sense/sense-comp.class';
+import {StoryComp} from '../../model/story/story-comp.class';
+import {ExampleComp} from '../../model/example/example-comp.class';
 import {
   NewListedSensesComponentModelComposerImpl
-} from '../../model/items_list/word-builder-new-component-model-composer.class';
+} from '../../model/items_list/model-composer.class';
 import {List} from 'immutable';
-import {WordBuilderNewSenseFactoryImpl} from '../../model/sense/word-builder-new-sense-factory.class';
-import {WordBuilderNewSensePositionFactoryImpl} from '../../model/sense/word-builder-new-sense-position-factory.class';
-import {NewComponentExampleFactoryImpl} from '../../model/example/word-builder-new-example-factory.class';
+import {SenseCompFactoryImpl} from '../../model/sense/sense-comp-factory.class';
+import {SensePositionCompFactoryImpl} from '../../model/sense-position/sense-position-comp-factory.class';
+import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
+import {ID_SERVICE} from '../../../service/word_builder/tokens';
 
 @Component({
   selector: 'app-listed-senses',
   templateUrl: './listed-senses.component.html',
   styleUrls: [],
   providers: [
-    {provide: ID_SERVICE, useClass: IDServiceImplementation},
+    {provide: ID_SERVICE, useClass: IDServiceImpl},
     {provide: ONTOLOGY_SERVICE, useClass: OntologyServiceImplementation},
     {provide: LISTED_SENSES_COMPONENT_MODEL_COMPOSER, useClass: NewListedSensesComponentModelComposerImpl},
-    {provide: NEW_SENSE_FACTORY, useClass: WordBuilderNewSenseFactoryImpl},
-    {provide: NEW_SENSE_POSITION_FACTORY, useClass: WordBuilderNewSensePositionFactoryImpl},
-    {provide: NEW_EXAMPLE_FACTORY, useClass: NewComponentExampleFactoryImpl},
-    {provide: WORD_BUILDER_SERVICE, useClass: WordBuilderServiceImpl}
+    {provide: SENSE_FACTORY, useClass: SenseCompFactoryImpl},
+    {provide: NEW_SENSE_POSITION_FACTORY, useClass: SensePositionCompFactoryImpl},
+    {provide: EXAMPLE_FACTORY, useClass: ExampleCompFactoryImpl},
   ]
 })
 export class ListedSensesComponent implements OnInit {
@@ -47,14 +43,13 @@ export class ListedSensesComponent implements OnInit {
     @Inject(ID_SERVICE) private idService: IDService,
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,
     @Inject(LISTED_SENSES_COMPONENT_MODEL_COMPOSER) private newListedSensesModelComposer: NewListedSensesComponentModelComposer,
-    @Inject(WORD_BUILDER_SERVICE) private wordBuilderService: WordBuilderService,
   ) {}
 
   public ngOnInit(): void {
     this.model = this.newListedSensesModelComposer.createNewModel();
   }
 
-  public get senses(): List<ComponentSense> {
+  public get senses(): List<SenseComp> {
     return this.model.senses;
   }
 
@@ -62,21 +57,21 @@ export class ListedSensesComponent implements OnInit {
   }
   private deleteStory(id: number) {
   }
-  private modifyStory(id: number, newStory: ComponentStory) {
+  private modifyStory(id: number, newStory: StoryComp) {
   }
 
   private addExample() {
   }
   private deleteExample(id: number) {
   }
-  private modifyExample(id: number, newExample: ComponentExample) {
+  private modifyExample(id: number, newExample: ExampleComp) {
   }
 
   private addSense() {
   }
   private deleteSense(index: number) {
   }
-  private modifySense(id: number, newSense: ComponentSense) {
+  private modifySense(id: number, newSense: SenseComp) {
   }
 }
 

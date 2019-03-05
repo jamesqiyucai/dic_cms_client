@@ -1,4 +1,4 @@
-import {ExemplifiedItem} from './exemplified-item.class';
+import {Examplable} from './examplable.class';
 import {List} from 'immutable';
 import {AbstractStory} from './abstract-story.class';
 import {AbstractExample} from './abstract-example.class';
@@ -6,7 +6,7 @@ import {changeElementOrder} from '../../../../utils/changeElementOrder.function'
 import {AbstractSensePosition} from './abstract-sense-position.class';
 import {BuilderComponentModelTypes} from './model-types.enum';
 
-export abstract class AbstractSense extends ExemplifiedItem {
+export abstract class AbstractSense extends Examplable {
   protected constructor(
     id: number,
     text: string,

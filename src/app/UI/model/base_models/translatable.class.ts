@@ -1,8 +1,8 @@
 import {List} from 'immutable';
-import {TextedItem} from './texted-item.class';
+import {Textable} from './textable.class';
 import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
 
-export abstract class TranslatableItem extends TextedItem {
+export abstract class Translatable extends Textable {
   protected constructor(
     id: number,
     type: string,

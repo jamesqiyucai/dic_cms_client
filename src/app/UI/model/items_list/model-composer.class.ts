@@ -1,17 +1,17 @@
-import {NewListedSensesComponentModelComposer} from './new-component-model-composer.interface';
+import {NewListedSensesComponentModelComposer} from './model-composer.interface';
 import {WordBuilderListedSensesComponentModel} from './word-builder-listed-senses-component-model.interface';
 import {List} from 'immutable';
-import {ComponentSense} from '../sense/component-sense.class';
+import {SenseComp} from '../sense/sense-comp.class';
 import {Injectable} from '@angular/core';
-import {NewComponentSenseFactory} from '../sense/new-sense-factory.interface';
+import {SenseCompFactory} from '../sense/sense-comp-factory.interface';
 import {WordBuilderListedSensesComponentModelImpl} from './word-builder-listed-senses-component-model.class';
 
 @Injectable()
 export class NewListedSensesComponentModelComposerImpl implements NewListedSensesComponentModelComposer {
-  private data: List<ComponentSense> = List([this.newSenseFactory.createNewSense()]);
+  private data: List<SenseComp> = List([this.newSenseFactory.createNewSense()]);
 
   constructor(
-    private newSenseFactory: NewComponentSenseFactory
+    private newSenseFactory: SenseCompFactory
   ) {}
 
   public createNewModel(): WordBuilderListedSensesComponentModel {

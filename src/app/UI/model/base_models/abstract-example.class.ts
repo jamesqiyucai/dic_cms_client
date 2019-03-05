@@ -1,10 +1,10 @@
 import {AbstractStory} from './abstract-story.class';
 import {List} from 'immutable';
 import {BuilderComponentModelTypes} from './model-types.enum';
-import {TranslatableItem} from './translatable-item.class';
-import {ElaboratedItem} from './elaborated-item.class';
+import {Translatable} from './translatable.class';
+import {Storable} from './storable.class';
 
-export abstract class AbstractExample extends ElaboratedItem {
+export abstract class AbstractExample extends Storable {
   protected constructor(
     id: number,
     text: string,
