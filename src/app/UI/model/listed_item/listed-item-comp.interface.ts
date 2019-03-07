@@ -1,5 +1,5 @@
 import {SenseComp} from '../sense/sense-comp.class';
 
-export interface ListedItem {
+export interface ListedItemComp {
   getContent(): SenseComp | null;
 }

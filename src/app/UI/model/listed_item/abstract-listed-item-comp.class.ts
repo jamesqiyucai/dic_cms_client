@@ -1,7 +1,7 @@
-import {ListedItem} from './listed-item.interface';
+import {ListedItemComp} from './listed-item-comp.interface';
 import {SenseComp} from '../sense/sense-comp.class';
 
-export abstract class AbstractListedItem implements ListedItem {
+export abstract class AbstractListedItemComp implements ListedItemComp {
   protected constructor(readonly isSense: boolean, private sense?: SenseComp) {}
 
   public getContent(): SenseComp | null {

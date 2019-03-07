@@ -1,27 +1,32 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {IDService} from '../../../service/word_builder/id.service.interface';
 import {OntologyService} from '../../../core/ontology/ontology.service.interface';
 import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
+import {ListedItemsCompModel} from '../../model/items_list/listed-items-comp-model.interface';
 import {
-  LISTED_SENSES_COMPONENT_MODEL_COMPOSER, EXAMPLE_FACTORY, SENSE_FACTORY, NEW_SENSE_POSITION_FACTORY,
-  ONTOLOGY_SERVICE,
-} from './tokens';
-import {WordBuilderListedSensesComponentModel} from '../../model/items_list/word-builder-listed-senses-component-model.interface';
-import {
-  NewListedSensesComponentModelComposer
-} from '../../model/items_list/model-composer.interface';
+  ListedItemsCompModelComposer
+} from '../../model/items_list/listed-items-comp-model-composer.interface';
 import {SenseComp} from '../../model/sense/sense-comp.class';
 import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleComp} from '../../model/example/example-comp.class';
 import {
-  NewListedSensesComponentModelComposerImpl
-} from '../../model/items_list/model-composer.class';
+  ListedItemsCompModelComposerImpl
+} from '../../model/items_list/listed-items-comp-model-composer.class';
 import {List} from 'immutable';
 import {SenseCompFactoryImpl} from '../../model/sense/sense-comp-factory.class';
 import {SensePositionCompFactoryImpl} from '../../model/sense-position/sense-position-comp-factory.class';
 import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
 import {ID_SERVICE} from '../../../service/word_builder/tokens';
+import {ONTOLOGY_SERVICE} from '../../../core/tokens';
+import {EXAMPLE_FACTORY} from '../../model/example/injection-token';
+import {LISTED_ITEMS_COMP_MODEL_COMPOSER} from '../../model/items_list/injection-token';
+import {SENSE_FACTORY} from '../../model/sense/injection-token';
+import {SENSE_POSITION_FACTORY} from '../../model/sense-position/injection-token';
+import {STORY_FACTORY} from '../../model/story/injection-token';
+import {StoryCompFactoryImpl} from '../../model/story/story-comp-factory.class';
+import {ListedItemComp} from '../../model/listed_item/listed-item-comp.interface';
+import {LISTED_ITEM_FACTORY} from '../../model/listed_item/injection-token';
+import {ListedItemCompFactoryImpl} from '../../model/listed_item/listed-item-comp-factory.class';
 
 @Component({
   selector: 'app-listed-senses',
@@ -30,48 +35,84 @@ import {ID_SERVICE} from '../../../service/word_builder/tokens';
   providers: [
     {provide: ID_SERVICE, useClass: IDServiceImpl},
     {provide: ONTOLOGY_SERVICE, useClass: OntologyServiceImplementation},
-    {provide: LISTED_SENSES_COMPONENT_MODEL_COMPOSER, useClass: NewListedSensesComponentModelComposerImpl},
+    {provide: LISTED_ITEMS_COMP_MODEL_COMPOSER, useClass: ListedItemsCompModelComposerImpl},
+    {provide: LISTED_ITEM_FACTORY, useClass: ListedItemCompFactoryImpl},
     {provide: SENSE_FACTORY, useClass: SenseCompFactoryImpl},
-    {provide: NEW_SENSE_POSITION_FACTORY, useClass: SensePositionCompFactoryImpl},
+    {provide: SENSE_POSITION_FACTORY, useClass: SensePositionCompFactoryImpl},
     {provide: EXAMPLE_FACTORY, useClass: ExampleCompFactoryImpl},
+    {provide: STORY_FACTORY, useClass: StoryCompFactoryImpl}
   ]
 })
 export class ListedSensesComponent implements OnInit {
-  private model: WordBuilderListedSensesComponentModel;
+  private listedItemsModel: ListedItemsCompModel;
 
   constructor(
-    @Inject(ID_SERVICE) private idService: IDService,
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,
-    @Inject(LISTED_SENSES_COMPONENT_MODEL_COMPOSER) private newListedSensesModelComposer: NewListedSensesComponentModelComposer,
+    @Inject(LISTED_ITEMS_COMP_MODEL_COMPOSER) private listedSensesModelComposer: ListedItemsCompModelComposer,
   ) {}
 
   public ngOnInit(): void {
-    this.model = this.newListedSensesModelComposer.createNewModel();
+    this.listedItemsModel = this.listedSensesModelComposer.createNewModel();
   }
 
-  public get senses(): List<SenseComp> {
-    return this.model.senses;
+  public get items(): List<ListedItemComp> {
+    return this.listedItemsModel.items;
   }
 
-  private addStory() {
-  }
-  private deleteStory(id: number) {
-  }
-  private modifyStory(id: number, newStory: StoryComp) {
+  public addStoryToExample(index: number, ofItem: number, atIndex: number): void {
+    this.listedItemsModel.addStoryToExample(index, ofItem, atIndex);
   }
 
-  private addExample() {
-  }
-  private deleteExample(id: number) {
-  }
-  private modifyExample(id: number, newExample: ExampleComp) {
+  public addStoryToSense(index: number, atIndex: number): void {
+    this.listedItemsModel.addStoryToSense(index, atIndex);
   }
 
-  private addSense() {
+  public modifyStoryInExample(index: number, ofItem: number, atIndex: number, to: StoryComp): void {
+    this.listedItemsModel.modifyStoryInExample(index, ofItem, atIndex, to);
   }
-  private deleteSense(index: number) {
+
+  public modifyStoryInSense(index: number, atIndex: number, to: StoryComp): void {
+    this.listedItemsModel.modifyStoryInSense(index, atIndex, to);
   }
-  private modifySense(id: number, newSense: SenseComp) {
+
+  public deleteStoryFromExample(index: number, ofItem: number, atIndex: number): void {
+    this.listedItemsModel.deleteStoryFromExample(index, ofItem, atIndex);
+  }
+
+  public deleteStoryFromSense(index: number, atIndex: number): void {
+    this.listedItemsModel.deleteStoryFromSense(index, atIndex);
+  }
+
+  public addExample(toItem: number, atIndex: number): void {
+    this.listedItemsModel.addExample(toItem, atIndex);
+  }
+
+  public modifyExample(atIndex: number, ofItem: number, to: ExampleComp): void {
+    this.listedItemsModel.modifyExample(atIndex, ofItem, to);
+  }
+
+  public deleteExample(fromItem: number, atIndex: number): void {
+    this.listedItemsModel.deleteExample(fromItem, atIndex);
+  }
+
+  public addSense(atIndex: number): void {
+    this.listedItemsModel.addSense(atIndex);
+  }
+
+  public modifySense(atIndex: number, to: SenseComp): void {
+    this.listedItemsModel.modifySense(atIndex, to);
+  }
+
+  public deleteSense(atIndex: number): void {
+    this.listedItemsModel.deleteSense(atIndex);
+  }
+
+  public addSeparator(atIndex: number): void {
+    this.listedItemsModel.addSeparator(atIndex);
+  }
+
+  public deleteSeparator(atIndex: number): void {
+    this.listedItemsModel.deleteSeparator(atIndex);
   }
 }
 
