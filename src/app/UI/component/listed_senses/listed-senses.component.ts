@@ -27,11 +27,14 @@ import {StoryCompFactoryImpl} from '../../model/story/story-comp-factory.class';
 import {ListedItemComp} from '../../model/listed_item/listed-item-comp.interface';
 import {LISTED_ITEM_FACTORY} from '../../model/listed_item/injection-token';
 import {ListedItemCompFactoryImpl} from '../../model/listed_item/listed-item-comp-factory.class';
+import {ListedItemCompFactory} from '../../model/listed_item/listed-item-comp-factory.interface';
+import {ExampleCompFactory} from '../../model/example/example-comp-factory.interface';
+import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
 
 @Component({
   selector: 'app-listed-senses',
   templateUrl: './listed-senses.component.html',
-  styleUrls: [],
+  styleUrls: ['./listed-senses.component.css'],
   providers: [
     {provide: ID_SERVICE, useClass: IDServiceImpl},
     {provide: ONTOLOGY_SERVICE, useClass: OntologyServiceImplementation},
@@ -45,9 +48,15 @@ import {ListedItemCompFactoryImpl} from '../../model/listed_item/listed-item-com
 })
 export class ListedSensesComponent implements OnInit {
   private listedItemsModel: ListedItemsCompModel;
-
+  readonly senseBase: ListedItemComp = this.listedItemFactory.createNewListedItem(true);
+  readonly exampleBase: ExampleComp = this.exampleFactory.createNewExample();
+  readonly storyBase: StoryComp = this.storyFactory.createNewStory();
+  readonly separatorBase: ListedItemComp = this.listedItemFactory.createNewListedItem(false);
   constructor(
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,
+    @Inject(EXAMPLE_FACTORY) private exampleFactory: ExampleCompFactory,
+    @Inject(STORY_FACTORY) private storyFactory: StoryCompFactory,
+    @Inject(LISTED_ITEM_FACTORY) private listedItemFactory: ListedItemCompFactory,
     @Inject(LISTED_ITEMS_COMP_MODEL_COMPOSER) private listedSensesModelComposer: ListedItemsCompModelComposer,
   ) {}
 
@@ -116,4 +125,3 @@ export class ListedSensesComponent implements OnInit {
   }
 }
 
-aaa

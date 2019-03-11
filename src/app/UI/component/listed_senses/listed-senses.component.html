@@ -1,5 +1,24 @@
-<div>
-  <div *ngFor="let sense of senses">
-    <div></div>
+<div class="listed-senses-container">
+  <div cdkDropList>
+    <div cdkDrag></div>
+    <div cdkDrag></div>
+    <div cdkDrag></div>
+    <div cdkDrag></div>
+  </div>
+  <div cdkDropList>
+    <div *ngFor="let item of items" cdkDrag>
+      <div *ngIf="item.isSense">
+        <
+        <div cdkDropList>
+          <div *ngFor="let example of item.getContent().examples">
+            <div cdkDropList>
+              <div *ngFor="let storyOfExample of example.stories"></div>
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let storyOfSense of item.getContent().stories"></div>
+      </div>
+      <div *ngIf="!item.isSense"></div>
+    </div>
   </div>
 </div>

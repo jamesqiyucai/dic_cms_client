@@ -5,6 +5,8 @@ import {ExampleComp} from '../example/example-comp.class';
 import {StoryComp} from '../story/story-comp.class';
 
 export class SenseComp extends AbstractSense {
+  protected _examples: List<ExampleComp>;
+  protected _stories: List<StoryComp>;
   constructor(
     id: number,
     pos: number,
@@ -17,5 +19,13 @@ export class SenseComp extends AbstractSense {
     stories: List<StoryComp>,
   ) {
     super(id, text, translations, stories, examples, pos, position, summary, tags);
+  }
+
+  get examples() {
+    return this._examples;
+  }
+
+  get stories() {
+    return this._stories;
   }
 }
