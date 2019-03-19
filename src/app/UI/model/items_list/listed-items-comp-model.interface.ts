@@ -9,19 +9,31 @@ export interface ListedItemsCompModel {
 
   addStoryToExample(index: number, ofItem: number, atIndex: number): void;
   addStoryToSense(index: number, atIndex: number): void;
-  modifyStoryInExample(index: number, ofItem: number, atIndex: number, to: StoryComp): void;
-  modifyStoryInSense(index: number, atIndex: number, to: StoryComp): void;
   deleteStoryFromExample(index: number, ofItem: number, atIndex: number): void;
   deleteStoryFromSense(index: number, atIndex: number): void;
+  modifyStoryTitleInSense(number: number, atIndex: number, to: string): void;
+  modifyStoryTextInSense(number: number, atIndex: number, to: string): void;
+  modifyStoryTitleInExample(number: number, inSense: number, atIndex: number, to: string): void;
+  modifyStoryTextInExample(number: number, inSense: number, atIndex: number, to: string): void;
 
   addExample(toItem: number, atIndex: number): void;
-  modifyExample(atIndex: number, ofItem: number, to: ExampleComp): void;
   deleteExample(fromItem: number, atIndex: number): void;
+  modifyExampleText(atExample: number, ofSense: number, to: string): void;
+  addExampleTranslation(inSense: number, toExample: number): void;
+  modifyExampleTranslation(inSense: number, example: number, atIndex: number, to: string): void;
+  deleteExampleTranslation(inSense: number, example: number, atIndex: number): void;
 
   addSense(atIndex: number): void;
-  modifySense(atIndex: number, to: SenseComp): void;
   deleteSense(atIndex: number): void;
+  modifySenseSummary(atIndex: number, to: string): void;
+  modifySenseText(atIndex: number, to: string): void;
+  addSenseTag(toSense: number): void;
+  deleteSenseTag(fromSense: number, atIndex: number): void;
+  modifySenseTag(atSense: number, atIndex: number, to: number): void;
+  addSenseTranslation(atSense: number): void;
+  modifySenseTranslation(atSense: number, atIndex: number, to: string);
+  deleteSenseTranslation(atSense: number, atIndex: number): void;
 
-  addSeparator(atIndex: number): void;
+  addSeparator(atIndex: number, separator: ListedItemComp): void;
   deleteSeparator(atIndex: number): void;
 }
