@@ -23,7 +23,7 @@ export interface ListedItemsCompModel {
   modifyExampleTranslation(inSense: number, example: number, atIndex: number, to: string): void;
   deleteExampleTranslation(inSense: number, example: number, atIndex: number): void;
 
-  addSense(atIndex: number): void;
+  addSense(atIndex: number, newSense: ListedItemComp): void;
   deleteSense(atIndex: number): void;
   modifySenseSummary(atIndex: number, to: string): void;
   modifySenseText(atIndex: number, to: string): void;

@@ -19,4 +19,16 @@ export class ListedItemsCompModelImpl implements ListedItemsCompModel {
   deleteSeparator(atIndex: number): void {
     this._items = this._items.delete(atIndex);
   }
+
+  addSense(atIndex: number, newSense: ListedItemComp): void {
+    this._items = this._items.insert(atIndex, newSense);
+  }
+
+  deleteSense(atIndex: number): void {
+    this._items = this._items.delete(atIndex);
+  }
+
+  modifySenseSummary(atIndex: number, to: string): void {
+    this._items = this._items.update(atIndex, item => item.getContent().summary = to)
+  }
 }
