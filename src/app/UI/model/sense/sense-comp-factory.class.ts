@@ -25,10 +25,10 @@ export class SenseCompFactoryImpl implements SenseCompFactory {
       1,
       newPosition, '',
       '',
-      List(),
-      List(),
-      List([newExample]),
-      List());
+      [],
+      [],
+      [newExample],
+      []);
     return newSense;
   }
 }

@@ -12,11 +12,8 @@ export abstract class Textable extends Item {
   get text() {
     return this._text;
   }
+
   set text(newText: string) {
-    if (newText !== '') {
-      this._text = newText;
-    } else {
-      alert('SENSE TEXT SHALL NEVER BE EMPTY');
-    }
+    this._text = newText;
   }
 }

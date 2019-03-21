@@ -1,12 +1,13 @@
 import {ListedItemComp} from './listed-item-comp.interface';
 import {SenseComp} from '../sense/sense-comp.class';
+import {fromJSGreedy} from '../../../../utils/changeElementOrder.function';
 
 export abstract class AbstractListedItemComp implements ListedItemComp {
-  protected constructor(readonly isSense: boolean, private sense?: SenseComp) {}
+  protected constructor(private sense: SenseComp) {}
 
-  public getContent(): SenseComp | null {
-    if (this.isSense) {
-      return this.sense;
+  public getSense(): SenseComp | null {
+    if (this.sense) {
+      return fromJSGreedy(this.sense);
     } else {
       return null;
     }

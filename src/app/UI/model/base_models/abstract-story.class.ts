@@ -14,10 +14,6 @@ export abstract class AbstractStory extends Textable {
     return this._title;
   }
   set title(newTitle: string) {
-    if (newTitle !== '') {
-      this._title = newTitle;
-    } else {
-      alert('StoryComp Title Shall Not Be Empty');
-    }
+    this._title = newTitle;
   }
 }

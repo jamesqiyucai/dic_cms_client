@@ -3,7 +3,8 @@ export abstract class AbstractPhonetic {
   }
 
   get region() {
-    return this._region;
+    const temp = this._region
+    return temp;
   }
   get symbol() {
     return this._symbol;

@@ -3,6 +3,6 @@ import {ListedItemComp} from './listed-item-comp.interface';
 
 export class ListedItemSeparatorComp extends AbstractListedItemComp implements ListedItemComp {
   constructor() {
-    super(false);
+    super(null);
   }
 }

@@ -14,17 +14,17 @@
     </div>
   </div>
   <div cdkDropList>
-    <div *ngFor="let item of items" cdkDrag>
-      <div *ngIf="item.isSense">
-        <label>Summary:<input [value]="item.getContent().summary"></label>
-        <label>Text:<input [value]="item.getContent().text"></label>
+    <div *ngFor="let item of items; index as i" cdkDrag>
+      <div *ngIf="item.getSense()">
+        <label>Summary:<input #summary [value]="item.getSense().summary" (input)="modifySenseSummary(i, summary.value)"></label>
+        <label>Text:<input [value]="item.getSense().text"></label>
         <div cdkDropList>
-          <div *ngFor="let translation of item.getContent().translations; index as i" cdkDrag>
+          <div *ngFor="let translation of item.getSense().translations; index as i" cdkDrag>
             <label>Translation{{i+1}}:<input [value]="translation"></label>
           </div>
         </div>
         <div cdkDropList>
-          <div *ngFor="let example of item.getContent().examples" cdkDrag>
+          <div *ngFor="let example of item.getSense().examples" cdkDrag>
             <label>Text:<input [value]="example.text"></label>
             <div cdkDropList>
               <div *ngFor="let storyOfExample of example.stories" cdkDrag>
@@ -35,10 +35,10 @@
           </div>
         </div>
         <div cdkDropList>
-          <div *ngFor="let storyOfSense of item.getContent().stories"></div>
+          <div *ngFor="let storyOfSense of item.getSense().stories"></div>
         </div>
       </div>
-      <div *ngIf="!item.isSense"></div>
+      <div *ngIf="!item.getSense()"></div>
     </div>
   </div>
 </div>

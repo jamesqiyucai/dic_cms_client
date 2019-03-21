@@ -1,22 +1,22 @@
 import {Examplable} from './examplable.class';
-import {List} from 'immutable';
 import {AbstractStory} from './abstract-story.class';
 import {AbstractExample} from './abstract-example.class';
-import {changeElementOrder} from '../../../../utils/changeElementOrder.function';
 import {AbstractSensePosition} from './abstract-sense-position.class';
 import {BuilderComponentModelTypes} from './model-types.enum';
+import {moveItemInArray} from '@angular/cdk/drag-drop';
+import {List} from 'immutable';
 
 export abstract class AbstractSense extends Examplable {
   protected constructor(
     id: number,
     text: string,
-    translations: List<string>,
-    stories: List<AbstractStory>,
-    examples: List<AbstractExample>,
+    translations: Array<string>,
+    stories: Array<AbstractStory>,
+    examples: Array<AbstractExample>,
     protected _pos: number,
     protected _position: AbstractSensePosition,
     protected _summary: string,
-    protected _tags: List<number>
+    protected _tags: Array<number>
   ) {
     super(id, BuilderComponentModelTypes.sense, text, translations, stories, examples);
   }
@@ -50,16 +50,22 @@ export abstract class AbstractSense extends Examplable {
     this._summary = newSummary;
   }
   get tags() {
-    return this._tags;
+    return List(this._tags);
   }
 
   public addTag(newTag: number) {
-    this._tags = this._tags.push(newTag);
+    this._tags.push(newTag);
   }
+
   public deleteTag(index: number) {
-    this._tags = this._tags.delete(index);
+    this._tags.splice(index, 1);
   }
+
   public changeTagsOrder(from: number, to: number) {
-    this._tags = changeElementOrder(this._tags, from, to);
+    moveItemInArray(this._tags, from, to);
+  }
+
+  public modifyTag(atIndex: number, to: number) {
+    this._tags[atIndex] = to;
   }
 }

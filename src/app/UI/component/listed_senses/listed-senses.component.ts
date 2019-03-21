@@ -64,64 +64,13 @@ export class ListedSensesComponent implements OnInit {
     this.listedItemsModel = this.listedSensesModelComposer.createNewModel();
   }
 
-  public get items(): List<ListedItemComp> {
+  public get items() {
     return this.listedItemsModel.items;
   }
 
-  public addStoryToExample(index: number, ofItem: number, atIndex: number): void {
-    this.listedItemsModel.addStoryToExample(index, ofItem, atIndex);
+  public modifySenseSummary(senseIndex: number, newSummary: string) {
+    this.listedItemsModel.modifySenseSummary(senseIndex, newSummary);
   }
 
-  public addStoryToSense(index: number, atIndex: number): void {
-    this.listedItemsModel.addStoryToSense(index, atIndex);
-  }
-
-  public modifyStoryInExample(index: number, ofItem: number, atIndex: number, to: StoryComp): void {
-    this.listedItemsModel.modifyStoryInExample(index, ofItem, atIndex, to);
-  }
-
-  public modifyStoryInSense(index: number, atIndex: number, to: StoryComp): void {
-    this.listedItemsModel.modifyStoryInSense(index, atIndex, to);
-  }
-
-  public deleteStoryFromExample(index: number, ofItem: number, atIndex: number): void {
-    this.listedItemsModel.deleteStoryFromExample(index, ofItem, atIndex);
-  }
-
-  public deleteStoryFromSense(index: number, atIndex: number): void {
-    this.listedItemsModel.deleteStoryFromSense(index, atIndex);
-  }
-
-  public addExample(toItem: number, atIndex: number): void {
-    this.listedItemsModel.addExample(toItem, atIndex);
-  }
-
-  public modifyExample(atIndex: number, ofItem: number, to: ExampleComp): void {
-    this.listedItemsModel.modifyExample(atIndex, ofItem, to);
-  }
-
-  public deleteExample(fromItem: number, atIndex: number): void {
-    this.listedItemsModel.deleteExample(fromItem, atIndex);
-  }
-
-  public addSense(atIndex: number): void {
-    this.listedItemsModel.addSense(atIndex);
-  }
-
-  public modifySense(atIndex: number, to: SenseComp): void {
-    this.listedItemsModel.modifySense(atIndex, to);
-  }
-
-  public deleteSense(atIndex: number): void {
-    this.listedItemsModel.deleteSense(atIndex);
-  }
-
-  public addSeparator(atIndex: number): void {
-    this.listedItemsModel.addSeparator(atIndex);
-  }
-
-  public deleteSeparator(atIndex: number): void {
-    this.listedItemsModel.deleteSeparator(atIndex);
-  }
 }
 
