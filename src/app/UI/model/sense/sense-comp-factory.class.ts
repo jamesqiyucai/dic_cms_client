@@ -1,7 +1,6 @@
 import {SenseCompFactory} from './sense-comp-factory.interface';
 import {SenseComp} from './sense-comp.class';
 import {SensePositionCompFactory} from '../sense-position/sense-position-comp-factory.interface';
-import {List} from 'immutable';
 import {Inject, Injectable} from '@angular/core';
 import {ExampleCompFactory} from '../example/example-comp-factory.interface';
 import {ID_SERVICE} from '../../../service/word_builder/tokens';
@@ -23,7 +22,8 @@ export class SenseCompFactoryImpl implements SenseCompFactory {
     const newSense = new SenseComp(
       this.idService.getID(ModelType.sense),
       1,
-      newPosition, '',
+      newPosition,
+      '',
       '',
       [],
       [],

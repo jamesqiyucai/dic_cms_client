@@ -3,6 +3,7 @@ import {ListedItemComp} from '../listed_item/listed-item-comp.interface';
 import {ExampleComp} from '../example/example-comp.class';
 import {StoryComp} from '../story/story-comp.class';
 import {List} from 'immutable';
+import {moveItemInArray} from '@angular/cdk/drag-drop';
 
 export class ListedItemsCompModelImpl implements ListedItemsCompModel {
   constructor(private _items: Array<ListedItemComp>) {}
@@ -27,6 +28,10 @@ export class ListedItemsCompModelImpl implements ListedItemsCompModel {
 
   public deleteSense(atIndex: number): void {
     this._items.splice(atIndex, 1);
+  }
+
+  public changeSenseOrder(fromIndex: number, toIndex: number): void {
+    moveItemInArray(this._items, fromIndex, toIndex);
   }
 
   public modifySenseSummary(atIndex: number, to: string): void {

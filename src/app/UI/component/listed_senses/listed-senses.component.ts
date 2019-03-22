@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {OntologyService} from '../../../core/ontology/ontology.service.interface';
 import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
@@ -6,13 +6,11 @@ import {ListedItemsCompModel} from '../../model/items_list/listed-items-comp-mod
 import {
   ListedItemsCompModelComposer
 } from '../../model/items_list/listed-items-comp-model-composer.interface';
-import {SenseComp} from '../../model/sense/sense-comp.class';
 import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleComp} from '../../model/example/example-comp.class';
 import {
   ListedItemsCompModelComposerImpl
 } from '../../model/items_list/listed-items-comp-model-composer.class';
-import {List} from 'immutable';
 import {SenseCompFactoryImpl} from '../../model/sense/sense-comp-factory.class';
 import {SensePositionCompFactoryImpl} from '../../model/sense-position/sense-position-comp-factory.class';
 import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
@@ -30,6 +28,7 @@ import {ListedItemCompFactoryImpl} from '../../model/listed_item/listed-item-com
 import {ListedItemCompFactory} from '../../model/listed_item/listed-item-comp-factory.interface';
 import {ExampleCompFactory} from '../../model/example/example-comp-factory.interface';
 import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-listed-senses',
@@ -49,28 +48,69 @@ import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
 export class ListedSensesComponent implements OnInit {
   private listedItemsModel: ListedItemsCompModel;
   readonly senseBase: ListedItemComp = this.listedItemFactory.createNewListedItem(true);
-  readonly exampleBase: ExampleComp = this.exampleFactory.createNewExample();
-  readonly storyBase: StoryComp = this.storyFactory.createNewStory();
-  readonly separatorBase: ListedItemComp = this.listedItemFactory.createNewListedItem(false);
+  readonly exampleBase: ExampleComp[] = [this.exampleFactory.createNewExample()];
+  readonly storyBase: StoryComp[] = [this.storyFactory.createNewStory()];
+  readonly separatorBase: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(false)];
   constructor(
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,
     @Inject(EXAMPLE_FACTORY) private exampleFactory: ExampleCompFactory,
     @Inject(STORY_FACTORY) private storyFactory: StoryCompFactory,
     @Inject(LISTED_ITEM_FACTORY) private listedItemFactory: ListedItemCompFactory,
-    @Inject(LISTED_ITEMS_COMP_MODEL_COMPOSER) private listedSensesModelComposer: ListedItemsCompModelComposer,
+    @Inject(LISTED_ITEMS_COMP_MODEL_COMPOSER) private listedItemsModelComposer: ListedItemsCompModelComposer,
+    private cdr: ChangeDetectorRef
   ) {}
 
   public ngOnInit(): void {
-    this.listedItemsModel = this.listedSensesModelComposer.createNewModel();
+    this.listedItemsModel = this.listedItemsModelComposer.createNewModel();
+    this.cdr.detectChanges();
   }
 
   public get items() {
     return this.listedItemsModel.items;
   }
 
-  public modifySenseSummary(senseIndex: number, newSummary: string) {
-    this.listedItemsModel.modifySenseSummary(senseIndex, newSummary);
+  public modifySenseSummary(atIndex: number, newSummary: string) {
+    this.listedItemsModel.modifySenseSummary(atIndex, newSummary);
   }
 
+  public modifySenseText(atIndex: number, newText: string) {
+    this.listedItemsModel.modifySenseText(atIndex, newText);
+  }
+
+  public modifySenseTranslation(ofSense: number, atIndex: number, newTranslation: string) {
+    this.listedItemsModel.modifySenseTranslation(ofSense, atIndex, newTranslation);
+  }
+
+  public modifyExampleText(ofSense: number, atIndex: number, newText: string) {
+    this.listedItemsModel.modifyExampleText(atIndex, ofSense, newText);
+  }
+
+  public modifyExampleTranslation(ofSense: number, inExample: number, atIndex: number, newTranslation: string) {
+    this.listedItemsModel.modifyExampleTranslation(ofSense, inExample, atIndex, newTranslation);
+  }
+
+  public modifyExampleStoryTitle(ofSense: number, atExample: number, atIndex: number, newTitle: string) {
+    this.listedItemsModel.modifyStoryTitleInExample(atExample, ofSense, atIndex, newTitle);
+  }
+
+  public modifyExampleStoryText(ofSense: number, atExample: number, atIndex: number, newText: string) {
+    this.listedItemsModel.modifyStoryTextInExample(atExample, ofSense, atIndex, newText);
+  }
+
+  public modifySenseStoryTitle(ofSense: number, atIndex: number, newTitle: string) {
+    this.listedItemsModel.modifyStoryTitleInSense(ofSense, atIndex, newTitle);
+  }
+
+  public modifySenseStoryText(ofSense: number, atIndex: number, newText: string) {
+    this.listedItemsModel.modifyStoryTextInSense(ofSense, atIndex, newText);
+  }
+
+  public itemDrop(event: CdkDragDrop<ListedItemComp>) {
+    if (event.previousContainer === event.container) {
+      this.listedItemsModel.changeSenseOrder(event.previousIndex, event.currentIndex);
+    } else {
+      this.listedItemsModel.addSense(event.currentIndex, event.previousContainer.data);
+    }
+  }
 }
 

@@ -5,4 +5,5 @@ export class ListedItemSenseComp extends AbstractListedItemComp implements Liste
   constructor(sense: SenseComp) {
     super(sense);
   }
+  public do() {}
 }

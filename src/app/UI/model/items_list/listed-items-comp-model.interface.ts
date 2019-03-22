@@ -28,6 +28,7 @@ export interface ListedItemsCompModel {
 
   addSense(atIndex: number, newSense: ListedItemComp): void;
   deleteSense(atIndex: number): void;
+  changeSenseOrder(fromIndex: number, toIndex: number): void;
   modifySenseSummary(atIndex: number, to: string): void;
   modifySenseText(atIndex: number, to: string): void;
   addSenseTag(toSense: number): void;
