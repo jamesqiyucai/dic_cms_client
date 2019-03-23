@@ -2,22 +2,14 @@ import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {OntologyService} from '../../../core/ontology/ontology.service.interface';
 import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
-import {ListedItemsCompModel} from '../../model/items_list/listed-items-comp-model.interface';
-import {
-  ListedItemsCompModelComposer
-} from '../../model/items_list/listed-items-comp-model-composer.interface';
 import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleComp} from '../../model/example/example-comp.class';
-import {
-  ListedItemsCompModelComposerImpl
-} from '../../model/items_list/listed-items-comp-model-composer.class';
 import {SenseCompFactoryImpl} from '../../model/sense/sense-comp-factory.class';
 import {SensePositionCompFactoryImpl} from '../../model/sense-position/sense-position-comp-factory.class';
 import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
 import {ID_SERVICE} from '../../../service/word_builder/tokens';
 import {ONTOLOGY_SERVICE} from '../../../core/tokens';
 import {EXAMPLE_FACTORY} from '../../model/example/injection-token';
-import {LISTED_ITEMS_COMP_MODEL_COMPOSER} from '../../model/items_list/injection-token';
 import {SENSE_FACTORY} from '../../model/sense/injection-token';
 import {SENSE_POSITION_FACTORY} from '../../model/sense-position/injection-token';
 import {STORY_FACTORY} from '../../model/story/injection-token';
@@ -28,7 +20,8 @@ import {ListedItemCompFactoryImpl} from '../../model/listed_item/listed-item-com
 import {ListedItemCompFactory} from '../../model/listed_item/listed-item-comp-factory.interface';
 import {ExampleCompFactory} from '../../model/example/example-comp-factory.interface';
 import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
+import {List} from 'immutable';
 
 @Component({
   selector: 'app-listed-senses',
@@ -37,7 +30,6 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop';
   providers: [
     {provide: ID_SERVICE, useClass: IDServiceImpl},
     {provide: ONTOLOGY_SERVICE, useClass: OntologyServiceImplementation},
-    {provide: LISTED_ITEMS_COMP_MODEL_COMPOSER, useClass: ListedItemsCompModelComposerImpl},
     {provide: LISTED_ITEM_FACTORY, useClass: ListedItemCompFactoryImpl},
     {provide: SENSE_FACTORY, useClass: SenseCompFactoryImpl},
     {provide: SENSE_POSITION_FACTORY, useClass: SensePositionCompFactoryImpl},
@@ -46,7 +38,7 @@ import {CdkDragDrop} from '@angular/cdk/drag-drop';
   ]
 })
 export class ListedSensesComponent implements OnInit {
-  private listedItemsModel: ListedItemsCompModel;
+  private _items: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(true)];
   readonly senseBase: ListedItemComp = this.listedItemFactory.createNewListedItem(true);
   readonly exampleBase: ExampleComp[] = [this.exampleFactory.createNewExample()];
   readonly storyBase: StoryComp[] = [this.storyFactory.createNewStory()];
@@ -56,60 +48,158 @@ export class ListedSensesComponent implements OnInit {
     @Inject(EXAMPLE_FACTORY) private exampleFactory: ExampleCompFactory,
     @Inject(STORY_FACTORY) private storyFactory: StoryCompFactory,
     @Inject(LISTED_ITEM_FACTORY) private listedItemFactory: ListedItemCompFactory,
-    @Inject(LISTED_ITEMS_COMP_MODEL_COMPOSER) private listedItemsModelComposer: ListedItemsCompModelComposer,
     private cdr: ChangeDetectorRef
   ) {}
 
   public ngOnInit(): void {
-    this.listedItemsModel = this.listedItemsModelComposer.createNewModel();
     this.cdr.detectChanges();
   }
 
   public get items() {
-    return this.listedItemsModel.items;
+    return List(this._items);
   }
 
-  public modifySenseSummary(atIndex: number, newSummary: string) {
-    this.listedItemsModel.modifySenseSummary(atIndex, newSummary);
+  // Methods on Separator
+  public addSeparator(atIndex: number, separator: ListedItemComp): void {
+    this._items.splice(atIndex, 0, separator);
   }
 
-  public modifySenseText(atIndex: number, newText: string) {
-    this.listedItemsModel.modifySenseText(atIndex, newText);
+  public deleteSeparator(atIndex: number): void {
+    this._items.splice(atIndex, 1);
   }
 
-  public modifySenseTranslation(ofSense: number, atIndex: number, newTranslation: string) {
-    this.listedItemsModel.modifySenseTranslation(ofSense, atIndex, newTranslation);
+  // Methods on Sense
+  public addSense(atIndex: number, newSense: ListedItemComp): void {
+    this._items.splice(atIndex, 0, newSense);
   }
 
-  public modifyExampleText(ofSense: number, atIndex: number, newText: string) {
-    this.listedItemsModel.modifyExampleText(atIndex, ofSense, newText);
+  public deleteSense(atIndex: number): void {
+    this._items.splice(atIndex, 1);
   }
 
-  public modifyExampleTranslation(ofSense: number, inExample: number, atIndex: number, newTranslation: string) {
-    this.listedItemsModel.modifyExampleTranslation(ofSense, inExample, atIndex, newTranslation);
+  public changeSenseOrder(fromIndex: number, toIndex: number): void {
+    moveItemInArray(this._items, fromIndex, toIndex);
   }
 
-  public modifyExampleStoryTitle(ofSense: number, atExample: number, atIndex: number, newTitle: string) {
-    this.listedItemsModel.modifyStoryTitleInExample(atExample, ofSense, atIndex, newTitle);
+  public modifySenseSummary(atIndex: number, to: string): void {
+    this._items[atIndex].sense.summary = to;
   }
 
-  public modifyExampleStoryText(ofSense: number, atExample: number, atIndex: number, newText: string) {
-    this.listedItemsModel.modifyStoryTextInExample(atExample, ofSense, atIndex, newText);
+  public modifySenseText(atIndex: number, to: string): void {
+    this._items[atIndex].sense.text = to;
   }
 
-  public modifySenseStoryTitle(ofSense: number, atIndex: number, newTitle: string) {
-    this.listedItemsModel.modifyStoryTitleInSense(ofSense, atIndex, newTitle);
+  public addSenseTag(toSense: number): void {
+    this._items[toSense].sense.addTag(1);
   }
 
-  public modifySenseStoryText(ofSense: number, atIndex: number, newText: string) {
-    this.listedItemsModel.modifyStoryTextInSense(ofSense, atIndex, newText);
+  public deleteSenseTag(fromSense: number, atIndex: number): void {
+    this._items[fromSense].sense.deleteTag(atIndex);
+  }
+
+  public modifySenseTag(atSense: number, atIndex: number, to: number): void {
+    this._items[atSense].sense.modifyTag(atIndex, to);
+  }
+
+  public changeSenseTagOrder(atSense: number, fromIndex: number, toIndex: number): void {
+    this._items[atSense].sense.changeTagsOrder(fromIndex, toIndex);
+  }
+
+  public addSenseTranslation(atSense: number): void {
+    this._items[atSense].sense.addTranslation('');
+  }
+
+  public modifySenseTranslation(atSense: number, atIndex: number, to: string) {
+    this._items[atSense].sense.modifyTranslation(atIndex, to);
+  }
+
+  public deleteSenseTranslation(atSense: number, atIndex: number): void {
+    this._items[atSense].sense.deleteTranslation(atIndex);
+  }
+
+  public changeSenseTranslationOrder(atSense: number, fromIndex: number, toIndex: number): void {
+    this._items[atSense].sense.changeTranslationsOrder(fromIndex, toIndex);
+  }
+
+  // Methods on Example
+  public addExample(toItem: number, atIndex: number, newExample: ExampleComp): void {
+    this._items[toItem].sense.addExample(atIndex, newExample);
+  }
+
+  public deleteExample(fromItem: number, atIndex: number): void {
+    this._items[fromItem].sense.deleteExample(atIndex);
+  }
+
+  public changeExampleOrder(ofItem: number, fromIndex: number, toIndex: number): void {
+    this._items[ofItem].sense.changeExamplesOrder(fromIndex, toIndex);
+  }
+
+  public modifyExampleText(atExample: number, ofSense: number, to: string): void {
+    this._items[ofSense].sense.examples[atExample].text = to;
+  }
+
+  public modifyExampleTranslation(inSense: number, example: number, atIndex: number, to: string): void {
+    this._items[inSense].sense.modifyExampleTranslation(example, atIndex, to);
+  }
+
+  public addExampleTranslation(inSense: number, toExample: number): void {
+    this._items[inSense].sense.addExampleTranslation(toExample, '');
+  }
+
+  public deleteExampleTranslation(inSense: number, fromExample: number, atIndex: number): void {
+    this._items[inSense].sense.deleteExampleTranslation(fromExample, atIndex);
+  }
+
+  public changeExampleTranslationOrder(inSense: number, atIndex: number, fromIndex: number, toIndex: number): void {
+    this._items[inSense].sense.changeExampleTranslationOrder(atIndex, fromIndex, toIndex);
+  }
+
+  // Methods on Story
+  public addStoryToExample(index: number, ofItem: number, atIndex: number, newStory: StoryComp): void {
+    this._items[ofItem].sense.addExampleStory(index, atIndex, newStory);
+  }
+
+  public addStoryToSense(index: number, atIndex: number, newStory): void {
+    this._items[index].sense.addStory(atIndex, newStory);
+  }
+
+  public deleteStoryFromExample(index: number, ofItem: number, atIndex: number): void {
+    this._items[ofItem].sense.deleteExampleStory(index, atIndex);
+  }
+
+  public deleteStoryFromSense(index: number, atIndex: number): void {
+    this._items[index].sense.deleteStory(atIndex);
+  }
+
+  public modifyStoryTitleInSense(index: number, atIndex: number, to: string): void {
+    this._items[index].sense.modifyStoryTitle(atIndex, to);
+  }
+
+  public modifyStoryTextInSense(index: number, atIndex: number, to: string): void {
+    this._items[index].sense.modifyStoryText(atIndex, to);
+  }
+
+  public modifyStoryTitleInExample(index: number, inSense: number, atIndex: number, to: string): void {
+    this._items[inSense].sense.modifyExampleStoryTitle(index, atIndex, to);
+  }
+
+  public modifyStoryTextInExample(index: number, inSense: number, atIndex: number, to: string): void {
+    this._items[inSense].sense.modifyExampleStoryText(index, atIndex, to);
+  }
+
+  public changeStoryOrderInExample(index: number, ofItem: number, fromIndex: number, toIndex: number): void {
+    this._items[ofItem].sense.changeExampleStoryOrder(index, fromIndex, toIndex);
+  }
+
+  public changeStoryOrderInSense(index: number, fromIndex: number, toIndex: number): void {
+    this._items[index].sense.changeStoryOrder(fromIndex, toIndex);
   }
 
   public itemDrop(event: CdkDragDrop<ListedItemComp>) {
     if (event.previousContainer === event.container) {
-      this.listedItemsModel.changeSenseOrder(event.previousIndex, event.currentIndex);
+      moveItemInArray(this._items, event.previousIndex, event.currentIndex);
     } else {
-      this.listedItemsModel.addSense(event.currentIndex, event.previousContainer.data);
+      copyArrayItem();
     }
   }
 }
