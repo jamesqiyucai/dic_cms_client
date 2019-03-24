@@ -2,25 +2,28 @@
   <div>
     <div
       cdkDropList
-      #newSenseList='cdkDropList'
       [cdkDropListData]="senseBase"
-      [cdkDropListConnectedTo]="[senseList]"
+      [cdkDropListConnectedTo]="['senseList']"
     >
       <div cdkDrag>NewSense</div>
     </div>
-    <div cdkDropList>
+    <div
+      cdkDropList
+      [cdkDropListData]="exampleBase"
+      [cdkDropListConnectedTo]="['senseExamples']"
+    >
       <div cdkDrag>NewExample</div>
     </div>
     <div cdkDropList>
       <div cdkDrag>NewStory</div>
     </div>
     <div cdkDropList>
-      <div cdkDrag>NewSeparator</div>
+      <div >NewSeparator</div>
     </div>
   </div>
   <div
     cdkDropList
-    #senseList='cdkDropList'
+    id="senseList"
     (cdkDropListDropped)="itemDrop($event)"
   >
     <div *ngFor="let item of items; index as si" cdkDrag>
@@ -32,7 +35,7 @@
             <label>SenseTranslation{{si+1}}:<input #senseTranslation [value]="senseTranslation" (input)="modifySenseTranslation(si, ti, senseTranslation.value)"></label>
           </div>
         </div>
-        <div cdkDropList>
+        <div cdkDropList id="senseExamples" (cdkDropListDropped)="senseExampleDrop(si, $event)">
           <div *ngFor="let example of item.sense.examples; index as ei" cdkDrag>
             <label>Text:<input #exampleText [value]="example.text" (input)="modifyExampleText(si, ei, exampleText.value)"></label>
             <div cdkDropList>

@@ -22,6 +22,7 @@ import {ExampleCompFactory} from '../../model/example/example-comp-factory.inter
 import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {List} from 'immutable';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-listed-senses',
@@ -40,7 +41,7 @@ import {List} from 'immutable';
 export class ListedSensesComponent implements OnInit {
   private _items: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(true)];
   readonly senseBase: ListedItemComp = this.listedItemFactory.createNewListedItem(true);
-  readonly exampleBase: ExampleComp[] = [this.exampleFactory.createNewExample()];
+  readonly exampleBase: ExampleComp = this.exampleFactory.createNewExample();
   readonly storyBase: StoryComp[] = [this.storyFactory.createNewStory()];
   readonly separatorBase: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(false)];
   constructor(
@@ -196,10 +197,20 @@ export class ListedSensesComponent implements OnInit {
   }
 
   public itemDrop(event: CdkDragDrop<ListedItemComp>) {
+    console.log('sense dropped');
     if (event.previousContainer === event.container) {
       moveItemInArray(this._items, event.previousIndex, event.currentIndex);
     } else {
-      copyArrayItem();
+      this._items.splice(event.currentIndex, 0, _.cloneDeep(event.previousContainer.data));
+    }
+  }
+
+  public senseExampleDrop(senseIndex: number, event: CdkDragDrop<ExampleComp>) {
+    console.log('example dropped');
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this._items, event.previousIndex, event.currentIndex);
+    } else {
+      this._items[senseIndex].sense.addExample(event.currentIndex, _.cloneDeep(event.previousContainer.data));
     }
   }
 }
