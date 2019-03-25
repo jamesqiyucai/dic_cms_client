@@ -1,49 +1,31 @@
-<div class="listed-senses-container">
-  <div>
-    <div
-      cdkDropList
-      [cdkDropListData]="senseBase"
-      [cdkDropListConnectedTo]="['senseList']"
-    >
-      <div cdkDrag>NewSense</div>
-    </div>
-    <div
-      cdkDropList
-      [cdkDropListData]="exampleBase"
-      [cdkDropListConnectedTo]="['senseExamples']"
-    >
-      <div cdkDrag>NewExample</div>
-    </div>
-    <div cdkDropList>
-      <div cdkDrag>NewStory</div>
-    </div>
-    <div cdkDropList>
-      <div >NewSeparator</div>
-    </div>
-  </div>
+<div class="listed-senses-container" cdkDropListGroup>
+  <div cdkDropList id="trash" (cdkDropListDropped)="thowAway($event)">TrashBin</div>
+  <button>NewSense</button>
   <div
     cdkDropList
-    id="senseList"
+    [cdkDropListConnectedTo]="['trash']"
     (cdkDropListDropped)="itemDrop($event)"
   >
     <div *ngFor="let item of items; index as si" cdkDrag>
       <div *ngIf="item.sense">
         <label>Summary:<input #senseSummary [value]="item.sense.summary" (input)="modifySenseSummary(si, senseSummary.value)"></label>
         <label>Text:<input #senseText [value]="item.sense.text" (input)="modifySenseText(si, senseText.value)"></label>
-        <div cdkDropList>
+        <div cdkDropList [cdkDropListConnectedTo]="['trash']">
           <div *ngFor="let senseTranslation of item.sense.translations; index as ti" cdkDrag>
             <label>SenseTranslation{{si+1}}:<input #senseTranslation [value]="senseTranslation" (input)="modifySenseTranslation(si, ti, senseTranslation.value)"></label>
           </div>
         </div>
-        <div cdkDropList id="senseExamples" (cdkDropListDropped)="senseExampleDrop(si, $event)">
+        <div cdkDropList [cdkDropListConnectedTo]="['trash']" [cdkDropListData]="si">
+          <button>NewExample</button>
           <div *ngFor="let example of item.sense.examples; index as ei" cdkDrag>
             <label>Text:<input #exampleText [value]="example.text" (input)="modifyExampleText(si, ei, exampleText.value)"></label>
-            <div cdkDropList>
+            <div cdkDropList [cdkDropListConnectedTo]="['trash']">
               <div *ngFor="let exampleTranslation of item.sense.examples.get(ei).translations; index as eti" cdkDrag>
                 <label>ExampleTranslation{{eti+1}}:<input #exampleTranslation [value]="exampleTranslation" (input)="modifyExampleTranslation(ei, si, eti, exampleTranslation.value)"></label>
               </div>
             </div>
-            <div cdkDropList>
+            <div cdkDropList [cdkDropListConnectedTo]="['trash']">
+              <button>NewStory</button>
               <div *ngFor="let storyOfExample of example.stories; index as esi" cdkDrag>
                 <label>Title:<input #exampleStoryTitle [value]="storyOfExample.title" (input)="modifyStoryTitleInExample(ei, si, esi, exampleStoryTitle.value)"></label>
                 <label>Content:<input #exampleStoryText [value]="storyOfExample.text" (input)="modifyStoryTextInExample(ei, si, esi, exampleStoryText.value)"></label>
@@ -51,7 +33,8 @@
             </div>
           </div>
         </div>
-        <div cdkDropList>
+        <div cdkDropList [cdkDropListConnectedTo]="['trash']">
+          <button>NewSenseStory</button>
           <div *ngFor="let storyOfSense of item.sense.stories; index as ssi" cdkDrag>
             <label>Title:<input #senseStoryTitle [value]="storyOfSense.title" (input)="modifyStoryTitleInSense(si, ssi, senseStoryTitle.value)"></label>
             <label>Text:<input #senseStoryText [value]="storyOfSense.text" (input)="modifyStoryTextInSense(si, ssi, senseStoryText.value)"></label>

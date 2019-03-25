@@ -22,7 +22,8 @@ import {ExampleCompFactory} from '../../model/example/example-comp-factory.inter
 import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {List} from 'immutable';
-import * as _ from 'lodash';
+import {CdkDrag} from '@angular/cdk/typings/esm5/drag-drop';
+import {SenseComp} from '../../model/sense/sense-comp.class';
 
 @Component({
   selector: 'app-listed-senses',
@@ -40,10 +41,9 @@ import * as _ from 'lodash';
 })
 export class ListedSensesComponent implements OnInit {
   private _items: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(true)];
-  readonly senseBase: ListedItemComp = this.listedItemFactory.createNewListedItem(true);
+  readonly senseBase: SenseComp = this.listedItemFactory.createNewListedItem(true).sense;
   readonly exampleBase: ExampleComp = this.exampleFactory.createNewExample();
-  readonly storyBase: StoryComp[] = [this.storyFactory.createNewStory()];
-  readonly separatorBase: ListedItemComp[] = [this.listedItemFactory.createNewListedItem(false)];
+  public senseDropListDisabled = false;
   constructor(
     @Inject(ONTOLOGY_SERVICE) private ontologyService: OntologyService,
     @Inject(EXAMPLE_FACTORY) private exampleFactory: ExampleCompFactory,
@@ -197,20 +197,41 @@ export class ListedSensesComponent implements OnInit {
   }
 
   public itemDrop(event: CdkDragDrop<ListedItemComp>) {
-    console.log('sense dropped');
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this._items, event.previousIndex, event.currentIndex);
-    } else {
-      this._items.splice(event.currentIndex, 0, _.cloneDeep(event.previousContainer.data));
+    if (event.item.data.type === 'SENSE') {
+      console.log('sense dropped');
+      if (event.previousContainer === event.container) {
+        moveItemInArray(this._items, event.previousIndex, event.currentIndex);
+      } else {
+        this._items.splice(event.currentIndex, 0, this.listedItemFactory.createNewListedItem(true));
+      }
     }
   }
 
   public senseExampleDrop(senseIndex: number, event: CdkDragDrop<ExampleComp>) {
-    console.log('example dropped');
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this._items, event.previousIndex, event.currentIndex);
-    } else {
-      this._items[senseIndex].sense.addExample(event.currentIndex, _.cloneDeep(event.previousContainer.data));
+    if (event.item.data.type === 'EXAMPLE') {
+      console.log('example dropped');
+      if (event.previousContainer === event.container) {
+        this._items[senseIndex].sense.changeExamplesOrder(event.previousIndex, event.currentIndex);
+      } else {
+        this._items[senseIndex].sense.addExample(event.currentIndex, this.exampleFactory.createNewExample());
+      }
+    }
+  }
+
+  public getListedItemDndPayload(index: number) {
+    return {
+      type: 'LISTEDITEM',
+
+    }
+  }
+
+  public throwAway(event: CdkDragDrop<any>) {
+    if (event.item.data.type === 'ListedItem') {
+      this.deleteSense(event.previousIndex);
+    } else if (event.item.data.type === 'ExampleComp') {
+      this.deleteExample(event.previousContainer.data, event.previousIndex);
+    } else if (event.item.data.type === 'StoryComp') {
+
     }
   }
 }
