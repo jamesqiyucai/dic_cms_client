@@ -22,8 +22,11 @@ import {ExampleCompFactory} from '../../model/example/example-comp-factory.inter
 import {StoryCompFactory} from '../../model/story/story-comp-factory.interface';
 import {CdkDragDrop, copyArrayItem, moveItemInArray} from '@angular/cdk/drag-drop';
 import {List} from 'immutable';
-import {CdkDrag} from '@angular/cdk/typings/esm5/drag-drop';
 import {SenseComp} from '../../model/sense/sense-comp.class';
+import {ExamplePosition} from './positions/example-position.class';
+import {ExampleStoryPosition} from './positions/example-story-position.class';
+import {SenseStoryPosition} from './positions/sense-story-position.class';
+import {SensePosition} from './positions/sense-position.class';
 
 @Component({
   selector: 'app-listed-senses',
@@ -207,31 +210,31 @@ export class ListedSensesComponent implements OnInit {
     }
   }
 
-  public senseExampleDrop(senseIndex: number, event: CdkDragDrop<ExampleComp>) {
-    if (event.item.data.type === 'EXAMPLE') {
-      console.log('example dropped');
-      if (event.previousContainer === event.container) {
-        this._items[senseIndex].sense.changeExamplesOrder(event.previousIndex, event.currentIndex);
-      } else {
-        this._items[senseIndex].sense.addExample(event.currentIndex, this.exampleFactory.createNewExample());
-      }
-    }
+  public getSensePosition(senseIndex: number): SensePosition {
+    return new SensePosition(senseIndex);
   }
 
-  public getListedItemDndPayload(index: number) {
-    return {
-      type: 'LISTEDITEM',
+  public getExamplePosition(senseIndex: number, exampleIndex: number): ExamplePosition {
+    return new ExamplePosition(senseIndex, exampleIndex);
+  }
 
-    }
+  public getSenseStoryPosition(senseIndex: number, storyIndex: number): SenseStoryPosition {
+    return new SenseStoryPosition(senseIndex, storyIndex);
+  }
+
+  public getExampleStoryPosition(senseIndex: number, exampleIndex: number, storyIndex: number): ExampleStoryPosition {
+    return new ExampleStoryPosition(senseIndex, exampleIndex, senseIndex);
   }
 
   public throwAway(event: CdkDragDrop<any>) {
-    if (event.item.data.type === 'ListedItem') {
-      this.deleteSense(event.previousIndex);
-    } else if (event.item.data.type === 'ExampleComp') {
+    if (event.item.data instanceof ExamplePosition) {
       this.deleteExample(event.previousContainer.data, event.previousIndex);
-    } else if (event.item.data.type === 'StoryComp') {
-
+    } else if (event.item.data instanceof ExampleStoryPosition) {
+      this.deleteStoryFromExample(event.item.data.exampleIndex, event.item.data.senseIndex, event.item.data.storyIndex);
+    } else if (event.item.data instanceof SenseStoryPosition) {
+      this.deleteStoryFromSense(event.item.data.senseIndex, event.item.data.storyIndex);
+    } else if (event.item.data instanceof SensePosition) {
+      this.deleteSense(event.item.data.senseIndex);
     }
   }
 }
