@@ -8,25 +8,7 @@ export abstract class AbstractExample extends Storable {
     text: string,
     translations: Array<string>,
     stories: Array<AbstractStory>,
-    protected _source: string,
-    protected _location: string
   ) {
     super(id, BuilderComponentModelTypes.example, text, translations, stories);
-  }
-
-  get source() {
-    return this._source;
-  }
-
-  get location() {
-    return this._location;
-  }
-
-  set source(newSource: string) {
-    this._source = newSource;
-  }
-
-  set location(newLocation: string) {
-    this._location = newLocation;
   }
 }
