@@ -1,0 +1,14 @@
+<div>
+  <label>Text:<input #textInput [value]=text (input)="changeText(textInput.value)"></label>
+  <div cdkDropList>
+    <div cdkDrag *ngFor="let translation of translations; index as i">
+      <label>Translation {{i+1}}:<input #translationInput [value]="translation" (input)="changeTranslation(i, translationInput.value)"></label>>
+    </div>
+  </div>
+  <div cdkDropList>
+    <div cdkDrag *ngFor="let word of appliedWords; index as i">
+      <label>Word {{i+1}}:<input #wordInput [value]="word" (input)="changeAppliedWord(i, wordInput.value)"></label>
+    </div>
+  </div>
+
+</div>

@@ -1,6 +1,6 @@
 import {AbstractSource} from '../base_models/abstract-source.class';
 
-export class ExampleSourceNewspaper extends AbstractSource {
+export class ExampleSourceNewspaperComp extends AbstractSource {
   constructor(
     private _passageTitle: string,
     private _publishingYear: number,

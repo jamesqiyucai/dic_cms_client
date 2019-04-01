@@ -5,7 +5,7 @@ export abstract class AbstractSource {
     return this._author;
   }
 
-  public set(newAuthor: string) {
+  public set author(newAuthor: string) {
     this._author = newAuthor;
   }
 

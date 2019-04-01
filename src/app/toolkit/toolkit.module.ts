@@ -5,6 +5,7 @@ import {SidebarComponent} from './sidebar';
 import { InputboxComponent } from './inputbox';
 import { OptionsComponent } from './options';
 import { OptionDirective } from './options/option.directive';
+import {EditableDivDirective} from './editable-div/editable-div.directive';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { OptionDirective } from './options/option.directive';
     CommonModule,
   ],
   declarations: [
+    EditableDivDirective,
     BurgerIconComponent,
     SidebarComponent,
     InputboxComponent,

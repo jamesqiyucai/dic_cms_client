@@ -1,6 +1,6 @@
 import {AbstractSource} from '../base_models/abstract-source.class';
 
-export class ExampleSourcePaperbook extends AbstractSource {
+export class ExampleSourcePaperbookComp extends AbstractSource {
   constructor(
     author: string,
     title: string,
