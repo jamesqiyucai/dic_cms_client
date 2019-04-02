@@ -1,14 +1,36 @@
 <div>
-  <label>Text:<input #textInput [value]=text (input)="changeText(textInput.value)"></label>
+  <div appEditable [text]="text" (valueChange)="changeText($event)">Example Text Goes Here.</div>
   <div cdkDropList>
-    <div cdkDrag *ngFor="let translation of translations; index as i">
-      <label>Translation {{i+1}}:<input #translationInput [value]="translation" (input)="changeTranslation(i, translationInput.value)"></label>>
+    <div
+      cdkDrag
+      appEditable
+      *ngFor="let translation of translations; index as i"
+      [text]="translations[i]"
+      (valueChange)="changeTranslation(i, $event)"
+    >Translation {{i+1}}
     </div>
   </div>
   <div cdkDropList>
-    <div cdkDrag *ngFor="let word of appliedWords; index as i">
-      <label>Word {{i+1}}:<input #wordInput [value]="word" (input)="changeAppliedWord(i, wordInput.value)"></label>
+    <div
+      cdkDrag
+      appEditable
+      *ngFor="let word of appliedWords; index as i"
+      [text]="appliedWords[i]"
+      (valueChange)="changeAppliedWord(i, $event)"
+    >Word {{i+1}}
     </div>
   </div>
-
+  <div
+    appEditable
+    [text]="note"
+    (valueChange)="changeNote($event)"
+  >Note
+  </div>
+  <div
+    appEditable
+    [text]="comment"
+    (valueChange)="changeComment($event)"
+  >Comment
+  </div>
+  <ng-content></ng-content>
 </div>

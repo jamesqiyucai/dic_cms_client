@@ -19,35 +19,19 @@ export class ExampleSourceNewspaperComponent extends SourceComponent {
     this.sourceInfo.passageTitle = newTitle;
   }
 
-  public get publishingYear() {
-    return this.sourceInfo.publishingYear;
-  }
-
-  public changePublishingYear(newYear: number) {
-    this.sourceInfo.publishingYear = newYear;
-  }
-
-  public get publishingMonth() {
-    return this.sourceInfo.publishingMonth;
-  }
-
-  public changePublishingMonth(newMonth: number) {
-    this.sourceInfo.publishingMonth = newMonth;
-  }
-
-  public get publishingDay() {
-    return this.sourceInfo.publishingDay;
-  }
-
-  public changePublishingDay(newDay: number) {
-    this.sourceInfo.publishingDay = newDay;
-  }
-
-  public getPageNumber() {
+  public get pageNumber() {
     return this.sourceInfo.pageNumber;
   }
 
-  public changePageNumber(newNumber: number) {
-    this.sourceInfo.pageNumber = newNumber;
+  public changePageNumber(newNumber: string) {
+    this.sourceInfo.pageNumber = Number(newNumber);
+  }
+
+  public getPublishingDate() {
+    return this.sourceInfo.getPublishingDate();
+  }
+
+  public dateChange(newDate: string) {
+    this.sourceInfo.dateChange(newDate);
   }
 }

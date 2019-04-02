@@ -1,0 +1,35 @@
+<div>
+  <input
+    #authorInput
+    [value]="author"
+    (input)="changeAuthor(authorInput.value)"
+  >
+  <input
+    #bookTitleInput
+    [value]="title"
+    (input)="changeTitle(bookTitleInput.value)"
+  >
+  <input
+    #pageInput
+    type="number"
+    [value]="page"
+    (input)="changePage(pageInput.value)"
+  >
+  <input
+    #publishedPlaceInput
+    [value]="publishedPlace"
+    (input)="changePublishedPlace(publishedPlaceInput.value)"
+  >
+  <input
+    #publishedYearInput
+    type="number"
+    [value]="publishedYear"
+    (input)="changePublishedYear(publishedYearInput.value)"
+  >
+  <input
+    #initialPublishingYearInput
+    type="number"
+    [value]="initialPublishingYear"
+    (input)="changeInitialPublishingYear(initialPublishingYearInput.value)"
+  >
+</div>

@@ -1,0 +1,33 @@
+<div>
+  <input
+    #authorInput
+    placeholder="author"
+    [value]="author"
+    (input)="changeAuthor(authorInput.value)"
+  >
+  <input
+    #newspaperTitleInput
+    placeholder="newspaperTitle"
+    [value]="title"
+    (input)="changeTitle(newspaperTitleInput.value)"
+  >
+  <input
+    #passageTitleInput
+    placeholder="passageTitle"
+    [value]="passageTitle"
+    (input)="changePassageTitle(passageTitleInput.value)"
+  >
+  <input
+    #pageNumberInput
+    type="number"
+    placeholder="pageNumber"
+    [value]="pageNumber"
+    (input)="changePageNumber(pageNumberInput.value)"
+  >
+  <input
+    #dateInput
+    type="date"
+    [value]="getPublishingDate()"
+    (input)="dateChange(dateInput.value)"
+  >
+</div>

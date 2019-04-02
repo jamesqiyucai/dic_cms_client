@@ -21,27 +21,27 @@ export class ExampleSourceNewspaperComp extends AbstractSource {
     this._passageTitle = newPassageTitle;
   }
 
-  public get publishingYear() {
+  private get publishingYear() {
     return this._publishingYear;
   }
 
-  public set publishingYear(newYear: number) {
+  private set publishingYear(newYear: number) {
     this._publishingYear = newYear;
   }
 
-  public get publishingMonth() {
+  private get publishingMonth() {
     return this._publishingMonth;
   }
 
-  public set publishingMonth(newMonth: number) {
+  private set publishingMonth(newMonth: number) {
     this._publishingMonth = newMonth;
   }
 
-  public get publishingDay() {
+  private get publishingDay() {
     return this._publishingDay;
   }
 
-  public set publishingDay(newDay: number) {
+  private set publishingDay(newDay: number) {
     this._publishingDay = newDay;
   }
 
@@ -51,5 +51,16 @@ export class ExampleSourceNewspaperComp extends AbstractSource {
 
   public set pageNumber(newNumber: number) {
     this._pageNumber = newNumber;
+  }
+
+  public getPublishingDate() {
+    return `${this.publishingYear}-${this.publishingMonth}-${this.publishingDay}`;
+  }
+
+  public dateChange(newDate: string) {
+    const date = new Date(newDate);
+    this.publishingYear = date.getFullYear();
+    this.publishingMonth = date.getMonth();
+    this.publishingDay = date.getDay();
   }
 }

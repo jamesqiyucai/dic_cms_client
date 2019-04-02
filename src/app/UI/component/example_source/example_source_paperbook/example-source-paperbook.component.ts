@@ -15,24 +15,24 @@ export class ExampleSourcePaperbookComponent extends SourceComponent {
     return this.sourceInfo.page;
   }
 
-  public changePage(newPage: number) {
-    this.sourceInfo.page = newPage;
+  public changePage(newPage: string) {
+    this.sourceInfo.page = Number(newPage);
   }
 
   public get initialPublishingYear() {
     return this.sourceInfo.initialPublishingYear;
   }
 
-  public changeInitialPublishingYear(newYear: number) {
-    this.sourceInfo.initialPublishingYear = newYear;
+  public changeInitialPublishingYear(newYear: string) {
+    this.sourceInfo.initialPublishingYear = Number(newYear);
   }
 
   public get publishedYear() {
     return this.sourceInfo.publishedYear;
   }
 
-  public changePublishedYear(newYear: number) {
-    this.sourceInfo.publishedYear = newYear;
+  public changePublishedYear(newYear: string) {
+    this.sourceInfo.publishedYear = Number(newYear);
   }
 
   public get publishedPlace() {

@@ -21,6 +21,7 @@ import {EditableDivDirective} from './editable-div/editable-div.directive';
     OptionDirective
   ],
   exports: [
+    EditableDivDirective,
     BurgerIconComponent,
     SidebarComponent,
     InputboxComponent,
