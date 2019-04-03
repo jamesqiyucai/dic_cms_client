@@ -32,5 +32,9 @@
     (valueChange)="changeComment($event)"
   >Comment
   </div>
+  <select #sourceSelect (input)="sourceSelect.value">
+    <option value="Newspaper">Newspaper</option>
+    <option value="Paperbook">Paperbook</option>
+  </select>
   <ng-content></ng-content>
 </div>

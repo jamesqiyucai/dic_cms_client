@@ -1,7 +1,9 @@
-import {Component, ContentChild} from '@angular/core';
+import {Component, ContentChild, EventEmitter, Output} from '@angular/core';
 import {ExampleComp} from '../../model/example/example-comp.class';
 import {List} from 'immutable';
 import {SourceComponent} from '../example_source/abstract_source/source.component';
+import {ExampleSourceTypeFactory} from '../../event/example_source_type/example-source-type-factory.class';
+import {ExampleSourceType} from '../../event/example_source_type/example-source-type.class';
 
 @Component({
   selector: 'app-example-editor',
@@ -13,6 +15,8 @@ export class ExampleEditorComponent {
   private _note: string;
   private _comment: string;
   @ContentChild(SourceComponent) private source: SourceComponent;
+  private sourceInstructionFactory = new ExampleSourceTypeFactory();
+  @Output() sourceChosen = new EventEmitter<ExampleSourceType>();
 
   public get text() {
     return this.example.text;
@@ -52,5 +56,16 @@ export class ExampleEditorComponent {
 
   public changeAppliedWord(atIndex: number, to: string) {
     this._appliedWords[atIndex] = to;
+  }
+
+  public chooseSource(sourceType: string) {
+    switch (sourceType) {
+      case 'Newspaper':
+        this.sourceChosen.emit(this.sourceInstructionFactory.createNewspaper());
+        break;
+      case 'Paperbook':
+        this.sourceChosen.emit(this.sourceInstructionFactory.createPaperbook());
+        break;
+    }
   }
 }
