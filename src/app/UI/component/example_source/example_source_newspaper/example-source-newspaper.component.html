@@ -1,33 +1,35 @@
 <div>
   <input
     #authorInput
-    placeholder="author"
+    placeholder="Author"
     [value]="author"
     (input)="changeAuthor(authorInput.value)"
   >
   <input
     #newspaperTitleInput
-    placeholder="newspaperTitle"
+    placeholder="NewspaperTitle"
     [value]="title"
     (input)="changeTitle(newspaperTitleInput.value)"
   >
   <input
     #passageTitleInput
-    placeholder="passageTitle"
+    placeholder="PassageTitle"
     [value]="passageTitle"
     (input)="changePassageTitle(passageTitleInput.value)"
   >
   <input
     #pageNumberInput
     type="number"
-    placeholder="pageNumber"
+    placeholder="PageNumber"
     [value]="pageNumber"
     (input)="changePageNumber(pageNumberInput.value)"
   >
+  <label>PublishingDate:
   <input
     #dateInput
     type="date"
+    placeholder="PublishingDate"
     [value]="getPublishingDate()"
     (input)="dateChange(dateInput.value)"
-  >
+  ></label>
 </div>

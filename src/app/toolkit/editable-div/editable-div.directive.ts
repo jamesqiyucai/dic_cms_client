@@ -23,7 +23,8 @@ export class EditableDivDirective implements OnChanges, OnInit {
         && e.inputType !== 'insertFromPaste'
         && e.inputType !== 'deleteContentBackward'
       ) {
-        document.execCommand('undo');
+        setTimeout(function() {document.execCommand('undo');
+        }, 0);
       }
     });
     this.renderer.listen(this.el.nativeElement, 'paste', (e: ClipboardEvent) => {
@@ -34,7 +35,7 @@ export class EditableDivDirective implements OnChanges, OnInit {
     this.renderer.listen(this.el.nativeElement, 'blur', () => this.valueChange.emit(this.el.nativeElement.innerHTML));
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.el.nativeElement.innerHTML = this.text;
   }
 }

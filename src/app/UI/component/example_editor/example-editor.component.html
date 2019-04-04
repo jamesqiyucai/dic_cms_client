@@ -1,5 +1,5 @@
 <div>
-  <div appEditable [text]="text" (valueChange)="changeText($event)">Example Text Goes Here.</div>
+  <label>Example Text:<div appEditable [text]="text" (valueChange)="changeText($event)"></div></label>
   <div cdkDropList>
     <div
       cdkDrag
@@ -20,19 +20,23 @@
     >Word {{i+1}}
     </div>
   </div>
-  <div
-    appEditable
-    [text]="note"
-    (valueChange)="changeNote($event)"
-  >Note
-  </div>
-  <div
-    appEditable
-    [text]="comment"
-    (valueChange)="changeComment($event)"
-  >Comment
-  </div>
-  <select #sourceSelect (input)="sourceSelect.value">
+  <label>Note:
+    <div
+      appEditable
+      [text]="note"
+      (valueChange)="changeNote($event)"
+    >
+    </div>
+  </label>
+  <label>Comment:
+    <div
+      appEditable
+      [text]="comment"
+      (valueChange)="changeComment($event)"
+    >
+    </div>
+  </label>
+  <select #sourceSelect (input)="chooseSource(sourceSelect.value)">
     <option value="Newspaper">Newspaper</option>
     <option value="Paperbook">Paperbook</option>
   </select>

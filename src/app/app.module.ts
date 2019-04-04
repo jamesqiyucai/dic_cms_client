@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
 import { ToolkitModule } from './toolkit/toolkit.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {ListedSensesModule} from './UI/component/listed_senses/listed-senses.module';
+import {IllustrationConstructorModule} from './UI/component/illustration_constructor/illustration-constructor.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +15,7 @@ import {ListedSensesModule} from './UI/component/listed_senses/listed-senses.mod
     BrowserAnimationsModule,
     CoreModule,
     ToolkitModule,
-    ListedSensesModule
+    IllustrationConstructorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

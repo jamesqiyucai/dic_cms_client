@@ -1,13 +1,21 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
 import {ExampleSourcePaperbookComp} from '../../../model/example_source_paperbook/example-source-paperbook-comp.class';
+import {EXAMPLE_SOURCE_PAPERBOOK_FACTORY} from '../../../model/example_source_paperbook/injection-token';
+import {ExampleSourcePaperbookFactory} from '../../../model/example_source_paperbook/example-source-paperbook-comp-factory.interface';
+import {ExampleSourcePaperbookFactoryImpl} from '../../../model/example_source_paperbook/example-source-paperbook-comp-factory.class';
 
 @Component({
   selector: 'app-example-source-paperbook',
-  templateUrl: './example-source-paperbook.component.html'
+  templateUrl: './example-source-paperbook.component.html',
+  providers: [{provide: EXAMPLE_SOURCE_PAPERBOOK_FACTORY, useClass: ExampleSourcePaperbookFactoryImpl}]
 })
 export class ExampleSourcePaperbookComponent extends SourceComponent {
-  protected sourceInfo: ExampleSourcePaperbookComp;
+  protected sourceInfo: ExampleSourcePaperbookComp = this.exampleSourcePaperbookFactory.createNewSource();
+
+  constructor(@Inject(EXAMPLE_SOURCE_PAPERBOOK_FACTORY) private exampleSourcePaperbookFactory: ExampleSourcePaperbookFactory) {
+    super();
+  }
 
   public deleteSource(): void {}
 

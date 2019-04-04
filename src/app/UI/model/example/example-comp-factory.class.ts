@@ -10,6 +10,6 @@ import {ModelType} from '../../../service/word_builder/model-type.enum';
 export class ExampleCompFactoryImpl implements ExampleCompFactory {
   constructor(@Inject(ID_SERVICE) private idService: IDService) {}
   public createNewExample(): ExampleComp {
-    return new ExampleComp(this.idService.getID(ModelType.example), '', [], [], '', '');
+    return new ExampleComp(this.idService.getID(ModelType.example), 'Example Text Goes Here.', [], []);
   }
 }
