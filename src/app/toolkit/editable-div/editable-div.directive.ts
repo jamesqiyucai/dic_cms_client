@@ -1,4 +1,4 @@
-import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2, SimpleChanges} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2} from '@angular/core';
 
 @Directive({
   selector: '[appEditable]'
@@ -10,27 +10,30 @@ export class EditableDivDirective implements OnChanges, OnInit {
   }
 
   ngOnInit(): void {
+    this.renderer.setStyle(this.el.nativeElement, 'display', 'inline-block');
     this.renderer.setAttribute(this.el.nativeElement, 'contenteditable', 'true');
     this.renderer.listen(this.el.nativeElement, 'keydown', (e: KeyboardEvent) => {
-      if (e.key === 'enter') {
+      if (e.key === 'Enter') {
         e.preventDefault();
       }
-    })
+    });
     this.renderer.listen(this.el.nativeElement, 'input', (e) => {
       if (
         e.inputType !== 'formatItalic'
         && e.inputType !== 'insertText'
         && e.inputType !== 'insertFromPaste'
         && e.inputType !== 'deleteContentBackward'
+        && e.inputType !== 'historyUndo'
+        && e.inputType !== 'insertCompositionText'
+        && e.inputType !== 'insertFromYank'
       ) {
-        setTimeout(function() {document.execCommand('undo');
-        }, 0);
+        document.execCommand('undo');
       }
     });
     this.renderer.listen(this.el.nativeElement, 'paste', (e: ClipboardEvent) => {
       e.preventDefault();
       const text = e.clipboardData.getData('text/plain');
-      document.execCommand('insertHTML', false, text);
+      document.execCommand('insertText', false, text);
     });
     this.renderer.listen(this.el.nativeElement, 'blur', () => this.valueChange.emit(this.el.nativeElement.innerHTML));
   }

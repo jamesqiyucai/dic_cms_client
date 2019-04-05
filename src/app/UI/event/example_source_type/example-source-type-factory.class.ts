@@ -8,4 +8,8 @@ export class ExampleSourceTypeFactory {
   public createPaperbook() {
     return new ExampleSourceType(false, true);
   }
+
+  public createNull() {
+    return new ExampleSourceType(false, false);
+  }
 }

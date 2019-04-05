@@ -33,8 +33,8 @@ export abstract class Examplable extends Storable {
     moveItemInArray(this._examples, from, to);
   }
 
-  public addExampleTranslation(toExample: number, text: string) {
-    this._examples[toExample].addTranslation(text);
+  public addExampleTranslation(toExample: number, atIndex: number, text: string) {
+    this._examples[toExample].addTranslation(atIndex, text);
   }
 
   public deleteExampleTranslation(fromExample: number, atIndex: number) {

@@ -16,8 +16,8 @@ export abstract class Translatable extends Textable {
     return List(this._translations);
   }
 
-  public addTranslation(newTranslation: string) {
-    this._translations.push(newTranslation);
+  public addTranslation(atIndex: number, newTranslation: string) {
+    this._translations.splice(atIndex, 0, newTranslation);
   }
 
   public changeTranslationsOrder(from: number, to: number) {

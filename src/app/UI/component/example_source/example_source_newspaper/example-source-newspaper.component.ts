@@ -39,7 +39,7 @@ export class ExampleSourceNewspaperComponent extends SourceComponent {
     return this.sourceInfo.getPublishingDate();
   }
 
-  public dateChange(newDate: string) {
+  public dateChange(newDate: Date) {
     this.sourceInfo.dateChange(newDate);
   }
 }

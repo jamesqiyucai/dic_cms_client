@@ -14,8 +14,8 @@ import {ExampleSourceType} from '../../event/example_source_type/example-source-
 })
 export class IllustrationConstructorComponent {
   private sourceInstruction = new ExampleSourceType(false, false);
+
   public setSourceType($event: ExampleSourceType) {
-    console.log('called');
     this.sourceInstruction = $event;
   }
 

@@ -110,7 +110,7 @@ export class ListedSensesComponent implements OnInit {
   }
 
   public addSenseTranslation(atSense: number): void {
-    this._items[atSense].sense.addTranslation('');
+    this._items[atSense].sense.addTranslation(atSense, '');
   }
 
   public modifySenseTranslation(atSense: number, atIndex: number, to: string) {
@@ -146,8 +146,8 @@ export class ListedSensesComponent implements OnInit {
     this._items[inSense].sense.modifyExampleTranslation(example, atIndex, to);
   }
 
-  public addExampleTranslation(inSense: number, toExample: number): void {
-    this._items[inSense].sense.addExampleTranslation(toExample, '');
+  public addExampleTranslation(inSense: number, toExample: number, atIndex: number): void {
+    this._items[inSense].sense.addExampleTranslation(toExample, atIndex, '');
   }
 
   public deleteExampleTranslation(inSense: number, fromExample: number, atIndex: number): void {

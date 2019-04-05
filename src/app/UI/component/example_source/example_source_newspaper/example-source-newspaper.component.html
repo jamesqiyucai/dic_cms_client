@@ -1,18 +1,21 @@
 <div>
   <input
     #authorInput
+    autocomplete="off"
     placeholder="Author"
     [value]="author"
     (input)="changeAuthor(authorInput.value)"
   >
   <input
     #newspaperTitleInput
+    autocomplete="off"
     placeholder="NewspaperTitle"
     [value]="title"
     (input)="changeTitle(newspaperTitleInput.value)"
   >
   <input
     #passageTitleInput
+    autocomplete="off"
     placeholder="PassageTitle"
     [value]="passageTitle"
     (input)="changePassageTitle(passageTitleInput.value)"
@@ -20,6 +23,7 @@
   <input
     #pageNumberInput
     type="number"
+    autocomplete="off"
     placeholder="PageNumber"
     [value]="pageNumber"
     (input)="changePageNumber(pageNumberInput.value)"
@@ -27,6 +31,7 @@
   <label>PublishingDate:
   <input
     #dateInput
+    autocomplete="off"
     type="date"
     placeholder="PublishingDate"
     [value]="getPublishingDate()"

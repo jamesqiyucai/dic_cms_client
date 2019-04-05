@@ -1,44 +1,69 @@
 <div>
-  <label>Example Text:<div appEditable [text]="text" (valueChange)="changeText($event)"></div></label>
-  <div cdkDropList>
-    <div
-      cdkDrag
-      appEditable
-      *ngFor="let translation of translations; index as i"
-      [text]="translations[i]"
-      (valueChange)="changeTranslation(i, $event)"
-    >Translation {{i+1}}
+  <label>Example Text: <div appEditable [text]="text" (valueChange)="modifyText($event)"></div></label>
+  <div
+    id="translation"
+    cdkDropList
+    [cdkDropListConnectedTo]="['trash']"
+    (cdkDropListDropped)="translationDropped($event)"
+    [cdkDropListData]="'translation'"
+  >
+    <div cdkDrag *ngFor="let translation of translations; index as i trackBy:trackByFn">
+      <div class="example-handle" cdkDragHandle>
+        <svg width="12px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <label>Translation {{i+1}}:</label>
+      <div
+        class="editable-div"
+        appEditable
+        [text]="translation"
+        (valueChange)="modifyTranslation(i, $event)"
+      >
+      </div>
     </div>
   </div>
-  <div cdkDropList>
-    <div
-      cdkDrag
-      appEditable
-      *ngFor="let word of appliedWords; index as i"
-      [text]="appliedWords[i]"
-      (valueChange)="changeAppliedWord(i, $event)"
-    >Word {{i+1}}
+  <div
+    id="appliedWord"
+    cdkDropList
+    [cdkDropListConnectedTo]="['trash']"
+    [cdkDropListData]="'appliedWord'"
+    (cdkDropListDropped)="appliedWordDropped($event)"
+  >
+    <div cdkDrag *ngFor="let word of appliedWords; index as i; trackBy:trackByFn">
+      <div class="example-handle" cdkDragHandle>
+        <svg width="12px" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div>
+      <label>ApplyTo:<input #appliedWordInput placeholder="AppliedWord" [value]="word" (input)="modifyAppliedWord(i, appliedWordInput.value)"></label>
     </div>
   </div>
-  <label>Note:
-    <div
-      appEditable
-      [text]="note"
-      (valueChange)="changeNote($event)"
-    >
-    </div>
-  </label>
-  <label>Comment:
-    <div
-      appEditable
-      [text]="comment"
-      (valueChange)="changeComment($event)"
-    >
-    </div>
-  </label>
+  <div>
+    <label>Comment:
+      <div
+        appEditable
+        [text]="comment"
+        (valueChange)="modifyComment($event)"
+      >
+      </div>
+    </label>
+  </div>
+  <div>
+    <label>Note:
+      <input placeholder="Note Goes Here." #noteText [value]="note" (input)="modifyNote(noteText.value)">
+    </label>
+  </div>
   <select #sourceSelect (input)="chooseSource(sourceSelect.value)">
+    <option value="" selected>-</option>
     <option value="Newspaper">Newspaper</option>
     <option value="Paperbook">Paperbook</option>
   </select>
   <ng-content></ng-content>
+  <div id="new" cdkDropList [cdkDropListConnectedTo]="['translation', 'appliedWord']">
+    <div cdkDrag>+</div>
+  </div>
+  <div id="trash" cdkDropList (cdkDropListDropped)="delete($event)">Trash</div>
 </div>

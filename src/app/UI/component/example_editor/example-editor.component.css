@@ -1,0 +1,11 @@
+.example-handle {
+  display: inline-block;
+  color: #ccc;
+  cursor: move;
+  width: 24px;
+  height: 24px;
+}
+
+.editable-div {
+  display: inline-block;
+}
