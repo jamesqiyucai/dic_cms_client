@@ -27,12 +27,17 @@ export class EditableDivDirective implements OnChanges, OnInit {
         && e.inputType !== 'insertCompositionText'
         && e.inputType !== 'insertFromYank'
       ) {
+        console.log(1)
         document.execCommand('undo');
+      } else if (e.target.innerHTML.includes('&nbsp;')) {
+        const deleteEvent = new KeyboardEvent('keydown', {code: 'delete'});
+        console.log('called')
+        this.el.nativeElement.dispatchEvent(deleteEvent);
       }
     });
     this.renderer.listen(this.el.nativeElement, 'paste', (e: ClipboardEvent) => {
       e.preventDefault();
-      const text = e.clipboardData.getData('text/plain');
+      const text = e.clipboardData.getData('text/plain').replace(/&nbsp;/g, '').replace(/<br>/g, ' ');
       document.execCommand('insertText', false, text);
     });
     this.renderer.listen(this.el.nativeElement, 'blur', () => this.valueChange.emit(this.el.nativeElement.innerHTML));
