@@ -1,4 +1,6 @@
 import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2} from '@angular/core';
+import {GetItalicizedRanges} from './get-italicized-ranges.function';
+import {ItalicizeRange} from './italicize-text-range.function';
 
 @Directive({
   selector: '[appEditable]'
@@ -6,6 +8,7 @@ import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, R
 export class EditableDivDirective implements OnChanges, OnInit {
   @Input() text = '';
   @Output() valueChange = new EventEmitter<string>();
+  @Output() italicizedRanges = new EventEmitter<Array<[number, number]>>();
   constructor(private el: ElementRef, private renderer: Renderer2) {
   }
 
@@ -27,11 +30,9 @@ export class EditableDivDirective implements OnChanges, OnInit {
         && e.inputType !== 'insertCompositionText'
         && e.inputType !== 'insertFromYank'
       ) {
-        console.log(1)
         document.execCommand('undo');
       } else if (e.target.innerHTML.includes('&nbsp;')) {
         const deleteEvent = new KeyboardEvent('keydown', {code: 'delete'});
-        console.log('called')
         this.el.nativeElement.dispatchEvent(deleteEvent);
       }
     });
@@ -40,7 +41,11 @@ export class EditableDivDirective implements OnChanges, OnInit {
       const text = e.clipboardData.getData('text/plain').replace(/&nbsp;/g, '').replace(/<br>/g, ' ');
       document.execCommand('insertText', false, text);
     });
-    this.renderer.listen(this.el.nativeElement, 'blur', () => this.valueChange.emit(this.el.nativeElement.innerHTML));
+    this.renderer.listen(this.el.nativeElement, 'blur', () => {
+      this.el.nativeElement.innerHTML = this.el.nativeElement.innerHTML.replace(/&nbsp;/g, '');
+      this.valueChange.emit(this.el.nativeElement.innerHTML);
+      this.italicizedRanges.emit(GetItalicizedRanges(this.el.nativeElement));
+    });
   }
 
   ngOnChanges(): void {

@@ -9,6 +9,7 @@ import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.c
 import {ID_SERVICE} from '../../../service/word_builder/tokens';
 import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {ExampleServ} from '../../../service/model/example-serv.interface';
 
 @Component({
   selector: 'app-example-editor',
@@ -21,6 +22,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class ExampleEditorComponent {
   private example = this.exampleFactory.createNewExample();
+  private italicizedTextRanges: Array<[number, number]> = [];
   private _appliedWords: Array<string> = [''];
   private _note = '';
   private _comment = 'Comment Goes Here';
@@ -52,6 +54,10 @@ export class ExampleEditorComponent {
 
   public get comment() {
     return this._comment;
+  }
+
+  public newItalicizedRanges(ranges: Array<[number, number]>) {
+    this.italicizedTextRanges = ranges;
   }
 
   public modifyText(newText: string) {
@@ -112,5 +118,18 @@ export class ExampleEditorComponent {
       case '':
         this.sourceChosen.emit(this.sourceInstructionFactory.createNull());
     }
+  }
+
+  public packData(): ExampleServ {
+    const italicizedTextRanges = this.italicizedTextRanges;
+    return {
+      text: this.text.replace(/<i>/g, '').replace(/<\/i>/g, ''),
+      format: {
+        italic: italicizedTextRanges
+      },
+      translations: this.translations.toArray(),
+      keywords: this.appliedWords.toArray(),
+      source: this.source.getInfo()
+    };
   }
 }

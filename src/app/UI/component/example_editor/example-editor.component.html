@@ -1,5 +1,11 @@
 <div>
-  <label>Example Text: <div appEditable [text]="text" (valueChange)="modifyText($event)"></div></label>
+  <label>Example Text:
+    <div
+      appEditable
+      [text]="text"
+      (valueChange)="modifyText($event)"
+      (italicizedRanges)="newItalicizedRanges($event)"
+    ></div></label>
   <div
     id="translation"
     cdkDropList

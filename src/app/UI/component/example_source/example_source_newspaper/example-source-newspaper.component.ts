@@ -4,6 +4,7 @@ import {ExampleSourceNewspaperComp} from '../../../model/example_source_newspape
 import {ExampleSourceNewspaperFactory} from '../../../model/example_source_newspaper/example-source-newspaper-comp-factory.interface';
 import {EXAMPLE_SOURCE_NEWSPAPER_FACTORY} from '../../../model/example_source_newspaper/injection-token';
 import {ExampleSourceNewspaperFactoryImpl} from '../../../model/example_source_newspaper/example-source-newspaper-comp-factory.class';
+import {ExampleSourceNewspaperServ} from '../../../../service/model/example-source-newspaper-serv.interface';
 
 @Component({
   selector: 'app-example-source-newspaper',
@@ -41,5 +42,15 @@ export class ExampleSourceNewspaperComponent extends SourceComponent {
 
   public dateChange(newDate: Date) {
     this.sourceInfo.dateChange(newDate);
+  }
+
+  public getInfo(): ExampleSourceNewspaperServ {
+    return {
+      author: this.author,
+      title: this.title,
+      passageTitle: this.passageTitle,
+      publishingDate: this.getPublishingDate().getTime(),
+      pageNumber: this.pageNumber
+    };
   }
 }

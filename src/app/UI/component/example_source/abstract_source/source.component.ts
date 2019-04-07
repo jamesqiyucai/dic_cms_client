@@ -20,4 +20,6 @@ export abstract class SourceComponent {
   public changeTitle(newTitle: string) {
     this.sourceInfo.title = newTitle;
   }
+
+  public abstract getInfo(): any;
 }
