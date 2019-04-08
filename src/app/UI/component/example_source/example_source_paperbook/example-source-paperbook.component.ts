@@ -4,6 +4,7 @@ import {ExampleSourcePaperbookComp} from '../../../model/example_source_paperboo
 import {EXAMPLE_SOURCE_PAPERBOOK_FACTORY} from '../../../model/example_source_paperbook/injection-token';
 import {ExampleSourcePaperbookFactory} from '../../../model/example_source_paperbook/example-source-paperbook-comp-factory.interface';
 import {ExampleSourcePaperbookFactoryImpl} from '../../../model/example_source_paperbook/example-source-paperbook-comp-factory.class';
+import {ExampleSourcePaperbookServ} from '../../../../service/model/example-source-paperbook-serv.interface';
 
 @Component({
   selector: 'app-example-source-paperbook',
@@ -49,5 +50,16 @@ export class ExampleSourcePaperbookComponent extends SourceComponent {
 
   public changePublishedPlace(newPlace: string) {
     this.sourceInfo.publishedPlace = newPlace;
+  }
+
+  public getInfo(): ExampleSourcePaperbookServ {
+    return {
+      author: this.author,
+      title: this.title,
+      page: this.page,
+      initialPublishingYear: this.initialPublishingYear,
+      publishedYear: this.publishedYear,
+      publishedPlace: this.publishedPlace
+    };
   }
 }

@@ -20,13 +20,8 @@
           <path d="M0 0h24v24H0z" fill="none"></path>
         </svg>
       </div>
-      <label>Translation {{i+1}}:</label>
-      <div
-        class="editable-div"
-        appEditable
-        [text]="translation"
-        (valueChange)="modifyTranslation(i, $event)"
-      >
+      <div class="editable">
+        <label>Translation {{i+1}}:<input #translationInput [value]="translation" (input)="modifyTranslation(i, translationInput.value)"></label>
       </div>
     </div>
   </div>
