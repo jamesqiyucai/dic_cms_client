@@ -1,0 +1,9 @@
+<div>
+  <label>Keyword: <input></label>
+  <div>droplist</div>
+  <app-example-editor>
+    <app-example-source-paperbook *ngIf="isPaperbook"></app-example-source-paperbook>
+    <app-example-source-newspaper *ngIf="isNewspaper"></app-example-source-newspaper>
+  </app-example-editor>
+  <button>Modify</button>
+</div>

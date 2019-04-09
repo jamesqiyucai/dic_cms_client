@@ -10,6 +10,7 @@ import {ID_SERVICE} from '../../../service/word_builder/tokens';
 import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {ExampleServ} from '../../../service/model/example-serv.interface';
+import {ExampleEditor} from './example-editor.interface';
 
 @Component({
   selector: 'app-example-editor',
@@ -20,7 +21,7 @@ import {ExampleServ} from '../../../service/model/example-serv.interface';
     {provide: ID_SERVICE, useClass: IDServiceImpl}
   ]
 })
-export class ExampleEditorComponent {
+export class ExampleEditorComponent implements ExampleEditor {
   private example = this.exampleFactory.createNewExample();
   private italicizedTextRanges: Array<[number, number]> = [];
   private _appliedWords: Array<string> = [''];
@@ -34,6 +35,18 @@ export class ExampleEditorComponent {
 
   trackByFn(index: any, item: any) {
     return index;
+  }
+
+  createNewExample(): void {
+  }
+
+  deleteCurrentExample(): void {
+  }
+
+  modifyCurrentExample(): void {
+  }
+
+  loadExample(id: number): void {
   }
 
   public get text() {

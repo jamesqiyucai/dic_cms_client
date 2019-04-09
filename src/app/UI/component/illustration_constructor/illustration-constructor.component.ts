@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ExampleSourceType} from '../../event/example_source_type/example-source-type.class';
+import {ExampleEditorComponent} from '../example_editor/example-editor.component';
 
 @Component({
   selector: 'app-illustration-constructor',
@@ -9,11 +10,17 @@ import {ExampleSourceType} from '../../event/example_source_type/example-source-
         <app-example-source-paperbook *ngIf="isPaperbook"></app-example-source-paperbook>
         <app-example-source-newspaper *ngIf="isNewspaper"></app-example-source-newspaper>
       </app-example-editor>
+      <button (click)="createNewExample()"></button>
     </div>
   `
 })
 export class IllustrationConstructorComponent {
   private sourceInstruction = new ExampleSourceType(false, false);
+  @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
+
+  public createNewExample() {
+    this.exampleEditor.createNewExample();
+  }
 
   public setSourceType($event: ExampleSourceType) {
     this.sourceInstruction = $event;

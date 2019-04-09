@@ -2,6 +2,6 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-illustration-modifier',
-  template: ``
+  templateUrl: './illustration-modifier.component.html'
 })
 export class IllustrationModifierComponent {}
