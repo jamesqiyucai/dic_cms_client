@@ -1,4 +1,4 @@
-export function ItalicizeRange(text: string, ranges: Array<[number, number]>): string {
+export function ItalicizeText(text: string, ranges: Array<[number, number]>): string {
   const children: string[] = [];
 
   if (ranges.length === 0) {

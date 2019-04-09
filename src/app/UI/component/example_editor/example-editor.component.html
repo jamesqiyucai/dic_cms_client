@@ -62,7 +62,8 @@
     <option value="Newspaper">Newspaper</option>
     <option value="Paperbook">Paperbook</option>
   </select>
-  <ng-content></ng-content>
+  <app-example-source-paperbook *ngIf="sourceInstruction.isPaperbook"></app-example-source-paperbook>
+  <app-example-source-newspaper *ngIf="sourceInstruction.isNewspaper"></app-example-source-newspaper>
   <div id="new" cdkDropList [cdkDropListConnectedTo]="['translation', 'appliedWord']">
     <div cdkDrag>+</div>
   </div>

@@ -1,6 +1,6 @@
 import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2} from '@angular/core';
 import {GetItalicizedRanges} from './get-italicized-ranges.function';
-import {ItalicizeRange} from './italicize-text-range.function';
+import {ItalicizeText} from './italicize-text-range.function';
 
 @Directive({
   selector: '[appEditable]'

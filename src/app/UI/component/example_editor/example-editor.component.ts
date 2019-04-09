@@ -1,8 +1,7 @@
 import {Component, ContentChild, EventEmitter, Inject, Output} from '@angular/core';
 import {List} from 'immutable';
 import {SourceComponent} from '../example_source/abstract_source/source.component';
-import {ExampleSourceTypeFactory} from '../../event/example_source_type/example-source-type-factory.class';
-import {ExampleSourceType} from '../../event/example_source_type/example-source-type.class';
+import {ExampleSourceTypeFactory} from './example-source-type-factory.class';
 import {ExampleCompFactory} from '../../model/example/example-comp-factory.interface';
 import {EXAMPLE_FACTORY} from '../../model/example/injection-token';
 import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
@@ -29,25 +28,27 @@ export class ExampleEditorComponent implements ExampleEditor {
   private _comment = 'Comment Goes Here';
   @ContentChild(SourceComponent) private source: SourceComponent;
   private sourceInstructionFactory = new ExampleSourceTypeFactory();
-  @Output() sourceChosen = new EventEmitter<ExampleSourceType>();
+  public sourceInstruction = this.sourceInstructionFactory.createNull();
 
   constructor(@Inject(EXAMPLE_FACTORY) private exampleFactory: ExampleCompFactory) {}
 
-  trackByFn(index: any, item: any) {
+  public trackByFn(index: any, item: any) {
     return index;
   }
 
-  createNewExample(): void {
+  public createNewExample(): void {
   }
 
-  deleteCurrentExample(): void {
+  public deleteCurrentExample(): void {
   }
 
-  modifyCurrentExample(): void {
+  public modifyCurrentExample(): void {
   }
 
-  loadExample(id: number): void {
+  public loadExample(id: number): void {
   }
+
+  public loadExampleProposal(id: number, version: number) {}
 
   public get text() {
     return this.example.text;
@@ -123,13 +124,13 @@ export class ExampleEditorComponent implements ExampleEditor {
   public chooseSource(sourceType: string) {
     switch (sourceType) {
       case 'Newspaper':
-        this.sourceChosen.emit(this.sourceInstructionFactory.createNewspaper());
+        this.sourceInstruction = this.sourceInstructionFactory.createNewspaper();
         break;
       case 'Paperbook':
-        this.sourceChosen.emit(this.sourceInstructionFactory.createPaperbook());
+        this.sourceInstruction = this.sourceInstructionFactory.createPaperbook();
         break;
       case '':
-        this.sourceChosen.emit(this.sourceInstructionFactory.createNull());
+        this.sourceInstruction = this.sourceInstructionFactory.createNull();
     }
   }
 
