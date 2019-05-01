@@ -1,5 +1,9 @@
 export abstract class AbstractSource {
-  protected constructor(protected _author: string, protected _title: string) {}
+  protected constructor(
+    public readonly type: string,
+    protected _author: string,
+    protected _title: string
+  ) {}
 
   public get author() {
     return this._author;

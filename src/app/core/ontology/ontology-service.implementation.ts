@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {PoS} from './pos.class';
 import {Variation} from './variation.class';
 import {Inflection} from './inflection.class';
-import {API_INFLECTIONS, API_POSES, API_VARIATIONS} from '../tokens';
+import {API_INFLECTIONS, API_POSES, API_VARIATIONS} from './tokens';
 
 @Injectable()
 export class OntologyServiceImplementation implements OntologyService {

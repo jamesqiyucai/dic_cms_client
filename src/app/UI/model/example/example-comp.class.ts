@@ -4,8 +4,19 @@ import {StoryComp} from '../story/story-comp.class';
 
 export class ExampleComp extends AbstractExample {
   protected _stories: Array<StoryComp>;
-  constructor(id: number, text: string, translations: Array<string>, stories: Array<StoryComp>) {
-    super(id, text, translations, stories);
+  constructor(
+    id: number,
+    protected _version: number,
+    text: string,
+    translations: Array<string>,
+    stories: Array<StoryComp>
+  ) {
+    super(null, text, translations, stories);
+    this._version = null;
+  }
+
+  get version() {
+    return this._version;
   }
 
   get stories() {

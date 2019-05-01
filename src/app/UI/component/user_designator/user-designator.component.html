@@ -1,0 +1,8 @@
+<div>
+  <p>Who Are You?</p>
+  <select #userSelect (change)="onUserChosen(userSelect.value)">
+    <option selected [value]="1">Jason Chu</option>
+    <option [value]="2">Alex Sun</option>
+    <option [value]="3">Fred Wong</option>
+  </select>
+</div>

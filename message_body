@@ -1,0 +1,112 @@
+GET Example
+url parameter: id, version
+example: {
+    id: 1,
+    version: 1,
+    text: 'This is an example.',
+    format: {
+        italic: [[1, 3], [5, 7]]
+    }
+    translations: ['这是一个翻译'],
+    keywords: ['example'],
+    note: 'Nothing special',
+    comment: 'Nothing special again',
+    source: {
+        type: 'journal',
+        author: 'wangzong',
+        title: 'wangzong daily',
+        passageTitle: 'tianxiadiyi',
+        publishingDate: 122342342341,
+        pageNumber: 1
+    },
+    source: {
+        type: 'book',
+        author: 'wangzong',
+        title: 'wangzong masterpiece',
+        page: 13,
+        initialPublishingYear: 1000,
+        publishedYear: 2000,
+        publishedPlace: 'Mars'
+    }
+}
+
+POST Example Proposal
+example: {
+    id: null/1,
+    version: null/2,
+    text: 'This is an example.',
+    format: {
+        italic: [[1, 3], [5, 7]]
+    }
+    translations: ['这是一个翻译'],
+    keywords: ['example'],
+    note: 'Nothing special',
+    comment: 'Nothing special again',
+    source: {
+        type: 'journal',
+        author: 'wangzong',
+        title: 'wangzong daily',
+        passageTitle: 'tianxiadiyi',
+        publishingDate: 122342342341,
+        pageNumber: 1
+    },
+    source: {
+        type: 'book',
+        author: 'wangzong',
+        title: 'wangzong masterpiece',
+        page: 13,
+        initialPublishingYear: 1000,
+        publishedYear: 2000,
+        publishedPlace: 'Mars'
+    }
+}
+
+GET Example Options
+url parameter: keyword
+examples: [
+    {id: 1, version: 1},
+    {id: 3, version: 1}
+]
+
+GET Proposals
+url parameter: userID
+proposals: [1, 2, 3]
+
+GET Proposal
+url parameter: proposalID
+proposal: {
+    id: 1,
+    status: 'pending'/'frozen'/'rejected'/'approved',
+    exampleID: 2,
+    version: 3,
+    text: 'This is an example.',
+    format: {
+        italic: [[1, 3], [5, 7]]
+    }
+    translations: ['这是一个翻译'],
+    keywords: ['example'],
+    note: 'Nothing special',
+    comment: 'Nothing special again',
+    source: {
+        type: 'journal',
+        author: 'wangzong',
+        title: 'wangzong daily',
+        passageTitle: 'tianxiadiyi',
+        publishingDate: 122342342341,
+        pageNumber: 1
+    },
+    source: {
+        type: 'book',
+        author: 'wangzong',
+        title: 'wangzong masterpiece',
+        page: 13,
+        initialPublishingYear: 1000,
+        publishedYear: 2000,
+        publishedPlace: 'Mars'
+    }
+}
+
+POST Decision
+url parameter: proposalID, 'approve'/'reject'
+
+

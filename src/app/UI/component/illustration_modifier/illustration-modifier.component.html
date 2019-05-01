@@ -1,8 +1,0 @@
-<div>
-  <label>Keyword: <input #keywordInput (input)="getExamples(keywordInput.value)"></label>
-  <div>
-    <div *ngFor="let option of exampleOptions" (click)="loadExample(option.id)">{{option}}</div>
-  </div>
-  <app-example-editor></app-example-editor>
-  <button (click)="modifyExample()">Modify</button>
-</div>

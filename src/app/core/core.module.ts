@@ -1,37 +1,25 @@
-import {APP_INITIALIZER, NgModule, Optional, SkipSelf} from '@angular/core';
+import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {throwIfAlreadyLoaded} from './module-import-guard';
-import {OntologyServiceImplementation} from './ontology/ontology-service.implementation';
 import {HttpClientModule} from '@angular/common/http';
-import {API_INFLECTIONS, API_POSES, API_VARIATIONS, ONTOLOGY_SERVICE} from './tokens';
-import {OntologyService} from './ontology/ontology.service.interface';
+import {USER_SERVICE} from './user/injection-token';
+import {UserServiceImpl} from './user/user-service.class';
+import {EXAMPLE_SERV_ID_SERVICE} from './example_serv_id/injection-token';
+import {ExampleServIdService} from './example_serv_id/example-serv-id-service.interface';
+import {ExampleServIdServiceImpl} from './example_serv_id/example-serv-id.service';
+import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from './example_proposal_serv_id/injection-token';
+import {ExampleProposalServIdServiceImpl} from './example_proposal_serv_id/example-proposal-serv-id.service';
+import {EXAMPLE_SERVICE} from '../service/entity/example/injection-token';
+import {ExampleServiceImpl} from '../service/entity/example/example.service';
 
 @NgModule({
   imports: [
     HttpClientModule
   ],
   providers: [
-    {provide: API_POSES, useValue: 'http://localhost:3000/poses'},
-    {provide: API_INFLECTIONS, useValue: 'http://localhost:3000/inflections'},
-    {provide: API_VARIATIONS, useValue: 'http://localhost:3000/variations'},
-    {provide: ONTOLOGY_SERVICE, useClass: OntologyServiceImplementation},
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (ontologyService: OntologyService) => function() { return ontologyService.loadPoses(); },
-      deps: [ONTOLOGY_SERVICE],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (ontologyService: OntologyService) => function() { return ontologyService.loadVariations(); },
-      deps: [ONTOLOGY_SERVICE],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (ontologyService: OntologyService) => function() { return ontologyService.loadInflections(); },
-      deps: [ONTOLOGY_SERVICE],
-      multi: true
-    },
+    {provide: USER_SERVICE, useClass: UserServiceImpl},
+    {provide: EXAMPLE_SERV_ID_SERVICE, useClass: ExampleServIdServiceImpl},
+    {provide: EXAMPLE_SERVICE, useClass: ExampleServiceImpl},
+    {provide: EXAMPLE_PROPOSAL_SERV_ID_SERVICE, useClass: ExampleProposalServIdServiceImpl},
   ]
 })
 export class CoreModule {

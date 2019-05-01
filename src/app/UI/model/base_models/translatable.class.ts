@@ -31,4 +31,8 @@ export abstract class Translatable extends Textable {
   public modifyTranslation(atIndex: number, to: string) {
     this._translations[atIndex] = to;
   }
+
+  public resetTranslations(to: Array<string>) {
+    this._translations = to;
+  }
 }

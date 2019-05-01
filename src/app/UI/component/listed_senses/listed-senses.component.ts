@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
 import {OntologyService} from '../../../core/ontology/ontology.service.interface';
-import {IDServiceImpl} from '../../../service/word_builder/id.service.class';
+import {IDServiceImpl} from '../../../service/entity/word_builder/id.service.class';
 import {OntologyServiceImplementation} from '../../../core/ontology/ontology-service.implementation';
 import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleComp} from '../../model/example/example-comp.class';
 import {SenseCompFactoryImpl} from '../../model/sense/sense-comp-factory.class';
 import {SensePositionCompFactoryImpl} from '../../model/sense-position/sense-position-comp-factory.class';
 import {ExampleCompFactoryImpl} from '../../model/example/example-comp-factory.class';
-import {ID_SERVICE} from '../../../service/word_builder/tokens';
-import {ONTOLOGY_SERVICE} from '../../../core/tokens';
+import {ID_SERVICE} from '../../../service/entity/word_builder/tokens';
+import {ONTOLOGY_SERVICE} from '../../../core/ontology/tokens';
 import {EXAMPLE_FACTORY} from '../../model/example/injection-token';
 import {SENSE_FACTORY} from '../../model/sense/injection-token';
 import {SENSE_POSITION_FACTORY} from '../../model/sense-position/injection-token';

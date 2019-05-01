@@ -1,9 +1,9 @@
 import {StoryCompFactory} from './story-comp-factory.interface';
 import {StoryComp} from './story-comp.class';
-import {ID_SERVICE} from '../../../service/word_builder/tokens';
-import {IDService} from '../../../service/word_builder/id.service.interface';
+import {ID_SERVICE} from '../../../service/entity/word_builder/tokens';
+import {IDService} from '../../../service/entity/word_builder/id.service.interface';
 import {Inject, Injectable} from '@angular/core';
-import {ModelType} from '../../../service/word_builder/model-type.enum';
+import {ModelType} from '../../../service/entity/word_builder/model-type.enum';
 
 @Injectable()
 export class StoryCompFactoryImpl implements StoryCompFactory {

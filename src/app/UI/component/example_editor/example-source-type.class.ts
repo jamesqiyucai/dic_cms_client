@@ -1,3 +1,3 @@
 export class ExampleSourceType {
-  constructor(readonly isNewspaper: boolean, readonly isPaperbook: boolean) {}
+  constructor(readonly isJournal: boolean, readonly isBook: boolean) {}
 }
