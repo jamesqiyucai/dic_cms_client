@@ -2,7 +2,7 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
 import {ExampleSourceBookComponentModel} from '../../../model/example_source_book/example-source-book-component.model';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal-service.interface';
+import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal.service';
 
 @Component({
   selector: 'app-example-source-paperbook',

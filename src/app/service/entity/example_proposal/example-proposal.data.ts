@@ -1,4 +1,4 @@
-import {ExampleProposalSourceType} from '../../model/example_proposal/example-proposal-source.type';
+import {ExampleProposalSourceServiceModelType} from '../../model/example_proposal/example-proposal-source.service.model.type';
 
 export interface ExampleProposalData {
   id: number;
@@ -16,7 +16,7 @@ export interface ExampleProposalData {
   note: string;
   comment: string;
   source: {
-    type: ExampleProposalSourceType;
+    type: ExampleProposalSourceServiceModelType;
     author: string;
     title: string;
     page: number;

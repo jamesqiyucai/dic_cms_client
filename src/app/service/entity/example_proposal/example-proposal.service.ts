@@ -1,16 +1,16 @@
 import {Observable} from 'rxjs';
-import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal-service.model';
+import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
 import {List} from 'immutable';
-import {ExampleProposalPurpose} from '../../model/example_proposal/example-proposal.purpose';
-import {ExampleProposalSourceType} from '../../model/example_proposal/example-proposal-source.type';
-import {ExampleProposalServiceEnumsFactory} from '../../model/example_proposal/example-proposal-service-enums.factory';
+import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
+import {ExampleProposalSourceServiceModelType} from '../../model/example_proposal/example-proposal-source.service.model.type';
+import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 
 export interface ExampleProposalService {
-  enums: ExampleProposalServiceEnumsFactory;
+  types: ExampleProposalServiceModelTypesFactory;
   exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
   createNewExampleProposalInService(
-    purpose: ExampleProposalPurpose,
+    purpose: ExampleProposalPurposeServiceModelTypes,
     id: number,
     initiator: number,
     status: string,
@@ -23,7 +23,7 @@ export interface ExampleProposalService {
     note: string,
     comment: string,
     source: {
-      type: ExampleProposalSourceType,
+      type: ExampleProposalSourceServiceModelType,
       author: string,
       title: string,
       page: number,
@@ -46,7 +46,7 @@ export interface ExampleProposalService {
     note?: string,
     comment?: string,
     source?: {
-      type: ExampleProposalSourceType,
+      type: ExampleProposalSourceServiceModelType,
       author: string,
       title: string,
       page: number,

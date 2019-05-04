@@ -2,7 +2,7 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
 import {ExampleSourceJournalComponentModel} from '../../../model/example_source_journal/example-source-journal-component.model';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal-service.interface';
+import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal.service';
 
 @Component({
   selector: 'app-example-source-newspaper',

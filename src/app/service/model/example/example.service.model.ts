@@ -1,5 +1,5 @@
-import {ExampleSourceJournalServiceModel} from '../example_proposal/example-source-journal-service.model';
-import {ExampleSourceBookServiceModel} from '../example_proposal/example-source-book-service.model';
+import {ExampleSourceJournalServiceModel} from '../example_proposal/example-source-journal.service.model';
+import {ExampleSourceBookServiceModel} from '../example_proposal/example-source-book.service.model';
 
 export class ExampleServiceModel {
   public format: {

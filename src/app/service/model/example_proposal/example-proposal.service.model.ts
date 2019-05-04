@@ -1,7 +1,7 @@
-import {ExampleProposalPurpose} from './example-proposal.purpose';
-import {ExampleProposalSourceType} from './example-proposal-source.type';
-import {ExampleSourceBookServiceModel} from './example-source-book-service.model';
-import {ExampleSourceJournalServiceModel} from './example-source-journal-service.model';
+import {ExampleProposalPurposeServiceModelTypes} from './example-proposal-purpose.service.model.types';
+import {ExampleProposalSourceServiceModelType} from './example-proposal-source.service.model.type';
+import {ExampleSourceBookServiceModel} from './example-source-book.service.model';
+import {ExampleSourceJournalServiceModel} from './example-source-journal.service.model';
 
 export class ExampleProposalServiceModel {
   public format: {
@@ -12,7 +12,7 @@ export class ExampleProposalServiceModel {
 
   constructor(
     public readonly identifier: number,
-    public readonly purpose: ExampleProposalPurpose,
+    public readonly purpose: ExampleProposalPurposeServiceModelTypes,
     public readonly id: number,
     public readonly initiator: number,
     public status: string,
@@ -25,7 +25,7 @@ export class ExampleProposalServiceModel {
     public note: string,
     public comment: string,
     source: {
-      type: ExampleProposalSourceType,
+      type: ExampleProposalSourceServiceModelType,
       author: string,
       title: string,
       page: number,
@@ -42,7 +42,7 @@ export class ExampleProposalServiceModel {
     this.format.italic = italic;
     if (source) {
       switch (source.type) {
-        case ExampleProposalSourceType.book: {
+        case ExampleProposalSourceServiceModelType.book: {
           this.source = new ExampleSourceBookServiceModel(
             source.author,
             source.title,
@@ -53,7 +53,7 @@ export class ExampleProposalServiceModel {
           );
           break;
         }
-        case ExampleProposalSourceType.journal: {
+        case ExampleProposalSourceServiceModelType.journal: {
           this.source = new ExampleSourceJournalServiceModel(
             source.author,
             source.title,

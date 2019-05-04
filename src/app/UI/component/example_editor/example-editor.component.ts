@@ -4,7 +4,7 @@ import {SourceComponent} from '../example_source/abstract_source/source.componen
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {ExampleEditor} from './example-editor.interface';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal-service.interface';
+import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
 import {ExampleComp} from '../../model/example/example-comp.class';
 import {EXAMPLE_SERVICE} from '../../../service/entity/example/injection-token';
 import {ExampleService} from '../../../service/entity/example/example-service.interface';

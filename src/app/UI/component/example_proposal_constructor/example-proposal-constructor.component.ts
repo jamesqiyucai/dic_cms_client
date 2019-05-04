@@ -4,7 +4,7 @@ import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleSourceBookComponentModel} from '../../model/example_source_book/example-source-book-component.model';
 import {ExampleSourceJournalComponentModel} from '../../model/example_source_journal/example-source-journal-component.model';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal-service.interface';
+import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
 
 @Component({
   selector: 'app-example-proposal-constructor',

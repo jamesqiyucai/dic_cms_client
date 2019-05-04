@@ -1,23 +1,23 @@
 import {Inject, Injectable} from '@angular/core';
-import {ExampleProposalService} from './example-proposal-service.interface';
+import {ExampleProposalService} from './example-proposal.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal-service.model';
-import {ExampleSourceJournalServiceModel} from '../../model/example_proposal/example-source-journal-service.model';
-import {ExampleSourceBookServiceModel} from '../../model/example_proposal/example-source-book-service.model';
+import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
+import {ExampleSourceJournalServiceModel} from '../../model/example_proposal/example-source-journal.service.model';
+import {ExampleSourceBookServiceModel} from '../../model/example_proposal/example-source-book.service.model';
 import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from '../../../core/example_proposal_serv_id/injection-token';
 import {ExampleProposalServIdService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
 import {USER_SERVICE} from '../../../core/user/injection-token';
 import {UserService} from '../../../core/user/user-service.interface';
-import {ExampleProposalData} from './example-proposal-data.interface';
+import {ExampleProposalData} from './example-proposal.data';
 import {List} from 'immutable';
-import {ExampleProposalPurpose} from '../../model/example_proposal/example-proposal.purpose';
-import {ExampleProposalSourceType} from '../../model/example_proposal/example-proposal-source.type';
-import {ExampleProposalServiceEnumsFactory} from '../../model/example_proposal/example-proposal-service-enums.factory';
+import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
+import {ExampleProposalSourceServiceModelType} from '../../model/example_proposal/example-proposal-source.service.model.type';
+import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
-  public readonly enums: ExampleProposalServiceEnumsFactory;
+  public readonly types: ExampleProposalServiceModelTypesFactory;
   private _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
   public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
@@ -46,7 +46,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     @Inject(USER_SERVICE) private userService: UserService,
     private http: HttpClient
   ) {
-    this.enums = new ExampleProposalServiceEnumsFactory();
+    this.types = new ExampleProposalServiceModelTypesFactory();
     this.exampleProposals = this._exampleProposals.asObservable();
     this.init();
   }
@@ -63,7 +63,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return this._exampleProposals.value.findIndex(proposal => proposal.identifier === identifier);
   }
 
-  private makeProposalFromData(data: ExampleProposalData, purpose: ExampleProposalPurpose): ExampleProposalServiceModel {
+  private makeProposalFromData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes): ExampleProposalServiceModel {
     return new ExampleProposalServiceModel(
       this.exampleProposalServiceModelIdentifierService.getId(),
       purpose,
@@ -102,7 +102,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public createNewExampleProposalInService(
-    purpose: ExampleProposalPurpose,
+    purpose: ExampleProposalPurposeServiceModelTypes,
     id: number,
     initiator: number,
     status: string,
@@ -115,7 +115,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     note: string,
     comment: string,
     source: {
-      type: ExampleProposalSourceType,
+      type: ExampleProposalSourceServiceModelType,
       author: string,
       title: string,
       page: number,
@@ -153,7 +153,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       ids.forEach((id, index) => {
         ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(data => {
           counter += 1;
-          fetchedProposals = fetchedProposals.update(index, () => this.makeProposalFromData(data, ExampleProposalPurpose.review));
+          fetchedProposals = fetchedProposals.update(index, () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review));
           if (counter === ids.length) {
             this._exampleProposals.next(this.makeNewProposalsWithFetchedProposals(this._exampleProposals.value, fetchedProposals));
           }
@@ -171,7 +171,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     note: string = this.getProposal(identifier).note,
     comment: string = this.getProposal(identifier).comment,
     source: {
-      type: ExampleProposalSourceType,
+      type: ExampleProposalSourceServiceModelType,
       author: string,
       title: string,
       page: number,
@@ -193,7 +193,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         proposal.comment = comment;
         let proposalSource;
         switch (source.type) {
-          case ExampleProposalSourceType.book: {
+          case ExampleProposalSourceServiceModelType.book: {
             proposalSource = new ExampleSourceBookServiceModel(
               source.author,
               source.title,
@@ -204,7 +204,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             );
             break;
           }
-          case ExampleProposalSourceType.journal: {
+          case ExampleProposalSourceServiceModelType.journal: {
             proposalSource = new ExampleSourceJournalServiceModel(
               source.author,
               source.title,
@@ -234,7 +234,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 identifier,
-                () => this.makeProposalFromData(data, ExampleProposalPurpose.review)
+                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review)
               )
             );
           },
@@ -253,7 +253,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 this.getProposalIndex(identifier),
-                () => this.makeProposalFromData(data, ExampleProposalPurpose.display)
+                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.display)
               )
             );
           }
@@ -271,7 +271,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 this.getProposalIndex(identifier),
-                () => this.makeProposalFromData(data, ExampleProposalPurpose.display)
+                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.display)
               )
             );
           }
