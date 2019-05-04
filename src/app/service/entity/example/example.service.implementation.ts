@@ -15,15 +15,19 @@ export class ExampleServiceImplementation implements ExampleService {
   public readonly examples: Observable<List<ExampleServiceModel>>;
   public readonly types: ExampleServiceModelTypesFactory;
 
-  private static getPersistentExample(id: number, version: number): Observable<ExampleData> {
+  private static getPersistentExample(id: number): Observable<ExampleData> {
     return undefined;
   }
 
-  private static getPersistentExampleIds(keyword: string): Observable<any> {
+  private static getPersistentExampleIds(keyword: string): Observable<number[]> {
     return undefined;
   }
 
-  public static getModelFromPersistentData(data: ExampleData): ExampleServiceModel {
+  private static getModelFromPersistentData(data: ExampleData): ExampleServiceModel {
+    return undefined;
+  }
+
+  private static getDataObjectFromModel(model: ExampleServiceModel): ExampleData {
     return undefined;
   }
 
