@@ -153,7 +153,9 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       ids.forEach((id, index) => {
         ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(data => {
           counter += 1;
-          fetchedProposals = fetchedProposals.update(index, () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review));
+          fetchedProposals = fetchedProposals.update(
+            index,
+            () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review));
           if (counter === ids.length) {
             this._exampleProposals.next(this.makeNewProposalsWithFetchedProposals(this._exampleProposals.value, fetchedProposals));
           }
