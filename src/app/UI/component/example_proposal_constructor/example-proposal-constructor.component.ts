@@ -83,7 +83,7 @@ export class ExampleProposalConstructorComponent implements AfterViewInit, OnDes
       exampleEditorData.comment,
       exampleEditorData.source
     );
-    this.exampleProposalService.createNewExampleProposalInService(newExampleProposalServ);
+    this.exampleProposalService.createExampleProposalInService(newExampleProposalServ);
     this.exampleProposalIdentifier = newExampleProposalServ.identifier;
     this.exampleProposalService.subscribeToExampleProposalInService(this.exampleProposalIdentifier, (proposal) => {
       this.exampleEditor.fillData(

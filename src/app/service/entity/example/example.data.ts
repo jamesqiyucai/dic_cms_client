@@ -1,3 +1,5 @@
+import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
+
 export interface ExampleData {
   id: null;
   initiator: null;
@@ -13,19 +15,14 @@ export interface ExampleData {
   note: string | null;
   comment: string | null;
   source: {
-    type: string;
-    author: string;
-    title: string;
-    passageTitle: string;
-    publishingDate: string;
-    pageNumber: number;
-  } & {
-    type: string;
-    author: string;
-    title: string;
-    page: number;
-    initialPublishingYear: number;
-    publishedYear: number;
-    publishedPlace: string;
+    type: ExampleSourceServiceModelTypes,
+    author: string,
+    title: string,
+    page: number,
+    initialPublishingYear?: number,
+    publishedYear?: number,
+    publishedPlace?: string,
+    passageTitle?: string,
+    publishingDate?: string,
   };
 }

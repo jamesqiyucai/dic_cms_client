@@ -1,5 +1,5 @@
-export enum ModelType {
-  story,
-  example,
-  sense
-}
+// export enum ModelType {
+//   story,
+//   example,
+//   sense
+// }

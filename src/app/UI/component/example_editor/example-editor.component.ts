@@ -223,7 +223,7 @@ export class ExampleEditorComponent implements ExampleEditor, OnInit, OnDestroy 
     //   undefined
     // );
     // this.identifier = proposalServ.identifier;
-    // this.exampleProposalService.createNewExampleProposalInService(proposalServ);
+    // this.exampleProposalService.createExampleProposalInService(proposalServ);
     // this.exampleProposalService.subscribeToExampleProposalInService(this.identifier, proposal => {
     //   this.example = new ExampleComp(
     //     null,
@@ -318,7 +318,7 @@ export class ExampleEditorComponent implements ExampleEditor, OnInit, OnDestroy 
   //       data.comment,
   //       data.source
   //     );
-  //     this.exampleProposalService.createNewExampleProposalInService(proposalServ);
+  //     this.exampleProposalService.createExampleProposalInService(proposalServ);
   //     this.identifier = proposalServ.identifier;
   //     this.exampleProposalService.subscribeToExampleProposalInService(this.identifier, proposal => {
   //       this.example = new ExampleComp(

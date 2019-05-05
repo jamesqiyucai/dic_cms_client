@@ -1,3 +1,3 @@
-export interface ExampleServIdService {
+export interface ExampleServiceIdentifierService {
   getId(): number;
 }

@@ -2,18 +2,16 @@ import {Observable} from 'rxjs';
 import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
 import {List} from 'immutable';
 import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
-import {ExampleProposalSourceServiceModelType} from '../../model/example_proposal/example-proposal-source.service.model.type';
+import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 
 export interface ExampleProposalService {
   types: ExampleProposalServiceModelTypesFactory;
   exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
-  createNewExampleProposalInService(
+  createExampleProposalInService(
     purpose: ExampleProposalPurposeServiceModelTypes,
-    id: number,
     initiator: number,
-    status: string,
     exampleId: number,
     version: number,
     text: string,
@@ -23,7 +21,7 @@ export interface ExampleProposalService {
     note: string,
     comment: string,
     source: {
-      type: ExampleProposalSourceServiceModelType,
+      type: ExampleSourceServiceModelTypes,
       author: string,
       title: string,
       page: number,
@@ -33,7 +31,7 @@ export interface ExampleProposalService {
       passageTitle?: string,
       publishingDate?: string,
     }
-  ): void;
+  ): number;
 
   loadPendingProposalsInService(userId: number): void;
 
@@ -46,7 +44,7 @@ export interface ExampleProposalService {
     note?: string,
     comment?: string,
     source?: {
-      type: ExampleProposalSourceServiceModelType,
+      type: ExampleSourceServiceModelTypes,
       author: string,
       title: string,
       page: number,

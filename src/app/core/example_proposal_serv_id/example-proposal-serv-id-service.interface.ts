@@ -1,3 +1,3 @@
-export interface ExampleProposalServIdService {
+export interface ExampleProposalServiceIdentifierService {
   getId(): number;
 }

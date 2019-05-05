@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
-import {IllustrationConstructorComponent} from './illustration-constructor.component';
+import {ExampleProposalConstructorComponent} from './example-proposal-constructor.component';
 import {ExampleEditorModule} from '../example_editor/example-editor.module';
 import {ExampleSourceModule} from '../example_source/example-source.module';
 import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [CommonModule, ExampleEditorModule, ExampleSourceModule],
-  declarations: [IllustrationConstructorComponent],
-  exports: [IllustrationConstructorComponent]
+  declarations: [ExampleProposalConstructorComponent],
+  exports: [ExampleProposalConstructorComponent]
 })
-export class IllustrationConstructorModule {}
+export class ExampleProposalConstructorModule {}

@@ -3,16 +3,16 @@ import {ExampleProposalService} from './example-proposal.service';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
-import {ExampleSourceJournalServiceModel} from '../../model/example_proposal/example-source-journal.service.model';
-import {ExampleSourceBookServiceModel} from '../../model/example_proposal/example-source-book.service.model';
+import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
+import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
 import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from '../../../core/example_proposal_serv_id/injection-token';
-import {ExampleProposalServIdService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
+import {ExampleProposalServiceIdentifierService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
 import {USER_SERVICE} from '../../../core/user/injection-token';
 import {UserService} from '../../../core/user/user-service.interface';
 import {ExampleProposalData} from './example-proposal.data';
 import {List} from 'immutable';
 import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
-import {ExampleProposalSourceServiceModelType} from '../../model/example_proposal/example-proposal-source.service.model.type';
+import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return undefined;
   }
 
-  private static createPersistentExampleProposal(identifier: number): Observable<any> {
+  private static createPersistentExampleProposal(identifier: number): Observable<number> {
     return undefined;
   }
 
@@ -42,7 +42,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   constructor(
-    @Inject(EXAMPLE_PROPOSAL_SERV_ID_SERVICE) private exampleProposalServiceModelIdentifierService: ExampleProposalServIdService,
+    @Inject(EXAMPLE_PROPOSAL_SERV_ID_SERVICE) private identifierService: ExampleProposalServiceIdentifierService,
     @Inject(USER_SERVICE) private userService: UserService,
     private http: HttpClient
   ) {
@@ -63,9 +63,51 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return this._exampleProposals.value.findIndex(proposal => proposal.identifier === identifier);
   }
 
-  private makeProposalFromData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes): ExampleProposalServiceModel {
+  private makeModel(
+    initiator: number,
+    purpose: ExampleProposalPurposeServiceModelTypes,
+    exampleId: number,
+    version: number,
+    text: string,
+    italic: Array<[number, number]>,
+    translations: Array<string>,
+    keywords: Array<string>,
+    note: string,
+    comment: string,
+    source: {
+      type: ExampleSourceServiceModelTypes,
+      author: string,
+      title: string,
+      page: number,
+      initialPublishingYear?: number,
+      publishedYear?: number,
+      publishedPlace?: string,
+      passageTitle?: string,
+      publishingDate?: string
+    },
+  ) {
     return new ExampleProposalServiceModel(
-      this.exampleProposalServiceModelIdentifierService.getId(),
+      this.identifierService.getId(),
+      purpose,
+      null,
+      initiator,
+      null,
+      exampleId,
+      version,
+      text,
+      italic,
+      translations,
+      keywords,
+      note,
+      comment,
+      source,
+      this,
+    );
+  }
+
+  private makeModelFromPersistentData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes) {
+    return new ExampleProposalServiceModel(
+      this.identifierService.getId(),
       purpose,
       data.id,
       data.initiator,
@@ -78,11 +120,12 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       data.keywords,
       data.note,
       data.comment,
-      data.source
+      data.source,
+      this,
     );
   }
 
-  private makeNewProposalsWithFetchedProposals(
+  private makeConcatenatedProposals(
     currentProposals: List<ExampleProposalServiceModel>,
     fetchedProposals: List<ExampleProposalServiceModel>
   ): List<ExampleProposalServiceModel> {
@@ -101,11 +144,13 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return newProposals ? newProposals : List([]);
   }
 
-  public createNewExampleProposalInService(
+  public removeExampleProposalInService(identifier: number): void {
+    this._exampleProposals.next(this._exampleProposals.value.delete(this.getProposalIndex(identifier)));
+  }
+
+  public createExampleProposalInService(
     purpose: ExampleProposalPurposeServiceModelTypes,
-    id: number,
     initiator: number,
-    status: string,
     exampleId: number,
     version: number,
     text: string,
@@ -115,7 +160,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     note: string,
     comment: string,
     source: {
-      type: ExampleProposalSourceServiceModelType,
+      type: ExampleSourceServiceModelTypes,
       author: string,
       title: string,
       page: number,
@@ -126,12 +171,9 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       publishingDate?: string
     }
     ): number {
-    const newProposal = new ExampleProposalServiceModel(
-      this.exampleProposalServiceModelIdentifierService.getId(),
-      purpose,
-      id,
+    const newProposal = this.makeModel(
       initiator,
-      status,
+      purpose,
       exampleId,
       version,
       text,
@@ -155,9 +197,10 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
           counter += 1;
           fetchedProposals = fetchedProposals.update(
             index,
-            () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review));
+            () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
+          );
           if (counter === ids.length) {
-            this._exampleProposals.next(this.makeNewProposalsWithFetchedProposals(this._exampleProposals.value, fetchedProposals));
+            this._exampleProposals.next(this.makeConcatenatedProposals(this._exampleProposals.value, fetchedProposals));
           }
         });
       });
@@ -173,7 +216,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     note: string = this.getProposal(identifier).note,
     comment: string = this.getProposal(identifier).comment,
     source: {
-      type: ExampleProposalSourceServiceModelType,
+      type: ExampleSourceServiceModelTypes,
       author: string,
       title: string,
       page: number,
@@ -195,7 +238,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         proposal.comment = comment;
         let proposalSource;
         switch (source.type) {
-          case ExampleProposalSourceServiceModelType.book: {
+          case ExampleSourceServiceModelTypes.book: {
             proposalSource = new ExampleSourceBookServiceModel(
               source.author,
               source.title,
@@ -206,7 +249,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             );
             break;
           }
-          case ExampleProposalSourceServiceModelType.journal: {
+          case ExampleSourceServiceModelTypes.journal: {
             proposalSource = new ExampleSourceJournalServiceModel(
               source.author,
               source.title,
@@ -223,20 +266,15 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     ));
   }
 
-  public removeExampleProposalInService(identifier: number): void {
-    this._exampleProposals.next(this._exampleProposals.value.delete(this.getProposalIndex(identifier)));
-  }
-
   public submitExampleProposal(identifier: number): void {
-    const p = this.getProposal(identifier);
     ExampleProposalServiceImplementation.createPersistentExampleProposal(identifier).subscribe(
-      () => {
-        ExampleProposalServiceImplementation.getPersistentExampleProposal(p.id).subscribe(
+      (id) => {
+        ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(
           (data) => {
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 identifier,
-                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.review)
+                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
               )
             );
           },
@@ -255,7 +293,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 this.getProposalIndex(identifier),
-                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.display)
+                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.display)
               )
             );
           }
@@ -273,7 +311,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             this._exampleProposals.next(
               this._exampleProposals.value.update(
                 this.getProposalIndex(identifier),
-                () => this.makeProposalFromData(data, ExampleProposalPurposeServiceModelTypes.display)
+                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.display)
               )
             );
           }

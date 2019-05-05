@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {ExampleServIdService} from './example-serv-id-service.interface';
+import {ExampleServiceIdentifierService} from './example-serv-id-service.interface';
 
 @Injectable()
-export class ExampleServIdServiceImpl implements ExampleServIdService {
+export class ExampleServIdServiceImpl implements ExampleServiceIdentifierService {
 
   private id = 0;
 

@@ -7,5 +7,7 @@ export interface ExampleService {
   types: ExampleServiceModelTypesFactory;
   examples: Observable<List<ExampleServiceModel>>;
 
+  removeExampleInService(identifier: number): void;
+
   loadPersistentExamplesInService(keyword: string): void;
 }

@@ -1,11 +1,11 @@
 import {ExampleProposalPurposeServiceModelTypes} from './example-proposal-purpose.service.model.types';
-import {ExampleProposalSourceServiceModelType} from './example-proposal-source.service.model.type';
+import {ExampleSourceServiceModelTypes} from '../example_source/example-source.service.model.types';
 
 export class ExampleProposalServiceModelTypesFactory {
   public get ExampleProposalPurpose() {
     return ExampleProposalPurposeServiceModelTypes;
   }
   public get ExampleProposalSourceType() {
-    return ExampleProposalSourceServiceModelType;
+    return ExampleSourceServiceModelTypes;
   }
 }

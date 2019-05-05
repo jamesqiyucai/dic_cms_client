@@ -1,7 +1,7 @@
-import {ExampleProposalSourceServiceModelType} from './example-proposal-source.service.model.type';
+import {ExampleSourceServiceModelTypes} from './example-source.service.model.types';
 
 export class ExampleSourceBookServiceModel {
-  public readonly type: ExampleProposalSourceServiceModelType;
+  public readonly type: ExampleSourceServiceModelTypes;
   constructor(
     public author: string,
     public title: string,
@@ -10,6 +10,6 @@ export class ExampleSourceBookServiceModel {
     public publishedYear: number,
     public publishedPlace: string,
 ) {
-    this.type = ExampleProposalSourceServiceModelType.book;
+    this.type = ExampleSourceServiceModelTypes.book;
   }
 }

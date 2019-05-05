@@ -1,6 +1,6 @@
-import {ExampleProposalServIdService} from './example-proposal-serv-id-service.interface';
+import {ExampleProposalServiceIdentifierService} from './example-proposal-serv-id-service.interface';
 
-export class ExampleProposalServIdServiceImpl implements ExampleProposalServIdService {
+export class ExampleProposalServIdServiceImpl implements ExampleProposalServiceIdentifierService {
   private id = 0;
 
   public getId(): number {
