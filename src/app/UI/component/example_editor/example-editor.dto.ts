@@ -7,6 +7,6 @@ export interface ExampleEditorDto {
   keywords: List<string>;
   comment: string;
   note: string;
-  source: 
+  source:
 }
 
