@@ -1,7 +1,7 @@
 <div>
   <input
     #authorInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     autocomplete="off"
     placeholder="Author"
     [value]="author"
@@ -9,7 +9,7 @@
   >
   <input
     #newspaperTitleInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     autocomplete="off"
     placeholder="NewspaperTitle"
     [value]="title"
@@ -17,14 +17,14 @@
   >
   <input
     #passageTitleInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     placeholder="PassageTitle"
     [value]="passageTitle"
     (input)="changePassageTitle(passageTitleInput.value)"
   >
   <input
     #pageNumberInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     type="number"
     placeholder="PageNumber"
     [value]="pageNumber"
@@ -33,7 +33,7 @@
   <label>PublishingDate:
   <input
     #dateInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     type="date"
     placeholder="PublishingDate"
     [value]="publishingDate"

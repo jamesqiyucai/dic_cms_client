@@ -1,20 +1,20 @@
 <div>
   <input
     #authorInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     placeholder="Author"
     [value]="author"
     (input)="changeAuthor(authorInput.value)"
   >
   <input
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     #bookTitleInput
     placeholder="BookTitle"
     [value]="title"
     (input)="changeTitle(bookTitleInput.value)"
   >
   <input
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     #pageInput
     placeholder="PageNumber"
     type="number"
@@ -22,7 +22,7 @@
     (input)="changePage(pageInput.value)"
   >
   <input
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     #publishedPlaceInput
     placeholder="PublishedPlace"
     [value]="publishedPlace"
@@ -30,7 +30,7 @@
   >
   <input
     #publishedYearInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     type="number"
     placeholder="PublishedYear"
     [value]="publishedYear"
@@ -38,7 +38,7 @@
   >
   <input
     #initialPublishingYearInput
-    [disabled]="!editingEnabled"
+    [disabled]="!unlocked"
     type="number"
     placeholder="InitialPublishingYear"
     [value]="initialPublishingYear"

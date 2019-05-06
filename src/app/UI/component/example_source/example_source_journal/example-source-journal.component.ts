@@ -1,80 +1,50 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
 import {ExampleSourceJournalComponentModel} from '../../../model/example_source_journal/example-source-journal-component.model';
-import {EXAMPLE_PROPOSAL_SERVICE} from '../../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal.service';
 
 @Component({
   selector: 'app-example-source-newspaper',
   templateUrl: './example-source-journal.component.html',
 })
 export class ExampleSourceJournalComponent extends SourceComponent implements OnInit{
-  protected sourceInfo: ExampleSourceJournalComponentModel;
+  protected sourceData: ExampleSourceJournalComponentModel;
 
-  constructor(@Inject(EXAMPLE_PROPOSAL_SERVICE) private exampleProposalService: ExampleProposalService) {
+  constructor() {
     super();
   }
 
-  ngOnInit(): void {
-    this.sourceInfo = new ExampleSourceJournalComponentModel('', null, null, null, null);
-  }
-
-  public fillData(
-    author: string,
-    title: string,
-    page: number,
-    initialPublishingYear?: number,
-    publishedYear?: number,
-    publishedPlace?: string,
-    passageTitle?: string,
-    publishingDate?: string
-  ) {
-    this.sourceInfo = new ExampleSourceJournalComponentModel(
-      author,
-      title,
-      passageTitle,
-      `${publishingDate.slice(0, 3)}-${publishingDate.slice(4, 5)}-${publishingDate.slice(6, 7)}`,
-      page,
-    );
-  }
-
-  public deleteSource(): void {}
-
   public get passageTitle() {
-    return this.sourceInfo.passageTitle;
-  }
-
-  public changePassageTitle(newTitle: string) {
-    this.sourceInfo.passageTitle = newTitle;
+    return this.sourceData.passageTitle;
   }
 
   public get pageNumber() {
-    return this.sourceInfo.pageNumber;
-  }
-
-  public changePageNumber(newNumber: string) {
-    this.sourceInfo.page = +newNumber;
+    return this.sourceData.page;
   }
 
   public get publishingDate() {
-    return this.sourceInfo.publishingDate;
+    return this.sourceData.publishingDate;
   }
 
-  public getPublishingDateWithoutDash() {
-    return this.sourceInfo.publishingDate.replace(/-/g, '');
+  public changePassageTitle(newTitle: string) {
+    this.sourceData.passageTitle = newTitle;
+    this.dataChange.emit(this.sourceData);
   }
 
   public dateChange(newDate: string) {
-    this.sourceInfo.publishingDate = newDate;
+    this.sourceData.publishingDate = newDate;
+    this.dataChange.emit(this.sourceData);
   }
 
-  public getData() {
-    return this.exampleProposalService.getNewExampleSourceJournalServ(
-      this.author,
-      this.title,
-      this.passageTitle,
-      this.getPublishingDateWithoutDash(),
-      this.pageNumber,
-    );
+  public changePageNumber(newNumber: string) {
+    this.sourceData.page = +newNumber;
+    this.dataChange.emit(this.sourceData);
+  }
+
+  ngOnInit(): void {
+    this.sourceData = new ExampleSourceJournalComponentModel('', null, null, null, null);
+  }
+
+  public fillData(data: ExampleSourceJournalComponentModel) {
+    this.sourceData = data;
   }
 }

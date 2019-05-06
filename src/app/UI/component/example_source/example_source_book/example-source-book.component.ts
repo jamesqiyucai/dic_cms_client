@@ -1,86 +1,60 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
 import {ExampleSourceBookComponentModel} from '../../../model/example_source_book/example-source-book-component.model';
-import {EXAMPLE_PROPOSAL_SERVICE} from '../../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../../service/entity/example_proposal/example-proposal.service';
 
 @Component({
   selector: 'app-example-source-paperbook',
   templateUrl: './example-source-book.component.html'
 })
 export class ExampleSourceBookComponent extends SourceComponent implements OnInit {
-  protected sourceInfo: ExampleSourceBookComponentModel;
+  protected sourceData: ExampleSourceBookComponentModel;
 
-  constructor(@Inject(EXAMPLE_PROPOSAL_SERVICE) private exampleProposalService: ExampleProposalService) {
+  constructor() {
     super();
   }
 
-  public ngOnInit() {
-    this.sourceInfo = new ExampleSourceBookComponentModel('', '', null, null, null, '');
-  }
-
-  public deleteSource(): void {}
-
   public get page() {
-    return this.sourceInfo.page;
-  }
-
-  public changePage(newPage: string) {
-    this.sourceInfo.page = Number(newPage);
+    return this.sourceData.page;
   }
 
   public get initialPublishingYear() {
-    return this.sourceInfo.initialPublishingYear;
-  }
-
-  public changeInitialPublishingYear(newYear: string) {
-    this.sourceInfo.initialPublishingYear = Number(newYear);
+    return this.sourceData.initialPublishingYear;
   }
 
   public get publishedYear() {
-    return this.sourceInfo.publishedYear;
-  }
-
-  public changePublishedYear(newYear: string) {
-    this.sourceInfo.publishedYear = Number(newYear);
+    return this.sourceData.publishedYear;
   }
 
   public get publishedPlace() {
-    return this.sourceInfo.publishedPlace;
+    return this.sourceData.publishedPlace;
+  }
+
+  public changePage(newPage: string) {
+    this.sourceData.page = Number(newPage);
+    this.dataChange.emit(this.sourceData);
+  }
+
+  public changeInitialPublishingYear(newYear: string) {
+    this.sourceData.initialPublishingYear = Number(newYear);
+    this.dataChange.emit(this.sourceData);
+  }
+
+  public changePublishedYear(newYear: string) {
+    this.sourceData.publishedYear = Number(newYear);
+    this.dataChange.emit(this.sourceData);
   }
 
   public changePublishedPlace(newPlace: string) {
-    this.sourceInfo.publishedPlace = newPlace;
+    this.sourceData.publishedPlace = newPlace;
+    this.dataChange.emit(this.sourceData);
   }
 
-  public fillData(
-    author: string,
-    title: string,
-    page: number,
-    initialPublishingYear?: number,
-    publishedYear?: number,
-    publishedPlace?: string,
-    passageTitle?: string,
-    publishingDate?: string
-  ) {
-    this.sourceInfo = new ExampleSourceBookComponentModel(
-      author,
-      title,
-      page,
-      initialPublishingYear,
-      publishedYear,
-      publishedPlace
-    );
+  public ngOnInit() {
+    this.sourceData = new ExampleSourceBookComponentModel('', '', null, null, null, '');
   }
 
-  public getData() {
-    return this.exampleProposalService.getNewExampleSourceBookServ(
-      this.author,
-      this.title,
-      this.page,
-      this.initialPublishingYear,
-      this.publishedYear,
-      this.publishedPlace
-    );
+  public fillData(data: ExampleSourceBookComponentModel) {
+    this.sourceData = data;
   }
+
 }

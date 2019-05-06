@@ -6,7 +6,7 @@ export class ExampleSourceJournalComponentModel extends AbstractSource {
     title: string,
     private _passageTitle: string,
     private _publishingDate: string,
-    private _pageNumber: number
+    private _page: number
   ) {
     super('journal', author, title);
   }
@@ -19,12 +19,12 @@ export class ExampleSourceJournalComponentModel extends AbstractSource {
     this._passageTitle = newPassageTitle;
   }
 
-  public get pageNumber() {
-    return this._pageNumber;
+  public get page() {
+    return this._page;
   }
 
-  public set pageNumber(newNumber: number) {
-    this._pageNumber = newNumber;
+  public set page(newNumber: number) {
+    this._page = newNumber;
   }
 
   public get publishingDate() {

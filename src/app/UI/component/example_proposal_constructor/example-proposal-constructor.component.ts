@@ -10,7 +10,8 @@ import {ExampleProposalService} from '../../../service/entity/example_proposal/e
   selector: 'app-example-proposal-constructor',
   template: `
     <div>
-      <app-example-editor [editingEnabled]="true"></app-example-editor>
+      <app-example-editor></app-example-editor>
+      <button (click)="refresh()">New</button>
       <button (click)="createPersistentExampleProposal()">Submit</button>
     </div>
   `
