@@ -1,29 +1,32 @@
 import {AbstractSource} from '../../../model/base_models/abstract-source.class';
-import {ExampleSourceBookComponentModel} from '../../../model/example_source_book/example-source-book-component.model';
-import {ExampleSourceJournalComponentModel} from '../../../model/example_source_journal/example-source-journal-component.model';
 import {EventEmitter} from '@angular/core';
+import {ExampleSourceBookComponentDto} from '../example_source_book/example-source-book.component.dto';
+import {ExampleSourceJournalComponentDto} from '../example_source_journal/example-source-journal.component.dto';
 
 export abstract class SourceComponent {
-  public readonly dataChange: EventEmitter<ExampleSourceBookComponentModel | ExampleSourceJournalComponentModel>;
+  public readonly dataChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
   protected _unlocked: boolean;
-  protected sourceData: AbstractSource;
+  protected sourceModel: AbstractSource;
 
   protected constructor() {
     this.dataChange = new EventEmitter();
+    this._unlocked = true;
   }
 
-  abstract fillData(data: ExampleSourceBookComponentModel | ExampleSourceJournalComponentModel): void;
+  abstract getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+
+  abstract fillData(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
 
   public get unlocked() {
     return this._unlocked;
   }
 
   public get author() {
-    return this.sourceData.author;
+    return this.sourceModel.author;
   }
 
   public get title() {
-    return this.sourceData.title;
+    return this.sourceModel.title;
   }
 
   public unlock() {
@@ -35,12 +38,12 @@ export abstract class SourceComponent {
   }
 
   public changeAuthor(newAuthor: string) {
-    this.sourceData.author = newAuthor;
-    this.dataChange.emit(<ExampleSourceBookComponentModel | ExampleSourceJournalComponentModel>this.sourceData);
+    this.sourceModel.author = newAuthor;
+    this.dataChange.emit(<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>this.getDto());
   }
 
   public changeTitle(newTitle: string) {
-    this.sourceData.title = newTitle;
-    this.dataChange.emit(<ExampleSourceBookComponentModel | ExampleSourceJournalComponentModel>this.sourceData);
+    this.sourceModel.title = newTitle;
+    this.dataChange.emit(<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>this.getDto());
   }
 }

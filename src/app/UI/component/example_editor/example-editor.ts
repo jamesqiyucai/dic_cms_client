@@ -1,9 +1,10 @@
 import {StoryComp} from '../../model/story/story-comp.class';
-import {ExampleSourceBookComponentModel} from '../../model/example_source_book/example-source-book-component.model';
-import {ExampleSourceJournalComponentModel} from '../../model/example_source_journal/example-source-journal-component.model';
 import {List} from 'immutable';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {EventEmitter} from '@angular/core';
+import {ExampleEditorDto} from './example-editor.dto';
+import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
+import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 
 export interface ExampleEditor {
   text: string;
@@ -13,7 +14,7 @@ export interface ExampleEditor {
   comment: string;
   unlocked: boolean;
 
-  exampleChange: EventEmitter<>;
+  exampleChange: EventEmitter<ExampleEditorDto>;
 
   onTextModify(newText: string): void;
   onItalicizedRangesChange(newRanges: Array<[number, number]>): void;
@@ -28,14 +29,15 @@ export interface ExampleEditor {
 
   fillData(
     exampleId: number,
-    text: string,
-    italic: Array<[number, number]>,
-    keywords: Array<string>,
-    translations: Array<string>,
-    stories: Array<StoryComp>,
+    version: number,
+    italicizedText: string,
+    italic: List<[number, number]>,
+    keywords: List<string>,
+    translations: List<string>,
+    stories: List<StoryComp>,
     note: string,
     comment: string,
-    source: ExampleSourceBookComponentModel & ExampleSourceJournalComponentModel
+    source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto
   ): void;
 
   lock(): void;

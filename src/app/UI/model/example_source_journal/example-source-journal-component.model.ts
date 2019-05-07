@@ -1,4 +1,5 @@
 import {AbstractSource} from '../base_models/abstract-source.class';
+import {ExampleSourceComponentTypes} from '../../component/example_source/example-source.component.types';
 
 export class ExampleSourceJournalComponentModel extends AbstractSource {
   constructor(
@@ -8,7 +9,7 @@ export class ExampleSourceJournalComponentModel extends AbstractSource {
     private _publishingDate: string,
     private _page: number
   ) {
-    super('journal', author, title);
+    super(ExampleSourceComponentTypes.journal, author, title);
   }
 
   public get passageTitle() {

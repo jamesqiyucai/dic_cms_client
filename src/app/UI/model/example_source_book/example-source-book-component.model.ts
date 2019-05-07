@@ -1,4 +1,5 @@
 import {AbstractSource} from '../base_models/abstract-source.class';
+import {ExampleSourceComponentTypes} from '../../component/example_source/example-source.component.types';
 
 export class ExampleSourceBookComponentModel extends AbstractSource {
   constructor(
@@ -9,7 +10,7 @@ export class ExampleSourceBookComponentModel extends AbstractSource {
     private _publishedYear: number,
     private _publishedPlace: string
   ) {
-    super('book', author, title);
+    super(ExampleSourceComponentTypes.book, author, title);
   }
 
   public get page() {
