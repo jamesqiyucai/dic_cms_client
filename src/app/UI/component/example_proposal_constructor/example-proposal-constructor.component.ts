@@ -16,7 +16,7 @@ import {ExampleSourceComponentTypes} from '../example_source/example-source.comp
     <div>
       <app-example-editor (exampleChange)="onExampleChange($event)"></app-example-editor>
       <button (click)="refresh()">New</button>
-      <button (click)="submit()" [disabled]="!canSubmit">Submit</button>
+      <button (click)="submit()" [disabled]="disabled">Submit</button>
     </div>
   `
 })
@@ -35,7 +35,7 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
 
   private subscription;
 
-  private _canSubmit: boolean;
+  private _canSubmit = true;
 
   constructor(@Inject(EXAMPLE_PROPOSAL_SERVICE) private exampleProposalService: ExampleProposalService) {}
 
@@ -214,27 +214,12 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
     );
   }
 
-  // private dataEqualWithLocalState(data: ExampleProposalConstructorComponentDto): boolean {
-  //   const identifierE = data.identifier === this.exampleProposalIdentifier;
-  //   const exampleIdE = data.id === this.exampleId;
-  //   const exampleVersionE = data.version === this.exampleVersion;
-  //   const textE = data.text === this.text;
-  //   const italicsE = this.italics.equals(data.format.italics);
-  //   const translationsE = this.translations.equals(data.translations);
-  //   const keywordsE = this.keywords.equals(data.keywords);
-  //   const noteE = this.note === data.note;
-  //   const commentE = this.comment === data.comment;
-  //   const sourceE = _.isEqual(this.source, data.source);
-  //
-  //   return identifierE && exampleIdE && exampleVersionE && textE && italicsE && translationsE && keywordsE && noteE && commentE && sourceE;
-  // }
-
   private lock() {
     this.exampleEditor.lock();
   }
 
-  public get canSubmit() {
-    return this._canSubmit;
+  public get disabled() {
+    return !this._canSubmit;
   }
 
   public onExampleChange(data: ExampleEditorComponentDto) {
@@ -268,6 +253,7 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   }
 
   public refresh() {
+    this._canSubmit = true;
     this.init();
   }
 
@@ -353,52 +339,25 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
 
 
 
-    this._canSubmit = true;
 
     this.updateExampleEditor();
     console.log('tried to update ee');
 
     this.exampleEditor.unlock();
 
-    // let source;
-    // switch (this.source.type) {
-    //   case ExampleSourceComponentTypes.book: {
-    //     source = {
-    //       type: this.exampleProposalService.types.ExampleProposalSourceType.book,
-    //       author: this.source.author,
-    //       title: this.source.title,
-    //       page: this.source.page,
-    //       initialPublishingYear: (this.source as ExampleSourceBookComponentDto).initialPublishingYear,
-    //       publishedYear: (this.source as ExampleSourceBookComponentDto).publishedYear,
-    //       publishedPlace: (this.source as ExampleSourceBookComponentDto).publishedPlace,
-    //     };
-    //     break;
-    //   }
-    //   case ExampleSourceComponentTypes.journal: {
-    //     source = {
-    //       type: this.exampleProposalService.types.ExampleProposalSourceType.journal,
-    //       author: this.source.author,
-    //       title: this.source.title,
-    //       page: this.source.page,
-    //       passageTitle: (this.source as ExampleSourceJournalComponentDto).passageTitle,
-    //       publishingDate: (this.source as ExampleSourceJournalComponentDto).publishingDate,
-    //     };
-    //     break;
-    //   }
-    // }
   }
 
   ngOnInit(): void {
     console.log('constructor init');
-    this.init();
   }
 
   ngAfterViewChecked(): void {
     console.log('view init');
-    // this.init();
+    this.init();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
 }

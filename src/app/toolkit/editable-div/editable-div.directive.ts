@@ -1,5 +1,6 @@
 import {Directive, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, Renderer2} from '@angular/core';
 import {GetItalicizedRanges} from './get-italicized-ranges.function';
+import {List} from 'immutable';
 
 @Directive({
   selector: '[appEditable]'
@@ -8,7 +9,7 @@ export class EditableDivDirective implements OnChanges, OnInit {
   @Input() enabled: boolean;
   @Input() text = '';
   @Output() valueChange = new EventEmitter<string>();
-  @Output() italicizedRanges = new EventEmitter<Array<[number, number]>>();
+  @Output() italicizedRanges = new EventEmitter<List<[number, number]>>();
   constructor(private el: ElementRef, private renderer: Renderer2) {
   }
 
@@ -45,7 +46,7 @@ export class EditableDivDirective implements OnChanges, OnInit {
       this.renderer.listen(this.el.nativeElement, 'blur', () => {
         this.el.nativeElement.innerHTML = this.el.nativeElement.innerHTML.replace(/&nbsp;/g, '');
         this.valueChange.emit(this.el.nativeElement.innerHTML);
-        this.italicizedRanges.emit(GetItalicizedRanges(this.el.nativeElement));
+        this.italicizedRanges.emit(List(GetItalicizedRanges(this.el.nativeElement)));
       });
     }
   }
