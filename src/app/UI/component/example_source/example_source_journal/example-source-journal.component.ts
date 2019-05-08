@@ -10,44 +10,48 @@ import {ExampleSourceBookComponentDto} from '../example_source_book/example-sour
   templateUrl: './example-source-journal.component.html',
 })
 export class ExampleSourceJournalComponent extends SourceComponent implements OnInit {
-  protected sourceModel: ExampleSourceJournalComponentModel;
+  protected _passageTitle: string;
+  protected _publishingDate: string;
 
   constructor() {
     super();
     this.sourceModel = new ExampleSourceJournalComponentModel('', null, null, null, null);
   }
 
-  public get passageTitle() {
-    return this.sourceModel.passageTitle;
+  private get passageTitle() {
+    return this._passageTitle;
   }
 
-  public get page() {
-    return this.sourceModel.page;
+  private set passageTitle(newPassageTitle: string) {
+    if (this.passageTitle !== newPassageTitle) {
+      this._passageTitle = newPassageTitle;
+      this.fireSourceDataChangeEvent();
+    }
   }
 
-  public get publishingDate() {
-    return this.sourceModel.publishingDate;
+  private get publishingDate() {
+    return this._publishingDate;
   }
 
-  public changePassageTitle(newTitle: string) {
-    this.sourceModel.passageTitle = newTitle;
-    this.dataChange.emit(this.getDto());
+  private set publishingDate(newPublishingDate: string) {
+    if (this.publishingDate !== newPublishingDate) {
+      this._publishingDate = newPublishingDate;
+      this.fireSourceDataChangeEvent();
+    }
   }
 
-  public dateChange(newDate: string) {
-    this.sourceModel.publishingDate = newDate;
-    this.dataChange.emit(this.getDto());
+  public onPassageTitleChange(newTitle: string) {
+    this.passageTitle = newTitle;
   }
 
-  public changePageNumber(newNumber: string) {
-    this.sourceModel.page = +newNumber;
-    this.dataChange.emit(this.getDto());
+  public onPublishingDateChange(newDate: string) {
+    this.publishingDate = newDate;
   }
 
   ngOnInit(): void {
   }
 
-  public fillData(data: ExampleSourceJournalComponentDto) {
+  public update(data: ExampleSourceJournalComponentDto) {
     this.sourceModel.author = data.author;
     this.sourceModel.title = data.title;
     this.sourceModel.page = data.page;

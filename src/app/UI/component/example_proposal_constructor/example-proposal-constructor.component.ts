@@ -159,7 +159,7 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   }
 
   private updateExampleEditor() {
-    this.exampleEditor.fillData(
+    this.exampleEditor.update(
       this.exampleId,
       this.exampleVersion,
       this.text,

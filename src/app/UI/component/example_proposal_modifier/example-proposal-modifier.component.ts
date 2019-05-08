@@ -37,7 +37,7 @@
 //
 //   public initializeProposalConstructor() {
 //     this.exampleData = this.exampleEditor.getData();
-//     this.exampleProposalConstructor.fillData(
+//     this.exampleProposalConstructor.update(
 //       this.exampleData.exampleId,
 //       this.exampleData.text,
 //       this.exampleData.italic,

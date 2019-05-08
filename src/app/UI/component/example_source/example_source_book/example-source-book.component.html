@@ -4,14 +4,14 @@
     [disabled]="!unlocked"
     placeholder="Author"
     [value]="author"
-    (input)="changeAuthor(authorInput.value)"
+    (input)="onAuthorChange(authorInput.value)"
   >
   <input
     [disabled]="!unlocked"
     #bookTitleInput
     placeholder="BookTitle"
     [value]="title"
-    (input)="changeTitle(bookTitleInput.value)"
+    (input)="onTitleChange(bookTitleInput.value)"
   >
   <input
     [disabled]="!unlocked"
@@ -19,7 +19,7 @@
     placeholder="PageNumber"
     type="number"
     [value]="page"
-    (input)="changePage(pageInput.value)"
+    (input)="onPageChange(pageInput.value)"
   >
   <input
     [disabled]="!unlocked"

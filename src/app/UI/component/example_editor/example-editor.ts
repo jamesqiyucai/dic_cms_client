@@ -27,7 +27,7 @@
 //   onSourceChoose(sourceType: string): void;
 //   onTrashDrop(event: CdkDragDrop<any>): void;
 //
-//   fillData(
+//   update(
 //     exampleId: number,
 //     version: number,
 //     italicizedText: string,

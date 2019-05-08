@@ -10,15 +10,14 @@ import {ExampleSourceJournalComponentDto} from '../example_source_journal/exampl
   templateUrl: './example-source-book.component.html'
 })
 export class ExampleSourceBookComponent extends SourceComponent implements OnInit {
-  protected sourceModel: ExampleSourceBookComponentModel;
+  protected _initialPublishingYear: number;
+  protected _publishedYear: number;
+  protected _publishedPlace: string;
+
 
   constructor() {
     super();
     this.sourceModel = new ExampleSourceBookComponentModel('', '', null, null, null, '');
-  }
-
-  public get page() {
-    return this.sourceModel.page;
   }
 
   public get initialPublishingYear() {
@@ -31,11 +30,6 @@ export class ExampleSourceBookComponent extends SourceComponent implements OnIni
 
   public get publishedPlace() {
     return this.sourceModel.publishedPlace;
-  }
-
-  public changePage(newPage: string) {
-    this.sourceModel.page = Number(newPage);
-    this.dataChange.emit(this.getDto());
   }
 
   public changeInitialPublishingYear(newYear: string) {
@@ -56,7 +50,7 @@ export class ExampleSourceBookComponent extends SourceComponent implements OnIni
   public ngOnInit() {
   }
 
-  public fillData(data: ExampleSourceBookComponentDto) {
+  public update(data: ExampleSourceBookComponentDto) {
     this.sourceModel.author = data.author;
     this.sourceModel.title = data.title;
     this.sourceModel.page = data.page;
