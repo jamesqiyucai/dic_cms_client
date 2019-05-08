@@ -5,7 +5,7 @@
     autocomplete="off"
     placeholder="Author"
     [value]="author"
-    (input)="changeAuthor(authorInput.value)"
+    (blur)="changeAuthor(authorInput.value)"
   >
   <input
     #newspaperTitleInput
@@ -13,14 +13,14 @@
     autocomplete="off"
     placeholder="NewspaperTitle"
     [value]="title"
-    (input)="changeTitle(newspaperTitleInput.value)"
+    (blur)="changeTitle(newspaperTitleInput.value)"
   >
   <input
     #passageTitleInput
     [disabled]="!unlocked"
     placeholder="PassageTitle"
     [value]="passageTitle"
-    (input)="changePassageTitle(passageTitleInput.value)"
+    (blur)="changePassageTitle(passageTitleInput.value)"
   >
   <input
     #pageNumberInput
@@ -28,7 +28,7 @@
     type="number"
     placeholder="PageNumber"
     [value]="page"
-    (input)="changePageNumber(pageNumberInput.value)"
+    (blur)="changePageNumber(pageNumberInput.value)"
   >
   <label>PublishingDate:
   <input
@@ -37,6 +37,6 @@
     type="date"
     placeholder="PublishingDate"
     [value]="publishingDate"
-    (input)="dateChange(dateInput.value)"
+    (blur)="dateChange(dateInput.value)"
   ></label>
 </div>
