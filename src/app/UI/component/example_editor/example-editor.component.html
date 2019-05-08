@@ -56,7 +56,7 @@
     </label>
   </div>
   <select #sourceSelect [disabled]="!unlocked" (input)="onSourceChoose(sourceSelect.value)">
-    <option [value]="null" selected>-</option>
+    <option value='' [selected]="sourceNull">-</option>
     <option value="journal">Journal</option>
     <option value="book">Book</option>
   </select>

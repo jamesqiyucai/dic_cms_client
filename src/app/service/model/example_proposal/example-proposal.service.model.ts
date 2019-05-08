@@ -11,11 +11,21 @@ export class ExampleProposalServiceModel {
     italic: Array<[number, number]>
   };
 
-  public source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
+  public source: {
+    type: ExampleSourceServiceModelTypes,
+    author: string,
+    title: string,
+    page: number,
+    passageTitle?: string,
+    publishingDate?: string,
+    initialPublishingYear?: number,
+    publishedYear?: number,
+    publishedPlace?: string,
+  };
 
   constructor(
     public readonly identifier: number,
-    public readonly purpose: ExampleProposalPurposeServiceModelTypes,
+    public purpose: ExampleProposalPurposeServiceModelTypes,
     public readonly id: number,
     public readonly initiator: number,
     public status: string,
@@ -70,6 +80,8 @@ export class ExampleProposalServiceModel {
           break;
         }
       }
+    } else {
+      this.source = source;
     }
 
     this.exampleProposalService = exampleProposalService;

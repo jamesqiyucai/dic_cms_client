@@ -1,13 +1,13 @@
-<div>
-  <div>
-    <label>Keyword: <input #keywordInput (input)="getExamples(keywordInput.value)"></label>
-    <div>
-      <div *ngFor="let option of optionsList;index as i" (click)="loadExample(idList[i])">{{optionsList[i] | async}}</div>
-    </div>
-    <app-example-editor [editingEnabled]="false"></app-example-editor>
-    <button (click)="initializeProposalConstructor()">Make Proposal</button>
-  </div>
-  <div *ngIf="proposalLoaded">
-    <app-example-proposal-constructor (proposalCreated)="refresh()"></app-example-proposal-constructor>
-  </div>
-</div>
+<!--<div>-->
+<!--  <div>-->
+<!--    <label>Keyword: <input #keywordInput (input)="getExamples(keywordInput.value)"></label>-->
+<!--    <div>-->
+<!--      <div *ngFor="let option of optionsList;index as i" (click)="loadExample(idList[i])">{{optionsList[i] | async}}</div>-->
+<!--    </div>-->
+<!--    <app-example-editor [editingEnabled]="false"></app-example-editor>-->
+<!--    <button (click)="initializeProposalConstructor()">Make Proposal</button>-->
+<!--  </div>-->
+<!--  <div *ngIf="proposalLoaded">-->
+<!--    <app-example-proposal-constructor (proposalCreated)="refresh()"></app-example-proposal-constructor>-->
+<!--  </div>-->
+<!--</div>-->

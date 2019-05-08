@@ -1,12 +1,12 @@
-<div>
-  <button (click)="getPendingProposals()">Check</button>
-  <div>
-    <div
-      *ngFor="let option of pendingExampleProposalTexts;index as i"
-      (click)="loadExampleProposal(pendingExampleProposalIds[i])"
-    >Proposal:{{option | async}}</div>
-  </div>
-  <app-example-editor [editingEnabled]="false"></app-example-editor>
-  <button (click)="approve()">Approve</button>
-  <button (click)="reject()">Reject</button>
-</div>
+<!--<div>-->
+<!--  <button (click)="getPendingProposals()">Check</button>-->
+<!--  <div>-->
+<!--    <div-->
+<!--      *ngFor="let option of pendingExampleProposalTexts;index as i"-->
+<!--      (click)="loadExampleProposal(pendingExampleProposalIds[i])"-->
+<!--    >Proposal:{{option | async}}</div>-->
+<!--  </div>-->
+<!--  <app-example-editor [editingEnabled]="false"></app-example-editor>-->
+<!--  <button (click)="approve()">Approve</button>-->
+<!--  <button (click)="reject()">Reject</button>-->
+<!--</div>-->

@@ -30,7 +30,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   private static createPersistentExampleProposal(identifier: number): Observable<number> {
-    return undefined;
+    return new Observable((observer) => {observer.next(1); });
   }
 
   private static getPersistentExampleProposal(id: number): Observable<ExampleProposalData> {
@@ -47,8 +47,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     private http: HttpClient
   ) {
     this.types = new ExampleProposalServiceModelTypesFactory();
-    this.exampleProposals = this._exampleProposals.asObservable();
     this.init();
+    this.exampleProposals = this._exampleProposals.asObservable();
   }
 
   private init() {
@@ -149,8 +149,6 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public createExampleProposalInService(
-    purpose: ExampleProposalPurposeServiceModelTypes,
-    initiator: number,
     exampleId: number,
     version: number,
     text: string,
@@ -172,8 +170,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     }
     ): number {
     const newProposal = this.makeModel(
-      initiator,
-      purpose,
+      this.userService.getUser(),
+      ExampleProposalPurposeServiceModelTypes.submit,
       exampleId,
       version,
       text,
@@ -236,30 +234,40 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         proposal.keywords = keywords;
         proposal.note = note;
         proposal.comment = comment;
+
+
         let proposalSource;
-        switch (source.type) {
-          case ExampleSourceServiceModelTypes.book: {
-            proposalSource = new ExampleSourceBookServiceModel(
-              source.author,
-              source.title,
-              source.page,
-              source.initialPublishingYear,
-              source.publishedYear,
-              source.publishedPlace
-            );
-            break;
+
+        if (source) {
+          switch (source.type) {
+            case ExampleSourceServiceModelTypes.book: {
+              proposalSource = new ExampleSourceBookServiceModel(
+                source.author,
+                source.title,
+                source.page,
+                source.initialPublishingYear,
+                source.publishedYear,
+                source.publishedPlace
+              );
+              break;
+            }
+            case ExampleSourceServiceModelTypes.journal: {
+              proposalSource = new ExampleSourceJournalServiceModel(
+                source.author,
+                source.title,
+                source.page,
+                source.publishingDate,
+                source.passageTitle
+              );
+              break;
+            }
           }
-          case ExampleSourceServiceModelTypes.journal: {
-            proposalSource = new ExampleSourceJournalServiceModel(
-              source.author,
-              source.title,
-              source.page,
-              source.publishingDate,
-              source.passageTitle
-            );
-            break;
-          }
+        } else {
+          proposalSource = null;
         }
+
+
+
         proposal.source = proposalSource;
         return proposal;
       },
@@ -269,17 +277,29 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   public submitExampleProposal(identifier: number): void {
     ExampleProposalServiceImplementation.createPersistentExampleProposal(identifier).subscribe(
       (id) => {
-        ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(
-          (data) => {
-            this._exampleProposals.next(
-              this._exampleProposals.value.update(
-                identifier,
-                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
-              )
-            );
-          },
-          () => {},
+
+        this._exampleProposals.next(
+          this._exampleProposals.value.update(
+            this.getProposalIndex(identifier),
+            (m) => {
+              const temp = m;
+              temp.purpose = ExampleProposalPurposeServiceModelTypes.review;
+              return temp;
+            }
+          )
         );
+
+        // ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(
+        //   (data) => {
+        //     this._exampleProposals.next(
+        //       this._exampleProposals.value.update(
+        //         identifier,
+        //         () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
+        //       )
+        //     );
+        //   },
+        //   () => {},
+        // );
       },
       () => {},
     );

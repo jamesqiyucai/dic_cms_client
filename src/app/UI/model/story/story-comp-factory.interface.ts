@@ -1,5 +1,5 @@
-import {StoryComp} from './story-comp.class';
-
-export interface StoryCompFactory {
-  createNewStory(): StoryComp;
-}
+// import {StoryComp} from './story-comp.class';
+//
+// export interface StoryCompFactory {
+//   createNewStory(): StoryComp;
+// }

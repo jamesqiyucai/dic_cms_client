@@ -14,6 +14,7 @@ export class ExampleSourceBookComponent extends SourceComponent implements OnIni
 
   constructor() {
     super();
+    this.sourceModel = new ExampleSourceBookComponentModel('', '', null, null, null, '');
   }
 
   public get page() {
@@ -53,7 +54,6 @@ export class ExampleSourceBookComponent extends SourceComponent implements OnIni
   }
 
   public ngOnInit() {
-    this.sourceModel = new ExampleSourceBookComponentModel('', '', null, null, null, '');
   }
 
   public fillData(data: ExampleSourceBookComponentDto) {

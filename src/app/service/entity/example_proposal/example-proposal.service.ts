@@ -10,8 +10,6 @@ export interface ExampleProposalService {
   exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
   createExampleProposalInService(
-    purpose: ExampleProposalPurposeServiceModelTypes,
-    initiator: number,
     exampleId: number,
     version: number,
     text: string,

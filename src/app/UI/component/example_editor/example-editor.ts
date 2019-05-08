@@ -2,7 +2,7 @@ import {StoryComp} from '../../model/story/story-comp.class';
 import {List} from 'immutable';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {EventEmitter} from '@angular/core';
-import {ExampleEditorDto} from './example-editor.dto';
+import {ExampleEditorComponentDto} from './example-editor.component.dto';
 import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 
@@ -14,7 +14,7 @@ export interface ExampleEditor {
   comment: string;
   unlocked: boolean;
 
-  exampleChange: EventEmitter<ExampleEditorDto>;
+  exampleChange: EventEmitter<ExampleEditorComponentDto>;
 
   onTextModify(newText: string): void;
   onItalicizedRangesChange(newRanges: Array<[number, number]>): void;

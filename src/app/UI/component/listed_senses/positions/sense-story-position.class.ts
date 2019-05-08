@@ -1,3 +1,3 @@
-export class SenseStoryPosition {
-  constructor(public senseIndex: number, public storyIndex: number) {}
-}
+// export class SenseStoryPosition {
+//   constructor(public senseIndex: number, public storyIndex: number) {}
+// }

@@ -14,6 +14,7 @@ export class ExampleSourceJournalComponent extends SourceComponent implements On
 
   constructor() {
     super();
+    this.sourceModel = new ExampleSourceJournalComponentModel('', null, null, null, null);
   }
 
   public get passageTitle() {
@@ -44,7 +45,6 @@ export class ExampleSourceJournalComponent extends SourceComponent implements On
   }
 
   ngOnInit(): void {
-    this.sourceModel = new ExampleSourceJournalComponentModel('', null, null, null, null);
   }
 
   public fillData(data: ExampleSourceJournalComponentDto) {
