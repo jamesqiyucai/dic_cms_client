@@ -5,8 +5,8 @@ import {ExampleSourceComponentTypes} from '../example-source.component.types';
 
 export abstract class SourceComponent {
   protected _type: ExampleSourceComponentTypes;
-  protected _author: string;
-  protected _title: string;
+  protected _author = null;
+  protected _title = null;
   protected _page: number;
 
 
@@ -62,7 +62,7 @@ export abstract class SourceComponent {
 
   abstract update(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
 
-  private get unlocked() {
+  protected get unlocked() {
     return this._unlocked;
   }
 

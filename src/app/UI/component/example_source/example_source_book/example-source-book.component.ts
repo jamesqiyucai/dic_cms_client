@@ -10,7 +10,7 @@ import {ExampleSourceComponentTypes} from '../example-source.component.types';
 export class ExampleSourceBookComponent extends SourceComponent {
   protected _initialPublishingYear: number;
   protected _publishedYear: number;
-  protected _publishedPlace: string;
+  protected _publishedPlace = null;
 
 
   constructor() {

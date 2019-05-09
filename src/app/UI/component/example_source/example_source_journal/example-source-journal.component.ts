@@ -8,8 +8,8 @@ import {ExampleSourceComponentTypes} from '../example-source.component.types';
   templateUrl: './example-source-journal.component.html',
 })
 export class ExampleSourceJournalComponent extends SourceComponent {
-  protected _passageTitle: string;
-  protected _publishingDate: string;
+  protected _passageTitle = null;
+  protected _publishingDate = null;
 
   constructor() {
     super();

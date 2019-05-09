@@ -2,7 +2,6 @@ export function GetItalicizedRanges(root: HTMLElement): Array<[number, number]> 
   const range = [];
   let counter = 0;
   const children = root.childNodes;
-  console.log(children)
   children.forEach(child => {
     if (child.nodeName === '#text') {
       counter += child.nodeValue.length;
