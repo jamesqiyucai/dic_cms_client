@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, EventEmitter, Inject, Output, ViewChild} from '@angular/core';
 import {List} from 'immutable';
 import {SourceComponent} from '../example_source/abstract_source/source.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -32,17 +32,30 @@ export class ExampleEditorComponent {
 
   @ViewChild(SourceDirective) private sourceHost: SourceDirective;
   public unlocked: boolean;
-  @Output() public readonly exampleChange: EventEmitter<ExampleEditorComponentDto>;
 
-  // private static getNormalizedText(text: string) {
-  //   return text.replace(/<i>/g, '').replace(/<\/i>/g, '');
-  // }
-  //
+  @Output() public readonly idChange: EventEmitter<number>;
+  @Output() public readonly versionChange: EventEmitter<number>;
+  @Output() public readonly textChange: EventEmitter<string>;
+  @Output() public readonly italicizedTextRangesChange: EventEmitter<List<[number, number]>>;
+  @Output() public readonly translationsChange: EventEmitter<List<string>>;
+  @Output() public readonly keywordsChange: EventEmitter<List<string>>;
+  @Output() public readonly noteChange: EventEmitter<string>;
+  @Output() public readonly commentChange: EventEmitter<string>;
+  @Output() public readonly sourceChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
+
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     @Inject(USER_SERVICE) private userService: UserService,
   ) {
-    this.exampleChange = new EventEmitter();
+    this.idChange = new EventEmitter();
+    this.versionChange = new EventEmitter();
+    this.textChange = new EventEmitter();
+    this.italicizedTextRangesChange = new EventEmitter();
+    this.translationsChange = new EventEmitter();
+    this.keywordsChange = new EventEmitter();
+    this.noteChange = new EventEmitter();
+    this.commentChange = new EventEmitter();
+    this.sourceChange = new EventEmitter();
   }
 
 
@@ -55,7 +68,7 @@ export class ExampleEditorComponent {
   private set exampleId(newId: number) {
     if (this.exampleId !== newId) {
       this._exampleId = newId;
-      this.fireExampleUpdatedEvent();
+      this.idChange.emit(this.exampleId);
     }
   }
 
@@ -66,7 +79,7 @@ export class ExampleEditorComponent {
   private set exampleVersion(newVersion: number) {
     if (this.exampleVersion !== newVersion) {
       this._exampleVersion = newVersion;
-      this.fireExampleUpdatedEvent();
+      this.versionChange.emit(this.exampleVersion);
     }
   }
 
@@ -81,7 +94,7 @@ export class ExampleEditorComponent {
   private set italicizedExampleText(newText: string) {
     if (this.italicizedExampleText !== newText) {
       this._italicizedExampleText = newText;
-      this.fireExampleUpdatedEvent();
+      this.textChange.emit(this.exampleText);
     }
   }
 
@@ -92,7 +105,7 @@ export class ExampleEditorComponent {
   private set italicizedTextRanges(newRanges: List<[number, number]>) {
     if (!this.italicizedTextRanges.equals(newRanges)) {
       this._italicizedTextRanges = newRanges.toArray();
-      this.fireExampleUpdatedEvent();
+      this.italicizedTextRangesChange.emit(this.italicizedTextRanges);
     }
   }
 
@@ -103,7 +116,7 @@ export class ExampleEditorComponent {
   private set translations(newTranslations: List<string>) {
     if (!this.translations.equals(newTranslations)) {
       this._translations = newTranslations.toArray();
-      this.fireExampleUpdatedEvent();
+      this.translationsChange.emit(this.translations);
     }
   }
 
@@ -114,7 +127,7 @@ export class ExampleEditorComponent {
   private set appliedWords(newWords: List<string>) {
     if (!this.appliedWords.equals(newWords)) {
       this._appliedWords = newWords.toArray();
-      this.fireExampleUpdatedEvent();
+      this.keywordsChange.emit(this.appliedWords);
     }
   }
 
@@ -125,7 +138,7 @@ export class ExampleEditorComponent {
   private set note(newNote: string) {
     if (this.note !== newNote) {
       this._note = newNote;
-      this.fireExampleUpdatedEvent();
+      this.noteChange.emit(this.note);
     }
   }
 
@@ -136,7 +149,7 @@ export class ExampleEditorComponent {
   private set comment(newComment: string) {
     if (this.comment !== newComment) {
       this._comment = newComment;
-      this.fireExampleUpdatedEvent();
+      this.commentChange.emit(this.comment);
     }
   }
 
@@ -156,14 +169,14 @@ export class ExampleEditorComponent {
     comment: string,
     note: string,
   ) {
-    this._exampleId = exampleId;
-    this._exampleVersion = exampleVersion;
-    this._italicizedExampleText = italicizeText(exampleText, italicizedTextRanges.toArray());
-    this._italicizedTextRanges = italicizedTextRanges.toArray();
-    this._translations = translations.toArray();
-    this._appliedWords = appliedWords.toArray();
-    this._comment = comment;
-    this._note = note;
+    this.exampleId = exampleId;
+    this.exampleVersion = exampleVersion;
+    this.italicizedExampleText = italicizeText(exampleText, italicizedTextRanges.toArray());
+    this.italicizedTextRanges = italicizedTextRanges;
+    this.translations = translations;
+    this.appliedWords = appliedWords;
+    this.comment = comment;
+    this.note = note;
     this.sourceHost.viewContainerRef.clear();
     this.sourceComponent = null;
   }
@@ -173,7 +186,7 @@ export class ExampleEditorComponent {
     viewContainerRef.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
     this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-    this.sourceComponent.dataChange.subscribe(() => this.fireExampleUpdatedEvent());
+    this.sourceComponent.dataChange.subscribe((dto: ExampleSourceBookComponentDto) => this.sourceChange.emit(dto));
   }
 
   private loadNewExampleJournalSourceComponent() {
@@ -181,59 +194,12 @@ export class ExampleEditorComponent {
     viewContainerRef.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
     this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-    this.sourceComponent.dataChange.subscribe(() => this.fireExampleUpdatedEvent());
+    this.sourceComponent.dataChange.subscribe((dto: ExampleSourceJournalComponentDto) => this.sourceChange.emit(dto));
   }
 
   private killSourceComponent() {
     this.sourceHost.viewContainerRef.clear();
-    this.sourceComponent = undefined;
-  }
-
-  // private loadSourceComponent(data?: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
-  //   if (!_.isEqual(this.sourceComponent ? this.sourceComponent.getDto() : this.sourceComponent, data)) {
-  //     const viewContainerRef = this.sourceHost.viewContainerRef;
-  //     viewContainerRef.clear();
-  //     this.sourceComponent = undefined;
-  //     if (data) {
-  //       switch (data.type) {
-  //         case ExampleSourceComponentTypes.book: {
-  //           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
-  //           this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-  //           this.sourceComponent.dataChange.subscribe(
-  //             (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
-  //           );
-  //           this.sourceComponent.update(data);
-  //           break;
-  //         }
-  //         case ExampleSourceComponentTypes.journal: {
-  //           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
-  //           this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-  //           this.sourceComponent.dataChange.subscribe(
-  //             (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
-  //           );
-  //           this.sourceComponent.update(data);
-  //           break;
-  //         }
-  //       }
-  //     } else {
-  //       this.fireExampleUpdatedEvent();
-  //     }
-  //   }
-  // }
-
-  private fireExampleUpdatedEvent() {
-    const newExample: ExampleEditorComponentDto = {
-      id: this.exampleId,
-      version: this.exampleVersion,
-      text: this.exampleText,
-      format: { italics: this.italicizedTextRanges },
-      translations: this.translations,
-      keywords: this.appliedWords,
-      comment: this.comment,
-      note: this.note,
-      source: this.sourceComponent ? this.sourceComponent.getDto() : null,
-    };
-    this.exampleChange.emit(newExample);
+    this.sourceComponent = null;
   }
 
   /**
@@ -305,30 +271,11 @@ export class ExampleEditorComponent {
     }
     switch (type) {
       case ExampleSourceComponentTypes.book: {
-        const sourceData: ExampleSourceBookComponentDto = {
-          type: ExampleSourceComponentTypes.book,
-          author: previousData ? previousData.author : '',
-          title: previousData ? previousData.title : '',
-          page: previousData ? previousData.page : null,
-          initialPublishingYear: null,
-          publishedYear: null,
-          publishedPlace: '',
-        };
         this.loadNewExampleBookSourceComponent();
-        this.sourceComponent.update(sourceData);
         break;
       }
       case ExampleSourceComponentTypes.journal: {
-        const sourceData: ExampleSourceJournalComponentDto = {
-          type: ExampleSourceComponentTypes.journal,
-          author: previousData ? previousData.author : '',
-          title: previousData ? previousData.title : '',
-          page: previousData ? previousData.page : null,
-          passageTitle: '',
-          publishingDate: '',
-        };
         this.loadNewExampleJournalSourceComponent();
-        this.sourceComponent.update(sourceData);
         break;
       }
       case '': {
@@ -341,6 +288,21 @@ export class ExampleEditorComponent {
   /**
    * Interface Methods
    */
+
+  private loadSourceComponentBasedOnData(source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto) {
+    switch (source.type) {
+      case ExampleSourceComponentTypes.book: {
+        this.loadNewExampleBookSourceComponent();
+        this.sourceComponent.update(source);
+        break;
+      }
+      case ExampleSourceComponentTypes.journal: {
+        this.loadNewExampleJournalSourceComponent();
+        this.sourceComponent.update(source);
+        break;
+      }
+    }
+  }
 
   public update(
     exampleId: number,
@@ -361,21 +323,20 @@ export class ExampleEditorComponent {
     this.appliedWords = keywords;
     this.comment = comment;
     this.note = note;
-    if (source) {
-      switch (source.type) {
-        case ExampleSourceComponentTypes.book: {
-          this.loadNewExampleBookSourceComponent();
+
+    if (this.sourceComponent || source) {
+      if (this.sourceComponent && source) {
+        if (this.sourceComponent.getDto().type === source.type) {
           this.sourceComponent.update(source);
-          break;
+        } else {
+          this.loadSourceComponentBasedOnData(source);
         }
-        case ExampleSourceComponentTypes.journal: {
-          this.loadNewExampleJournalSourceComponent();
-          this.sourceComponent.update(source);
-          break;
-        }
+
+      } else if (!this.sourceComponent) {
+        this.loadSourceComponentBasedOnData(source);
+      } else {
+        this.killSourceComponent();
       }
-    } else {
-      this.killSourceComponent();
     }
   }
 

@@ -24,7 +24,6 @@ export class ExampleSourceBookComponent extends SourceComponent {
   private set initialPublishingYear(newYear: number) {
     if (this.initialPublishingYear !== newYear) {
       this._initialPublishingYear = newYear;
-      this.fireSourceDataChangeEvent();
     }
   }
 
@@ -35,7 +34,6 @@ export class ExampleSourceBookComponent extends SourceComponent {
   private set publishedYear(newYear: number) {
     if (this.publishedYear !== newYear) {
       this._publishedYear = newYear;
-      this.fireSourceDataChangeEvent();
     }
   }
 
@@ -46,20 +44,22 @@ export class ExampleSourceBookComponent extends SourceComponent {
   private set publishedPlace(newPlace: string) {
     if (this.publishedPlace !== newPlace) {
       this._publishedPlace = newPlace;
-      this.fireSourceDataChangeEvent();
     }
   }
 
   private onInitialPublishingYearChange(newYear: number) {
     this.initialPublishingYear = newYear;
+    this.fireSourceDataChangeEvent();
   }
 
   private onPublishedYearChange(newYear: number) {
     this.publishedYear = newYear;
+    this.fireSourceDataChangeEvent();
   }
 
   private onPublishedPlaceChange(newPlace: string) {
     this.publishedPlace = newPlace;
+    this.fireSourceDataChangeEvent();
   }
 
   protected fireSourceDataChangeEvent() {
@@ -67,12 +67,34 @@ export class ExampleSourceBookComponent extends SourceComponent {
   }
 
   public update(data: ExampleSourceBookComponentDto) {
-    this.author = data.author;
-    this.title = data.title;
-    this.page = data.page;
-    this.initialPublishingYear = data.initialPublishingYear;
-    this.publishedYear = data.publishedYear;
-    this.publishedPlace = data.publishedPlace;
+    let updatedAnything: boolean;
+    if (this.author !== data.author) {
+      this.author = data.author;
+      updatedAnything = true;
+    }
+    if (this.title !== data.title) {
+      this.title = data.title;
+      updatedAnything = true;
+    }
+    if (this.page !== data.page) {
+      this.page =  data.page;
+      updatedAnything = true;
+    }
+    if (this.initialPublishingYear !== data.initialPublishingYear) {
+      this.initialPublishingYear = data.initialPublishingYear;
+      updatedAnything = true;
+    }
+    if (this.publishedYear !== data.publishedYear) {
+      this.publishedYear = data.publishedYear;
+      updatedAnything = true;
+    }
+    if (this.publishedPlace !== data.publishedPlace) {
+      this.publishedPlace = data.publishedPlace;
+      updatedAnything = true;
+    }
+    if (updatedAnything === true) {
+      this.fireSourceDataChangeEvent();
+    }
   }
 
   public getDto(): ExampleSourceBookComponentDto {
