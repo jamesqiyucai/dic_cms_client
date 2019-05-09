@@ -26,7 +26,7 @@
     #publishedPlaceInput
     placeholder="PublishedPlace"
     [value]="publishedPlace"
-    (input)="changePublishedPlace(publishedPlaceInput.value)"
+    (input)="onPublishedPlaceChange(publishedPlaceInput.value)"
   >
   <input
     #publishedYearInput
@@ -34,7 +34,7 @@
     type="number"
     placeholder="PublishedYear"
     [value]="publishedYear"
-    (input)="changePublishedYear(publishedYearInput.value)"
+    (input)="onPublishedYearChange(publishedYearInput.value)"
   >
   <input
     #initialPublishingYearInput
@@ -42,6 +42,6 @@
     type="number"
     placeholder="InitialPublishingYear"
     [value]="initialPublishingYear"
-    (input)="changeInitialPublishingYear(initialPublishingYearInput.value)"
+    (input)="onInitialPublishingYearChange(initialPublishingYearInput.value)"
   >
 </div>

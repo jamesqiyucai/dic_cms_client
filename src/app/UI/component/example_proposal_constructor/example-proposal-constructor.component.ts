@@ -20,7 +20,7 @@ import {ExampleSourceComponentTypes} from '../example_source/example-source.comp
     </div>
   `
 })
-export class ExampleProposalConstructorComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
   private _exampleProposalIdentifier: number;
   private _exampleId: number;
@@ -57,7 +57,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set exampleId(newId: number) {
     if (newId !== this.exampleId) {
       this._exampleId = newId;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -69,7 +68,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set exampleVersion(newVersion: number) {
     if (newVersion !== this.exampleVersion) {
       this._exampleVersion = newVersion;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -81,7 +79,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set text(newText: string) {
     if (newText !== this.text) {
       this._text = newText;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -93,7 +90,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set italics(newItalics: List<[number, number]>) {
     if (!this.italics.equals(newItalics)) {
       this._italics = newItalics.toArray();
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -105,7 +101,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set translations(newTranslations: List<string>) {
     if (!this.translations.equals(newTranslations)) {
       this._translations = newTranslations.toArray();
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -117,7 +112,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set keywords(newKeywords: List<string>) {
     if (!this.keywords.equals(newKeywords)) {
       this._keywords = newKeywords.toArray();
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -129,7 +123,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set note(newNote: string) {
     if (this.note !== newNote) {
       this._note = newNote;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -141,7 +134,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set comment(newComment: string) {
     if (this.comment !== newComment) {
       this._comment = newComment;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -153,7 +145,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
   private set source(newSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
     if (!_.isEqual(this.source, newSource)) {
       this._source = newSource;
-      this.updateExampleEditor();
       this.updateProposalInService();
     }
   }
@@ -269,7 +260,16 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
     this._comment = '';
     this._source = null;
 
-
+    this.exampleEditor.init(
+      this.exampleId,
+      this.exampleVersion,
+      this.text,
+      this.italics,
+      this.translations,
+      this.keywords,
+      this.note,
+      this.comment
+    );
 
     this._exampleProposalIdentifier = this.exampleProposalService.createExampleProposalInService(
       this.exampleId,
@@ -340,7 +340,6 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
 
 
 
-    this.updateExampleEditor();
     console.log('tried to update ee');
 
     this.exampleEditor.unlock();
@@ -349,13 +348,14 @@ export class ExampleProposalConstructorComponent implements OnInit, AfterViewChe
 
   ngOnInit(): void {
     console.log('constructor init');
-  }
-
-  ngAfterViewChecked(): void {
-    console.log('view init');
     this.init();
+
   }
 
+  // ngAfterViewChecked(): void {
+  //   console.log('view init');
+  // }
+  //
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

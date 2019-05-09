@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Inject, OnInit, Output, ViewChild} from '@angular/core';
 import {List} from 'immutable';
 import {SourceComponent} from '../example_source/abstract_source/source.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -13,14 +13,13 @@ import {ExampleSourceBookComponentDto} from '../example_source/example_source_bo
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
 import {italicizeText} from './italicize-text';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-example-editor',
   templateUrl: './example-editor.component.html',
   styleUrls: ['./example-editor.component.css'],
 })
-export class ExampleEditorComponent implements OnInit {
+export class ExampleEditorComponent {
   private _exampleId: number;
   private _exampleVersion: number;
   private _italicizedExampleText: string;
@@ -45,11 +44,6 @@ export class ExampleEditorComponent implements OnInit {
   ) {
     this.exampleChange = new EventEmitter();
   }
-
-  ngOnInit() {
-    this.init();
-  }
-
 
 
 
@@ -90,13 +84,6 @@ export class ExampleEditorComponent implements OnInit {
       this.fireExampleUpdatedEvent();
     }
   }
-
-  // private set exampleText(newText: string) {
-  //   if (this._italicizedExampleText !== newText) {
-  //     this._italicizedExampleText = newText;
-  //     this.fireExampleUpdatedEvent();
-  //   }
-  // }
 
   private get italicizedTextRanges() {
     return List(this._italicizedTextRanges);
@@ -159,16 +146,24 @@ export class ExampleEditorComponent implements OnInit {
   }
 
 
-  private init() {
-    // this.example = new ExampleComp(null, null, 'Example Text Goes Here', ['新翻译'], []);
-    this._exampleId = null;
-    this._exampleVersion = null;
-    this._italicizedExampleText = 'Example Text Goes Here';
-    this._italicizedTextRanges = [];
-    this._translations = ['新翻译'];
-    this._appliedWords = [''];
-    this._comment = '';
-    this._note = '';
+  public init(
+    exampleId: number,
+    exampleVersion: number,
+    exampleText: string,
+    italicizedTextRanges: List<[number, number]>,
+    translations: List<string>,
+    appliedWords: List<string>,
+    comment: string,
+    note: string,
+  ) {
+    this._exampleId = exampleId;
+    this._exampleVersion = exampleVersion;
+    this._italicizedExampleText = italicizeText(exampleText, italicizedTextRanges.toArray());
+    this._italicizedTextRanges = italicizedTextRanges.toArray();
+    this._translations = translations.toArray();
+    this._appliedWords = appliedWords.toArray();
+    this._comment = comment;
+    this._note = note;
     this.sourceHost.viewContainerRef.clear();
     this.sourceComponent = null;
   }
@@ -178,6 +173,7 @@ export class ExampleEditorComponent implements OnInit {
     viewContainerRef.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
     this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+    this.sourceComponent.dataChange.subscribe(() => this.fireExampleUpdatedEvent());
   }
 
   private loadNewExampleJournalSourceComponent() {
@@ -185,6 +181,7 @@ export class ExampleEditorComponent implements OnInit {
     viewContainerRef.clear();
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
     this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+    this.sourceComponent.dataChange.subscribe(() => this.fireExampleUpdatedEvent());
   }
 
   private killSourceComponent() {
@@ -192,37 +189,37 @@ export class ExampleEditorComponent implements OnInit {
     this.sourceComponent = undefined;
   }
 
-  private loadSourceComponent(data?: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
-    if (!_.isEqual(this.sourceComponent ? this.sourceComponent.getDto() : this.sourceComponent, data)) {
-      const viewContainerRef = this.sourceHost.viewContainerRef;
-      viewContainerRef.clear();
-      this.sourceComponent = undefined;
-      if (data) {
-        switch (data.type) {
-          case ExampleSourceComponentTypes.book: {
-            const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
-            this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-            this.sourceComponent.dataChange.subscribe(
-              (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
-            );
-            this.sourceComponent.update(data);
-            break;
-          }
-          case ExampleSourceComponentTypes.journal: {
-            const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
-            this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-            this.sourceComponent.dataChange.subscribe(
-              (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
-            );
-            this.sourceComponent.update(data);
-            break;
-          }
-        }
-      } else {
-        this.fireExampleUpdatedEvent();
-      }
-    }
-  }
+  // private loadSourceComponent(data?: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
+  //   if (!_.isEqual(this.sourceComponent ? this.sourceComponent.getDto() : this.sourceComponent, data)) {
+  //     const viewContainerRef = this.sourceHost.viewContainerRef;
+  //     viewContainerRef.clear();
+  //     this.sourceComponent = undefined;
+  //     if (data) {
+  //       switch (data.type) {
+  //         case ExampleSourceComponentTypes.book: {
+  //           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
+  //           this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+  //           this.sourceComponent.dataChange.subscribe(
+  //             (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
+  //           );
+  //           this.sourceComponent.update(data);
+  //           break;
+  //         }
+  //         case ExampleSourceComponentTypes.journal: {
+  //           const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
+  //           this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+  //           this.sourceComponent.dataChange.subscribe(
+  //             (source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) => this.fireExampleUpdatedEvent(source)
+  //           );
+  //           this.sourceComponent.update(data);
+  //           break;
+  //         }
+  //       }
+  //     } else {
+  //       this.fireExampleUpdatedEvent();
+  //     }
+  //   }
+  // }
 
   private fireExampleUpdatedEvent() {
     const newExample: ExampleEditorComponentDto = {
@@ -234,19 +231,17 @@ export class ExampleEditorComponent implements OnInit {
       keywords: this.appliedWords,
       comment: this.comment,
       note: this.note,
-      source: source ? source : this.sourceComponent ? this.sourceComponent.getDto() : null,
+      source: this.sourceComponent ? this.sourceComponent.getDto() : null,
     };
     this.exampleChange.emit(newExample);
-    console.log('child event fired');
   }
 
   /**
    * View Methods
    */
-  public trackByFn(index: any) {
+  private trackByFn(index: any) {
     return index;
   }
-
 
   private onItalicizedRangesChange(newRanges: List<[number, number]>) {
     this.italicizedTextRanges = newRanges;
@@ -304,7 +299,6 @@ export class ExampleEditorComponent implements OnInit {
   }
 
   private onSourceChoose(type: string) {
-    console.log('source choose called');
     let previousData: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
     if (this.sourceComponent) {
       previousData = this.sourceComponent.getDto();
@@ -320,7 +314,8 @@ export class ExampleEditorComponent implements OnInit {
           publishedYear: null,
           publishedPlace: '',
         };
-        this.loadSourceComponent(sourceData);
+        this.loadNewExampleBookSourceComponent();
+        this.sourceComponent.update(sourceData);
         break;
       }
       case ExampleSourceComponentTypes.journal: {
@@ -332,11 +327,12 @@ export class ExampleEditorComponent implements OnInit {
           passageTitle: '',
           publishingDate: '',
         };
-        this.loadSourceComponent(sourceData);
+        this.loadNewExampleJournalSourceComponent();
+        this.sourceComponent.update(sourceData);
         break;
       }
       case '': {
-        this.loadSourceComponent();
+        this.killSourceComponent();
         break;
       }
     }
@@ -365,7 +361,22 @@ export class ExampleEditorComponent implements OnInit {
     this.appliedWords = keywords;
     this.comment = comment;
     this.note = note;
-    this.source = source;
+    if (source) {
+      switch (source.type) {
+        case ExampleSourceComponentTypes.book: {
+          this.loadNewExampleBookSourceComponent();
+          this.sourceComponent.update(source);
+          break;
+        }
+        case ExampleSourceComponentTypes.journal: {
+          this.loadNewExampleJournalSourceComponent();
+          this.sourceComponent.update(source);
+          break;
+        }
+      }
+    } else {
+      this.killSourceComponent();
+    }
   }
 
   public getData(): ExampleEditorComponentDto {
@@ -397,7 +408,6 @@ export class ExampleEditorComponent implements OnInit {
   }
 
   public reset(): void {
-    this.init();
   }
 
 

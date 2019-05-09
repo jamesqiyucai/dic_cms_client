@@ -1,4 +1,3 @@
-import {AbstractSource} from '../../../model/base_models/abstract-source.class';
 import {EventEmitter} from '@angular/core';
 import {ExampleSourceBookComponentDto} from '../example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source_journal/example-source-journal.component.dto';
@@ -14,7 +13,6 @@ export abstract class SourceComponent {
 
   public readonly dataChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
   protected _unlocked: boolean;
-  protected sourceModel: AbstractSource;
 
   protected constructor() {
     this.dataChange = new EventEmitter();
@@ -64,7 +62,7 @@ export abstract class SourceComponent {
 
   abstract update(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
 
-  public get unlocked() {
+  private get unlocked() {
     return this._unlocked;
   }
 
