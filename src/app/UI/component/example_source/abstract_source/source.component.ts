@@ -8,11 +8,9 @@ export abstract class SourceComponent {
   protected _author = null;
   protected _title = null;
   protected _page: number;
-
-
+  protected _unlocked: boolean;
 
   public readonly dataChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
-  protected _unlocked: boolean;
 
   protected constructor() {
     this.dataChange = new EventEmitter();
@@ -20,6 +18,11 @@ export abstract class SourceComponent {
   }
 
   protected abstract fireSourceDataChangeEvent();
+
+  protected get unlocked() {
+    return this._unlocked;
+  }
+
 
   protected get type() {
     return this._type;
@@ -58,23 +61,6 @@ export abstract class SourceComponent {
     }
   }
 
-  abstract getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
-
-  abstract update(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
-
-  protected get unlocked() {
-    return this._unlocked;
-  }
-
-
-  public unlock() {
-    this._unlocked = true;
-  }
-
-  public lock() {
-    this._unlocked = false;
-  }
-
   protected onAuthorChange(newAuthor: string) {
     this.author = newAuthor;
   }
@@ -86,4 +72,17 @@ export abstract class SourceComponent {
   protected onPageChange(newPage: number) {
     this.page = newPage;
   }
+
+  public abstract getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+
+  public abstract update(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
+
+  public unlock() {
+    this._unlocked = true;
+  }
+
+  public lock() {
+    this._unlocked = false;
+  }
+
 }

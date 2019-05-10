@@ -1,13 +1,12 @@
 <div>
   <label>Example Text:
     <div
-      *ngIf="unlocked"
       appEditable
+      [enabled]="unlocked"
       [text]="italicizedExampleText"
       (valueChange)="onTextModify($event)"
       (italicizedRanges)="onItalicizedRangesChange($event)"
     ></div>
-    <div style="display: inline-block" *ngIf="!unlocked">{{italicizedExampleText}}</div>
   </label>
   <div
     [cdkDropListDisabled]="!unlocked"

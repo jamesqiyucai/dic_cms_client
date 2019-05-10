@@ -6,6 +6,7 @@ import {List} from 'immutable';
   selector: '[appEditable]'
 })
 export class EditableDivDirective implements OnChanges, OnInit {
+  @Input() enabled: true;
   @Input() text = '';
   @Output() valueChange = new EventEmitter<string>();
   @Output() italicizedRanges = new EventEmitter<List<[number, number]>>();
@@ -14,7 +15,7 @@ export class EditableDivDirective implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.renderer.setStyle(this.el.nativeElement, 'display', 'inline-block');
-    this.renderer.setAttribute(this.el.nativeElement, 'contenteditable', 'true');
+    this.renderer.setAttribute(this.el.nativeElement, 'contenteditable', `${this.enabled}`);
     this.renderer.listen(this.el.nativeElement, 'keydown', (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -51,5 +52,6 @@ export class EditableDivDirective implements OnChanges, OnInit {
 
   ngOnChanges(): void {
     this.el.nativeElement.innerHTML = this.text;
+    this.renderer.setAttribute(this.el.nativeElement, 'contenteditable', `${this.enabled}`);
   }
 }

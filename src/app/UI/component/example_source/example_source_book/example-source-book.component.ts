@@ -4,7 +4,7 @@ import {ExampleSourceBookComponentDto} from './example-source-book.component.dto
 import {ExampleSourceComponentTypes} from '../example-source.component.types';
 
 @Component({
-  selector: 'app-example-source-paperbook',
+  selector: 'app-example-source-book',
   templateUrl: './example-source-book.component.html'
 })
 export class ExampleSourceBookComponent extends SourceComponent {

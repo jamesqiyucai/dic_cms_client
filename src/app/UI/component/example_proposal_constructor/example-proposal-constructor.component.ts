@@ -1,4 +1,4 @@
-import {AfterViewChecked, AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ExampleEditorComponent} from '../example_editor/example-editor.component';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
 import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
@@ -7,16 +7,25 @@ import * as _ from 'lodash';
 import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleProposalConstructorComponentDto} from './example-proposal-constructor.component.dto';
-import {ExampleEditorComponentDto} from '../example_editor/example-editor.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
 
 @Component({
   selector: 'app-example-proposal-constructor',
   template: `
     <div>
-      <app-example-editor (exampleChange)="onExampleChange($event)"></app-example-editor>
-      <button (click)="refresh()">New</button>
-      <button (click)="submit()" [disabled]="disabled">Submit</button>
+      <app-example-editor
+        (idChange)="onIdChange($event)"
+        (versionChange)="onVersionChange($event)"
+        (textChange)="onTextChange($event)"
+        (italicizedTextRangesChange)="onItalicizedTextRangesChange($event)"
+        (translationsChange)="onTranslationsChange($event)"
+        (keywordsChange)="onKeywordsChange($event)"
+        (noteChange)="onNoteChange($event)"
+        (commentChange)="onCommentChange($event)"
+        (sourceChange)="onSourceChange($event)"
+      ></app-example-editor>
+      <button (click)="onNew()">New</button>
+      <button (click)="onSubmit()" [disabled]="!canSubmit">Submit</button>
     </div>
   `
 })
@@ -32,124 +41,14 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   private _note: string;
   private _comment: string;
   private _source: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+  private _canSubmit = true;
 
   private subscription;
 
-  private _canSubmit = true;
 
   constructor(@Inject(EXAMPLE_PROPOSAL_SERVICE) private exampleProposalService: ExampleProposalService) {}
 
-  private get exampleProposalIdentifier() {
-    return this._exampleProposalIdentifier;
-  }
-
-  private set exampleProposalIdentifier(newIdentifier: number) {
-    if (this.exampleProposalIdentifier !== newIdentifier) {
-      this._exampleProposalIdentifier = newIdentifier;
-      this.updateProposalInService();
-    }
-  }
-
-  private get exampleId() {
-    return this._exampleId;
-  }
-
-  private set exampleId(newId: number) {
-    if (newId !== this.exampleId) {
-      this._exampleId = newId;
-      this.updateProposalInService();
-    }
-  }
-
-  private get exampleVersion() {
-    return this._exampleVersion;
-  }
-
-  private set exampleVersion(newVersion: number) {
-    if (newVersion !== this.exampleVersion) {
-      this._exampleVersion = newVersion;
-      this.updateProposalInService();
-    }
-  }
-
-  private get text() {
-    return this._text;
-  }
-
-  private set text(newText: string) {
-    if (newText !== this.text) {
-      this._text = newText;
-      this.updateProposalInService();
-    }
-  }
-
-  private get italics() {
-    return List(this._italics);
-  }
-
-  private set italics(newItalics: List<[number, number]>) {
-    if (!this.italics.equals(newItalics)) {
-      this._italics = newItalics.toArray();
-      this.updateProposalInService();
-    }
-  }
-
-  private get translations() {
-    return List(this._translations);
-  }
-
-  private set translations(newTranslations: List<string>) {
-    if (!this.translations.equals(newTranslations)) {
-      this._translations = newTranslations.toArray();
-      this.updateProposalInService();
-    }
-  }
-
-  private get keywords() {
-    return List(this._keywords);
-  }
-
-  private set keywords(newKeywords: List<string>) {
-    if (!this.keywords.equals(newKeywords)) {
-      this._keywords = newKeywords.toArray();
-      this.updateProposalInService();
-    }
-  }
-
-  private get note() {
-    return this._note;
-  }
-
-  private set note(newNote: string) {
-    if (this.note !== newNote) {
-      this._note = newNote;
-      this.updateProposalInService();
-    }
-  }
-
-  private get comment() {
-    return this._comment;
-  }
-
-  private set comment(newComment: string) {
-    if (this.comment !== newComment) {
-      this._comment = newComment;
-      this.updateProposalInService();
-    }
-  }
-
-  private get source() {
-    return this._source;
-  }
-
-  private set source(newSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
-    if (!_.isEqual(this.source, newSource)) {
-      this._source = newSource;
-      this.updateProposalInService();
-    }
-  }
-
-  private updateExampleEditor() {
+  private updateView() {
     this.exampleEditor.update(
       this.exampleId,
       this.exampleVersion,
@@ -157,14 +56,13 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
       this.italics,
       this.keywords,
       this.translations,
-      null,
       this.note,
       this.comment,
       this.source,
     );
   }
 
-  private updateProposalInService() {
+  private updateModel() {
     let source = null;
     if (this.source) {
       switch (this.source.type) {
@@ -205,49 +103,6 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     );
   }
 
-  private lock() {
-    this.exampleEditor.lock();
-  }
-
-  public get disabled() {
-    return !this._canSubmit;
-  }
-
-  public onExampleChange(data: ExampleEditorComponentDto) {
-    console.log('heard example editor event');
-    this.exampleId = data.id;
-    this.exampleVersion = data.version;
-    this.text = data.text;
-    this.italics = data.format.italics;
-    this.translations = data.translations;
-    this.keywords = data.keywords;
-    this.note = data.note;
-    this.comment = data.comment;
-    this.source = data.source;
-  }
-
-  public fillData(data: ExampleProposalConstructorComponentDto) {
-    this.exampleProposalIdentifier = data.identifier;
-    this.exampleId = data.id;
-    this.exampleVersion = data.version;
-    this.text = data.text;
-    this.italics = data.format.italics;
-    this.translations = data.translations;
-    this.keywords = data.keywords;
-    this.note = data.note;
-    this.comment = data.comment;
-    this.source = data.source;
-  }
-
-  public submit() {
-    this.exampleProposalService.submitExampleProposal(this.exampleProposalIdentifier);
-  }
-
-  public refresh() {
-    this._canSubmit = true;
-    this.init();
-  }
-
   private init(): void {
 
     this._exampleId = null;
@@ -260,16 +115,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     this._comment = '';
     this._source = null;
 
-    this.exampleEditor.init(
-      this.exampleId,
-      this.exampleVersion,
-      this.text,
-      this.italics,
-      this.translations,
-      this.keywords,
-      this.note,
-      this.comment
-    );
+    this.updateView();
 
     this._exampleProposalIdentifier = this.exampleProposalService.createExampleProposalInService(
       this.exampleId,
@@ -282,6 +128,8 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
       this.comment,
       null,
     );
+
+
 
     this.subscription = this.exampleProposalService.exampleProposals.subscribe(proposals => {
       const serviceData = proposals.find(proposal => proposal.identifier === this.exampleProposalIdentifier);
@@ -333,31 +181,208 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
         note: serviceData.note,
         source: newSourceData,
       };
-      this.fillData(newProposalData);
+      this.update(newProposalData);
     });
-
-
-
-
-
-    console.log('tried to update ee');
-
-    this.exampleEditor.unlock();
-
   }
 
-  ngOnInit(): void {
-    console.log('constructor init');
+  private get canSubmit() {
+    return this._canSubmit;
+  }
+
+  private get exampleProposalIdentifier() {
+    return this._exampleProposalIdentifier;
+  }
+
+  private set exampleProposalIdentifier(newIdentifier: number) {
+    if (this.exampleProposalIdentifier !== newIdentifier) {
+      this._exampleProposalIdentifier = newIdentifier;
+      this.updateModel();
+    }
+  }
+
+  private get exampleId() {
+    return this._exampleId;
+  }
+
+  private set exampleId(newId: number) {
+    if (newId !== this.exampleId) {
+      this._exampleId = newId;
+      this.updateView();
+    }
+  }
+
+  private get exampleVersion() {
+    return this._exampleVersion;
+  }
+
+  private set exampleVersion(newVersion: number) {
+    if (newVersion !== this.exampleVersion) {
+      this._exampleVersion = newVersion;
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get text() {
+    return this._text;
+  }
+
+  private set text(newText: string) {
+    if (newText !== this.text) {
+      this._text = newText;
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get italics() {
+    return List(this._italics);
+  }
+
+  private set italics(newItalics: List<[number, number]>) {
+    if (!this.italics.equals(newItalics)) {
+      this._italics = newItalics.toArray();
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get translations() {
+    return List(this._translations);
+  }
+
+  private set translations(newTranslations: List<string>) {
+    if (!this.translations.equals(newTranslations)) {
+      this._translations = newTranslations.toArray();
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get keywords() {
+    return List(this._keywords);
+  }
+
+  private set keywords(newKeywords: List<string>) {
+    if (!this.keywords.equals(newKeywords)) {
+      this._keywords = newKeywords.toArray();
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get note() {
+    return this._note;
+  }
+
+  private set note(newNote: string) {
+    if (this.note !== newNote) {
+      this._note = newNote;
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get comment() {
+    return this._comment;
+  }
+
+  private set comment(newComment: string) {
+    if (this.comment !== newComment) {
+      this._comment = newComment;
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private get source() {
+    return this._source;
+  }
+
+  private set source(newSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
+    if (!_.isEqual(this.source, newSource)) {
+      this._source = newSource;
+      this.updateView();
+      this.updateModel();
+    }
+  }
+
+  private onIdChange(newId: number) {
+    this.exampleId = newId;
+  }
+
+  private onVersionChange(newVersion: number) {
+    this.exampleVersion = newVersion;
+  }
+
+  private onTextChange(newText: string) {
+    this.text = newText;
+  }
+
+  private onItalicizedTextRangesChange(newRanges: List<[number, number]>) {
+    this.italics = newRanges;
+  }
+
+  private onTranslationsChange(newTranslations: List<string>) {
+    this.translations = newTranslations;
+  }
+
+  private onKeywordsChange(newKeywords: List<string>) {
+    this.keywords = newKeywords;
+  }
+
+  private onNoteChange(newNote: string) {
+    this.note = newNote;
+  }
+
+  private onCommentChange(newComment: string) {
+    this.comment = newComment;
+  }
+
+  private onSourceChange(newSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto) {
+    this.source = newSource;
+  }
+
+  private onSubmit() {
+    this.exampleProposalService.submitExampleProposal(this.exampleProposalIdentifier);
+  }
+
+  private onNew() {
     this.init();
-
+    this.unlock();
   }
 
-  // ngAfterViewChecked(): void {
-  //   console.log('view init');
-  // }
-  //
-  ngOnDestroy(): void {
+  /*****************************************************************************/
+  public ngOnInit(): void {
+    this.init();
+    this.unlock();
+  }
+
+  public ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  public lock() {
+    this.exampleEditor.lock();
+    this._canSubmit = false;
+  }
+
+  public unlock() {
+    this.exampleEditor.unlock();
+    this._canSubmit = true;
+  }
+
+  public update(data: ExampleProposalConstructorComponentDto) {
+    this.exampleProposalIdentifier = data.identifier;
+    this.exampleId = data.id;
+    this.exampleVersion = data.version;
+    this.text = data.text;
+    this.italics = data.format.italics;
+    this.translations = data.translations;
+    this.keywords = data.keywords;
+    this.note = data.note;
+    this.comment = data.comment;
+    this.source = data.source;
   }
 
 }

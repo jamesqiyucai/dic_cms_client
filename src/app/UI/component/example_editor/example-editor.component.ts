@@ -4,11 +4,9 @@ import {SourceComponent} from '../example_source/abstract_source/source.componen
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {USER_SERVICE} from '../../../core/user/injection-token';
 import {UserService} from '../../../core/user/user-service.interface';
-import {StoryComp} from '../../model/story/story-comp.class';
 import {ExampleSourceJournalComponent} from '../example_source/example_source_journal/example-source-journal.component';
 import {ExampleSourceBookComponent} from '../example_source/example_source_book/example-source-book.component';
 import {SourceDirective} from '../../../toolkit/source_directive/source.directive';
-import {ExampleEditorComponentDto} from './example-editor.component.dto';
 import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
@@ -20,6 +18,7 @@ import {italicizeText} from './italicize-text';
   styleUrls: ['./example-editor.component.css'],
 })
 export class ExampleEditorComponent {
+  private _unlocked: boolean;
   private _exampleId: number;
   private _exampleVersion: number;
   private _italicizedExampleText: string;
@@ -31,7 +30,6 @@ export class ExampleEditorComponent {
   private sourceComponent: SourceComponent;
 
   @ViewChild(SourceDirective) private sourceHost: SourceDirective;
-  public unlocked: boolean;
 
   @Output() public readonly idChange: EventEmitter<number>;
   @Output() public readonly versionChange: EventEmitter<number>;
@@ -47,6 +45,16 @@ export class ExampleEditorComponent {
     private componentFactoryResolver: ComponentFactoryResolver,
     @Inject(USER_SERVICE) private userService: UserService,
   ) {
+    this._exampleId = null;
+    this._exampleVersion = null;
+    this._italicizedExampleText = null;
+    this._translations = null;
+    this._italicizedTextRanges = null;
+    this._appliedWords = null;
+    this._note = null;
+    this._comment = null;
+    this.sourceComponent = null;
+
     this.idChange = new EventEmitter();
     this.versionChange = new EventEmitter();
     this.textChange = new EventEmitter();
@@ -58,8 +66,9 @@ export class ExampleEditorComponent {
     this.sourceChange = new EventEmitter();
   }
 
-
-
+  private get unlocked() {
+    return this._unlocked;
+  }
 
   private get exampleId() {
     return this._exampleId;
@@ -153,32 +162,8 @@ export class ExampleEditorComponent {
     }
   }
 
-
   private get sourceNull() {
     return !this.sourceComponent;
-  }
-
-
-  public init(
-    exampleId: number,
-    exampleVersion: number,
-    exampleText: string,
-    italicizedTextRanges: List<[number, number]>,
-    translations: List<string>,
-    appliedWords: List<string>,
-    comment: string,
-    note: string,
-  ) {
-    this.exampleId = exampleId;
-    this.exampleVersion = exampleVersion;
-    this.italicizedExampleText = italicizeText(exampleText, italicizedTextRanges.toArray());
-    this.italicizedTextRanges = italicizedTextRanges;
-    this.translations = translations;
-    this.appliedWords = appliedWords;
-    this.comment = comment;
-    this.note = note;
-    this.sourceHost.viewContainerRef.clear();
-    this.sourceComponent = null;
   }
 
   private loadNewExampleBookSourceComponent() {
@@ -197,14 +182,27 @@ export class ExampleEditorComponent {
     this.sourceComponent.dataChange.subscribe((dto: ExampleSourceJournalComponentDto) => this.sourceChange.emit(dto));
   }
 
+  private loadSourceComponentBasedOnData(source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto) {
+    switch (source.type) {
+      case ExampleSourceComponentTypes.book: {
+        this.loadNewExampleBookSourceComponent();
+        this.sourceComponent.update(source);
+        break;
+      }
+      case ExampleSourceComponentTypes.journal: {
+        this.loadNewExampleJournalSourceComponent();
+        this.sourceComponent.update(source);
+        break;
+      }
+    }
+  }
+
   private killSourceComponent() {
     this.sourceHost.viewContainerRef.clear();
     this.sourceComponent = null;
   }
 
-  /**
-   * View Methods
-   */
+
   private trackByFn(index: any) {
     return index;
   }
@@ -272,10 +270,27 @@ export class ExampleEditorComponent {
     switch (type) {
       case ExampleSourceComponentTypes.book: {
         this.loadNewExampleBookSourceComponent();
+        this.sourceComponent.update({
+          type: ExampleSourceComponentTypes.book,
+          author: previousData ? previousData.author : null,
+          title: previousData ? previousData.title : null,
+          page: previousData ? previousData.page : null,
+          initialPublishingYear: null,
+          publishedPlace: null,
+          publishedYear: null,
+        });
         break;
       }
       case ExampleSourceComponentTypes.journal: {
         this.loadNewExampleJournalSourceComponent();
+        this.sourceComponent.update({
+          type: ExampleSourceComponentTypes.book,
+          author: previousData ? previousData.author : null,
+          title: previousData ? previousData.title : null,
+          page: previousData ? previousData.page : null,
+          passageTitle: null,
+          publishingDate: null,
+        });
         break;
       }
       case '': {
@@ -285,24 +300,6 @@ export class ExampleEditorComponent {
     }
   }
 
-  /**
-   * Interface Methods
-   */
-
-  private loadSourceComponentBasedOnData(source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto) {
-    switch (source.type) {
-      case ExampleSourceComponentTypes.book: {
-        this.loadNewExampleBookSourceComponent();
-        this.sourceComponent.update(source);
-        break;
-      }
-      case ExampleSourceComponentTypes.journal: {
-        this.loadNewExampleJournalSourceComponent();
-        this.sourceComponent.update(source);
-        break;
-      }
-    }
-  }
 
   public update(
     exampleId: number,
@@ -311,7 +308,6 @@ export class ExampleEditorComponent {
     italics: List<[number, number]>,
     keywords: List<string>,
     translations: List<string>,
-    stories: List<StoryComp>,
     note: string,
     comment: string,
     source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto,
@@ -320,6 +316,7 @@ export class ExampleEditorComponent {
     this.exampleVersion = version;
     this.italicizedExampleText = italicizeText(normalizedText, italics.toArray());
     this.italicizedTextRanges = italics;
+    this.translations = translations;
     this.appliedWords = keywords;
     this.comment = comment;
     this.note = note;
@@ -340,36 +337,32 @@ export class ExampleEditorComponent {
     }
   }
 
-  public getData(): ExampleEditorComponentDto {
-    return {
-      id: this.exampleId,
-      version: this.exampleVersion,
-      text: this.exampleText,
-      format: { italics: this.italicizedTextRanges },
-      translations: this.translations,
-      keywords: this.appliedWords,
-      comment: this.comment,
-      note: this.note,
-      source: this.sourceComponent ? this.sourceComponent.getDto() : null,
-    };
-  }
+  // public getData(): ExampleEditorComponentDto {
+  //   return {
+  //     id: this.exampleId,
+  //     version: this.exampleVersion,
+  //     text: this.exampleText,
+  //     format: { italics: this.italicizedTextRanges },
+  //     translations: this.translations,
+  //     keywords: this.appliedWords,
+  //     comment: this.comment,
+  //     note: this.note,
+  //     source: this.sourceComponent ? this.sourceComponent.getDto() : null,
+  //   };
+  // }
 
   public lock(): void {
-    this.unlocked = false;
+    this._unlocked = false;
     if (this.sourceComponent) {
       this.sourceComponent.lock();
     }
   }
 
   public unlock(): void {
-    this.unlocked = true;
+    this._unlocked = true;
     if (this.sourceComponent) {
       this.sourceComponent.unlock();
     }
   }
-
-  public reset(): void {
-  }
-
 
 }

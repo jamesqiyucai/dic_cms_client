@@ -13,7 +13,6 @@ export function italicizeText(text: string, ranges: Array<[number, number]>): st
     ranges.forEach((range, index, array) => {
       if (index === 0) {
         children.push(text.substring(0, range[0]));
-        console.log(text.substring(0, range[0]));
         children.push(`<i>${text.substring(range[0], range[1] + 1)}</i>`);
       } else if (index === array.length - 1) {
         const previousRange = array[index - 1];
