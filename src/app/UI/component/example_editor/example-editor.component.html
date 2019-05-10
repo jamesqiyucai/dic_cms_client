@@ -3,10 +3,11 @@
     <div
       appEditable
       [enabled]="unlocked"
-      [text]="text"
+      [text]="italicizedExampleText"
       (valueChange)="onTextModify($event)"
       (italicizedRanges)="onItalicizedRangesChange($event)"
-    ></div></label>
+    ></div>
+  </label>
   <div
     [cdkDropListDisabled]="!unlocked"
     id="translation"
@@ -55,7 +56,7 @@
       <input #noteText placeholder="Note Goes Here." [disabled]="!unlocked" [value]="note" (input)="onNoteModify(noteText.value)">
     </label>
   </div>
-  <select #sourceSelect [disabled]="!unlocked" (input)="onSourceChoose(sourceSelect.value)">
+  <select #sourceSelect [disabled]="!unlocked" (change)="onSourceChoose(sourceSelect.value)">
     <option value='' [selected]="sourceNull">-</option>
     <option value="journal">Journal</option>
     <option value="book">Book</option>

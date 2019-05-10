@@ -1,80 +1,111 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
-import {ExampleSourceBookComponentModel} from '../../../model/example_source_book/example-source-book-component.model';
 import {ExampleSourceBookComponentDto} from './example-source-book.component.dto';
 import {ExampleSourceComponentTypes} from '../example-source.component.types';
-import {ExampleSourceJournalComponentDto} from '../example_source_journal/example-source-journal.component.dto';
 
 @Component({
-  selector: 'app-example-source-paperbook',
+  selector: 'app-example-source-book',
   templateUrl: './example-source-book.component.html'
 })
-export class ExampleSourceBookComponent extends SourceComponent implements OnInit {
-  protected sourceModel: ExampleSourceBookComponentModel;
+export class ExampleSourceBookComponent extends SourceComponent {
+  protected _initialPublishingYear: number;
+  protected _publishedYear: number;
+  protected _publishedPlace = null;
+
 
   constructor() {
     super();
-    this.sourceModel = new ExampleSourceBookComponentModel('', '', null, null, null, '');
   }
 
-  public get page() {
-    return this.sourceModel.page;
+  private get initialPublishingYear() {
+    return this._initialPublishingYear;
   }
 
-  public get initialPublishingYear() {
-    return this.sourceModel.initialPublishingYear;
+  private set initialPublishingYear(newYear: number) {
+    if (this.initialPublishingYear !== newYear) {
+      this._initialPublishingYear = newYear;
+    }
   }
 
-  public get publishedYear() {
-    return this.sourceModel.publishedYear;
+  private get publishedYear() {
+    return this._publishedYear;
   }
 
-  public get publishedPlace() {
-    return this.sourceModel.publishedPlace;
+  private set publishedYear(newYear: number) {
+    if (this.publishedYear !== newYear) {
+      this._publishedYear = newYear;
+    }
   }
 
-  public changePage(newPage: string) {
-    this.sourceModel.page = Number(newPage);
+  private get publishedPlace() {
+    return this._publishedPlace;
+  }
+
+  private set publishedPlace(newPlace: string) {
+    if (this.publishedPlace !== newPlace) {
+      this._publishedPlace = newPlace;
+    }
+  }
+
+  private onInitialPublishingYearChange(newYear: number) {
+    this.initialPublishingYear = newYear;
+    this.fireSourceDataChangeEvent();
+  }
+
+  private onPublishedYearChange(newYear: number) {
+    this.publishedYear = newYear;
+    this.fireSourceDataChangeEvent();
+  }
+
+  private onPublishedPlaceChange(newPlace: string) {
+    this.publishedPlace = newPlace;
+    this.fireSourceDataChangeEvent();
+  }
+
+  protected fireSourceDataChangeEvent() {
     this.dataChange.emit(this.getDto());
   }
 
-  public changeInitialPublishingYear(newYear: string) {
-    this.sourceModel.initialPublishingYear = Number(newYear);
-    this.dataChange.emit(this.getDto());
+  public update(data: ExampleSourceBookComponentDto) {
+    let updatedAnything: boolean;
+    if (this.author !== data.author) {
+      this.author = data.author;
+      updatedAnything = true;
+    }
+    if (this.title !== data.title) {
+      this.title = data.title;
+      updatedAnything = true;
+    }
+    if (this.page !== data.page) {
+      this.page =  data.page;
+      updatedAnything = true;
+    }
+    if (this.initialPublishingYear !== data.initialPublishingYear) {
+      this.initialPublishingYear = data.initialPublishingYear;
+      updatedAnything = true;
+    }
+    if (this.publishedYear !== data.publishedYear) {
+      this.publishedYear = data.publishedYear;
+      updatedAnything = true;
+    }
+    if (this.publishedPlace !== data.publishedPlace) {
+      this.publishedPlace = data.publishedPlace;
+      updatedAnything = true;
+    }
+    if (updatedAnything === true) {
+      this.fireSourceDataChangeEvent();
+    }
   }
 
-  public changePublishedYear(newYear: string) {
-    this.sourceModel.publishedYear = Number(newYear);
-    this.dataChange.emit(this.getDto());
-  }
-
-  public changePublishedPlace(newPlace: string) {
-    this.sourceModel.publishedPlace = newPlace;
-    this.dataChange.emit(this.getDto());
-  }
-
-  public ngOnInit() {
-  }
-
-  public fillData(data: ExampleSourceBookComponentDto) {
-    this.sourceModel.author = data.author;
-    this.sourceModel.title = data.title;
-    this.sourceModel.page = data.page;
-    this.sourceModel.initialPublishingYear = data.initialPublishingYear;
-    this.sourceModel.publishedYear = data.publishedYear;
-    this.sourceModel.publishedPlace = data.publishedPlace;
-    this.dataChange.emit(this.getDto());
-  }
-
-  getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto {
+  public getDto(): ExampleSourceBookComponentDto {
     return {
       type: ExampleSourceComponentTypes.book,
-      author: this.sourceModel.author,
-      title: this.sourceModel.title,
-      page: this.sourceModel.page,
-      initialPublishingYear: this.sourceModel.initialPublishingYear,
-      publishedYear: this.sourceModel.publishedYear,
-      publishedPlace: this.sourceModel.publishedPlace,
+      author: this.author,
+      title: this.title,
+      page: this.page,
+      initialPublishingYear: this.initialPublishingYear,
+      publishedYear: this.publishedYear,
+      publishedPlace: this.publishedPlace,
     };
   }
 

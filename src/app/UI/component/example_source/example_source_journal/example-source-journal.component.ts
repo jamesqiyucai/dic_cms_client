@@ -1,69 +1,89 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {SourceComponent} from '../abstract_source/source.component';
-import {ExampleSourceJournalComponentModel} from '../../../model/example_source_journal/example-source-journal-component.model';
 import {ExampleSourceJournalComponentDto} from './example-source-journal.component.dto';
 import {ExampleSourceComponentTypes} from '../example-source.component.types';
-import {ExampleSourceBookComponentDto} from '../example_source_book/example-source-book.component.dto';
 
 @Component({
   selector: 'app-example-source-newspaper',
   templateUrl: './example-source-journal.component.html',
 })
-export class ExampleSourceJournalComponent extends SourceComponent implements OnInit {
-  protected sourceModel: ExampleSourceJournalComponentModel;
+export class ExampleSourceJournalComponent extends SourceComponent {
+  protected _passageTitle = null;
+  protected _publishingDate = null;
 
   constructor() {
     super();
-    this.sourceModel = new ExampleSourceJournalComponentModel('', null, null, null, null);
   }
 
-  public get passageTitle() {
-    return this.sourceModel.passageTitle;
+  private get passageTitle() {
+    return this._passageTitle;
   }
 
-  public get page() {
-    return this.sourceModel.page;
+  private set passageTitle(newPassageTitle: string) {
+    if (this.passageTitle !== newPassageTitle) {
+      this._passageTitle = newPassageTitle;
+    }
   }
 
-  public get publishingDate() {
-    return this.sourceModel.publishingDate;
+  private get publishingDate() {
+    return this._publishingDate;
   }
 
-  public changePassageTitle(newTitle: string) {
-    this.sourceModel.passageTitle = newTitle;
+  private set publishingDate(newPublishingDate: string) {
+    if (this.publishingDate !== newPublishingDate) {
+      this._publishingDate = newPublishingDate;
+    }
+  }
+
+  private onPassageTitleChange(newTitle: string) {
+    this.passageTitle = newTitle;
+    this.fireSourceDataChangeEvent();
+  }
+
+  private onPublishingDateChange(newDate: string) {
+    this.publishingDate = newDate;
+    this.fireSourceDataChangeEvent();
+  }
+
+  protected fireSourceDataChangeEvent() {
     this.dataChange.emit(this.getDto());
   }
 
-  public dateChange(newDate: string) {
-    this.sourceModel.publishingDate = newDate;
-    this.dataChange.emit(this.getDto());
+  public update(data: ExampleSourceJournalComponentDto) {
+    let updatedAnything: boolean;
+    if (this.author !== data.author) {
+      this.author = data.author;
+      updatedAnything = true;
+    }
+    if (this.title !== data.title) {
+      this.title = data.title;
+      updatedAnything = true;
+    }
+    if (this.page !== data.page) {
+      this.page =  data.page;
+      updatedAnything = true;
+    }
+    if (this.passageTitle !== data.passageTitle) {
+      this.passageTitle = data.passageTitle;
+      updatedAnything = true;
+    }
+    if (this.publishingDate !== data.publishingDate) {
+      this.publishingDate = data.publishingDate;
+      updatedAnything = true;
+    }
+    if (updatedAnything === true) {
+      this.fireSourceDataChangeEvent();
+    }
   }
 
-  public changePageNumber(newNumber: string) {
-    this.sourceModel.page = +newNumber;
-    this.dataChange.emit(this.getDto());
-  }
-
-  ngOnInit(): void {
-  }
-
-  public fillData(data: ExampleSourceJournalComponentDto) {
-    this.sourceModel.author = data.author;
-    this.sourceModel.title = data.title;
-    this.sourceModel.page = data.page;
-    this.sourceModel.passageTitle = data.passageTitle;
-    this.sourceModel.publishingDate = data.publishingDate;
-    this.dataChange.emit(this.getDto());
-  }
-
-  getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto {
+  public getDto(): ExampleSourceJournalComponentDto {
     return {
       type: ExampleSourceComponentTypes.journal,
-      author: this.sourceModel.author,
-      title: this.sourceModel.title,
-      page: this.sourceModel.page,
-      passageTitle: this.sourceModel.passageTitle,
-      publishingDate: this.sourceModel.publishingDate,
+      author: this.author,
+      title: this.title,
+      page: this.page,
+      passageTitle: this.passageTitle,
+      publishingDate: this.publishingDate,
     };
   }
 }
