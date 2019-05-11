@@ -1,6 +1,4 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
-import {USER_SERVICE} from '../../../../core/user/injection-token';
-import {UserService} from '../../../../core/user/user-service.interface';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-example-proposal-approver-pending-item',
