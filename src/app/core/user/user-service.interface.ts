@@ -1,4 +1,5 @@
 export interface UserService {
   setUser(id: number): void;
-  getUser(): number;
+  getUser(id: number): string;
+  getCurrentUser(): number;
 }

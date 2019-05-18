@@ -12,10 +12,10 @@ export class ExampleProposalServiceModel {
   };
 
   public source: {
-    type: ExampleSourceServiceModelTypes,
-    author: string,
-    title: string,
-    page: number,
+    type: string,
+    author?: string,
+    title?: string,
+    page?: number,
     passageTitle?: string,
     publishingDate?: string,
     initialPublishingYear?: number,
@@ -38,10 +38,10 @@ export class ExampleProposalServiceModel {
     public note: string,
     public comment: string,
     source: {
-      type: ExampleSourceServiceModelTypes,
-      author: string,
-      title: string,
-      page: number,
+      type: string,
+      author?: string,
+      title?: string,
+      page?: number,
       passageTitle?: string,
       publishingDate?: string,
       initialPublishingYear?: number,

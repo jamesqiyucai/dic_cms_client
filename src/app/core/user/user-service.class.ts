@@ -4,12 +4,23 @@ import {UserService} from './user-service.interface';
 @Injectable()
 export class UserServiceImpl implements UserService {
   private user: number;
+  private userNames: Map<number, string>;
+
+  constructor() {
+    this.userNames = new Map();
+    this.userNames.set(1, 'Jason Chu');
+    this.userNames.set(2, 'Alex Sun');
+  }
 
   public setUser(id: number) {
     this.user = id;
   }
 
-  public getUser(): number {
+  public getCurrentUser(): number {
     return this.user;
+  }
+
+  public getUserName(id: number) {
+    return this.userNames.get(id);
   }
 }

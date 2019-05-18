@@ -9,11 +9,13 @@ import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from '../../../core/example_proposal_s
 import {ExampleProposalServiceIdentifierService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
 import {USER_SERVICE} from '../../../core/user/injection-token';
 import {UserService} from '../../../core/user/user-service.interface';
-import {ExampleProposalData} from './example-proposal.data';
 import {List} from 'immutable';
 import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
+import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../../../data_access/service/example_proposal/injection-token';
+import {ExampleProposalDataService} from '../../../data_access/service/example_proposal/example-proposal.data.service';
+import * as _ from 'lodash';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
@@ -21,27 +23,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   private _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
   public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
-  private static approvePersistentExampleProposal(identifier: number): Observable<any> {
-    return undefined;
-  }
-
-  private static rejectPersistentExampleProposal(identifier: number): Observable<any> {
-    return undefined;
-  }
-
-  private static createPersistentExampleProposal(identifier: number): Observable<number> {
-    return new Observable((observer) => {observer.next(1); });
-  }
-
-  private static getPersistentExampleProposal(id: number): Observable<ExampleProposalData> {
-    return undefined;
-  }
-
-  private static getPersistentPendingProposalIds(userId: number): Observable<number[]> {
-    return undefined;
-  }
-
   constructor(
+    @Inject(EXAMPLE_PROPOSAL_DATA_SERVICE) private exampleProposalDataService: ExampleProposalDataService,
     @Inject(EXAMPLE_PROPOSAL_SERV_ID_SERVICE) private identifierService: ExampleProposalServiceIdentifierService,
     @Inject(USER_SERVICE) private userService: UserService,
     private http: HttpClient
@@ -105,25 +88,25 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     );
   }
 
-  private makeModelFromPersistentData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes) {
-    return new ExampleProposalServiceModel(
-      this.identifierService.getId(),
-      purpose,
-      data.id,
-      data.initiator,
-      data.status,
-      data.exampleId,
-      data.version,
-      data.text,
-      data.format.italic,
-      data.translations,
-      data.keywords,
-      data.note,
-      data.comment,
-      data.source,
-      this,
-    );
-  }
+  // private makeModelFromPersistentData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes) {
+  //   return new ExampleProposalServiceModel(
+  //     this.identifierService.getId(),
+  //     purpose,
+  //     data.id,
+  //     data.initiator,
+  //     data.status,
+  //     data.exampleId,
+  //     data.version,
+  //     data.text,
+  //     data.format.italic,
+  //     data.translations,
+  //     data.keywords,
+  //     data.note,
+  //     data.comment,
+  //     data.source,
+  //     this,
+  //   );
+  // }
 
   private makeConcatenatedProposals(
     currentProposals: List<ExampleProposalServiceModel>,
@@ -170,7 +153,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     }
     ): number {
     const newProposal = this.makeModel(
-      this.userService.getUser(),
+      this.userService.getCurrentUser(),
       ExampleProposalPurposeServiceModelTypes.submit,
       exampleId,
       version,
@@ -187,11 +170,11 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public loadPendingProposalsInService(userId: number): void {
-    ExampleProposalServiceImplementation.getPersistentPendingProposalIds(userId).subscribe(ids => {
+    this.exampleProposalDataService.getProposalsByReviewer(userId).subscribe(ids => {
       let fetchedProposals: List<ExampleProposalServiceModel> = List(ids.map(() => undefined));
       let counter = 0;
       ids.forEach((id, index) => {
-        ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(data => {
+        this.exampleProposalDataService.get(id).subscribe(data => {
           counter += 1;
           fetchedProposals = fetchedProposals.update(
             index,
@@ -275,7 +258,23 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public submitExampleProposal(identifier: number): void {
-    ExampleProposalServiceImplementation.createPersistentExampleProposal(identifier).subscribe(
+    const model = _.cloneDeep(this.getProposal(identifier));
+    const proposalData = this.exampleProposalDataService.makeExampleProposalData(
+      model.id,
+      model.initiator,
+      this.userService.getCurrentUser(),
+      model.status,
+      model.exampleId,
+      model.version,
+      model.text,
+      model.format.italic,
+      model.translations,
+      model.keywords,
+      model.note,
+      model.comment,
+      model.source
+    );
+    this.exampleProposalDataService.post(this.getProposal(identifier)).subscribe(
       (id) => {
 
         this._exampleProposals.next(
@@ -306,17 +305,52 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public approveExampleProposal(identifier: number) {
-    ExampleProposalServiceImplementation.approvePersistentExampleProposal(identifier).subscribe(
+    this.exampleProposalDataService.approveProposal(this.getProposalIndex(identifier))
+      .subscribe(
       () => {
-        ExampleProposalServiceImplementation.getPersistentExampleProposal(this.getProposal(identifier).id).subscribe(
+        this.exampleProposalDataService.get(this.getProposal(identifier).id)
+          .subscribe(
           (data) => {
-            this._exampleProposals.next(
-              this._exampleProposals.value.update(
-                this.getProposalIndex(identifier),
-                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.display)
-              )
+            const newModel = new ExampleProposalServiceModel(
+              identifier,
+              undefined,
+              data.id,
+              data.initiator,
+              data.status,
+              data.exampleId,
+              data.version,
+              data.text,
+              data.format.italic,
+              data.translations,
+              data.keywords,
+              data.note,
+              data.comment,
+              data.source,
+              undefined,
             );
-          }
+    //         this._exampleProposals.next(
+    //           this._exampleProposals.value.update(
+    //             this.getProposalIndex(identifier),
+    //             () => new ExampleProposalServiceModel(
+    //               identifier,
+    //               undefined,
+    //               data.id,
+    //               data.initiator,
+    //               data.status,
+    //               data.exampleId,
+    //               data.version,
+    //               data.text,
+    //               data.format.italic,
+    //               data.translations,
+    //               data.keywords,
+    //               data.note,
+    //               data.comment,
+    //               data.source,
+    //               undefined,
+    //             );
+    //           );
+    //         )
+            }
           );
         },
       () => {},

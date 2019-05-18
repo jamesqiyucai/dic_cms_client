@@ -2,7 +2,13 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-example-proposal-approver-pending-item',
-  template: './example-proposal-approver-pending-item.component.html'
+  template: `
+    <div (click)="onItemClick()">
+      <div>Proposer:{{proposer}}</div>
+      <div>Text:{{text}}</div>
+      <div>Comment:{{comment}}</div>
+    </div>
+  `
 })
 export class ExampleProposalApproverPendingItemComponent {
   private _index: number;
@@ -21,7 +27,7 @@ export class ExampleProposalApproverPendingItemComponent {
     return this._selected;
   }
 
-  private set selected(newState: boolean) {
+  @Input() private set selected(newState: boolean) {
     this._selected = newState;
   }
 
@@ -57,7 +63,8 @@ export class ExampleProposalApproverPendingItemComponent {
     this._comment = newComment;
   }
 
-  public cancelFocus() {
-    this.selected = false;
+  private onItemClick() {
+    this.select.emit(this.index);
   }
+
 }

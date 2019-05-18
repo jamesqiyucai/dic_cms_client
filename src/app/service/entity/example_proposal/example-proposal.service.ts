@@ -1,7 +1,6 @@
 import {Observable} from 'rxjs';
 import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
 import {List} from 'immutable';
-import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_proposal/example-proposal-purpose.service.model.types';
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 

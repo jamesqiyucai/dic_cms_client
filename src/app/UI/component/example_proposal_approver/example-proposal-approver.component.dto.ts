@@ -1,5 +1,5 @@
-import {ExampleEditorComponentDto} from '../example_editor/example-editor.component.dto';
+import {ExampleProposalConstructorComponentDto} from '../example_proposal_constructor/example-proposal-constructor.component.dto';
 
-export interface ExampleProposalApproverComponentDto extends ExampleEditorComponentDto {
-  identifier: number;
+export interface ExampleProposalApproverComponentDto extends ExampleProposalConstructorComponentDto {
+  proposer: string;
 }

@@ -10,7 +10,7 @@
 //   constructor(@Inject(USER_SERVICE) private userService: UserService) {}
 //
 //   public showReview() {
-//     if (this.userService.getUser() === 1) {
+//     if (this.userService.getCurrentUser() === 1) {
 //       return true;
 //     } else {
 //       return false;
