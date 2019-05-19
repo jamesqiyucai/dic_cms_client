@@ -5,38 +5,36 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {FormatData} from '../../dto/format.data';
 import {BookSourceData} from '../../dto/book-source.data';
 import {JournalSourceData} from '../../dto/journal-source.data';
-import {SourceData} from '../../dto/source.data';
 import {Observable} from 'rxjs';
 import {ExampleProposalDataService} from './example-proposal.data.service';
 
 @Injectable()
 export class ExampleProposalDataServiceImplementation
   extends AbstractDataService<ExampleProposalData>
-  implements ExampleProposalDataService
-{
+  implements ExampleProposalDataService {
   protected domain = 'proposals';
 
-  private makeBookSourceData(
-    author: string,
-    title: string,
-    page: number,
-    initialPublishingYear: number,
-    publishedYear: number,
-    publishedPlace: string,
-  ) {
-    return new BookSourceData(author, title, page, initialPublishingYear, publishedYear, publishedPlace);
-  }
-
-  private makeJournalSourceData(
-    author: string,
-    title: string,
-    page: number,
-    passageTitle: string,
-    publishingDate: string,
-  ) {
-    return new JournalSourceData(author, title, passageTitle, publishingDate, page);
-  }
-
+  // private makeBookSourceData(
+  //   author: string,
+  //   title: string,
+  //   page: number,
+  //   initialPublishingYear: number,
+  //   publishedYear: number,
+  //   publishedPlace: string,
+  // ) {
+  //   return new BookSourceData(author, title, page, initialPublishingYear, publishedYear, publishedPlace);
+  // }
+  //
+  // private makeJournalSourceData(
+  //   author: string,
+  //   title: string,
+  //   page: number,
+  //   passageTitle: string,
+  //   publishingDate: string,
+  // ) {
+  //   return new JournalSourceData(author, title, passageTitle, publishingDate, page);
+  // }
+  //
   public makeExampleProposalData(
     id: number,
     initiator: number,

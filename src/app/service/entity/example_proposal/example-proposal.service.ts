@@ -8,6 +8,8 @@ export interface ExampleProposalService {
   types: ExampleProposalServiceModelTypesFactory;
   exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
+  updateView(): void;
+
   createExampleProposalInService(
     exampleId: number,
     version: number,

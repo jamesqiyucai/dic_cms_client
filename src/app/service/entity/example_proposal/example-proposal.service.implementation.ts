@@ -1,7 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {ExampleProposalService} from './example-proposal.service';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, from, Observable} from 'rxjs';
 import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
 import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
@@ -16,9 +15,11 @@ import {ExampleProposalServiceModelTypesFactory} from '../../model/example_propo
 import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../../../data_access/service/example_proposal/injection-token';
 import {ExampleProposalDataService} from '../../../data_access/service/example_proposal/example-proposal.data.service';
 import * as _ from 'lodash';
+import {map, mergeAll, mergeMap} from 'rxjs/operators';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
+  private _proposals: Array<ExampleProposalServiceModel>;
   public readonly types: ExampleProposalServiceModelTypesFactory;
   private _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
   public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
@@ -27,7 +28,6 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     @Inject(EXAMPLE_PROPOSAL_DATA_SERVICE) private exampleProposalDataService: ExampleProposalDataService,
     @Inject(EXAMPLE_PROPOSAL_SERV_ID_SERVICE) private identifierService: ExampleProposalServiceIdentifierService,
     @Inject(USER_SERVICE) private userService: UserService,
-    private http: HttpClient
   ) {
     this.types = new ExampleProposalServiceModelTypesFactory();
     this.init();
@@ -46,48 +46,52 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return this._exampleProposals.value.findIndex(proposal => proposal.identifier === identifier);
   }
 
-  private makeModel(
-    initiator: number,
-    purpose: ExampleProposalPurposeServiceModelTypes,
-    exampleId: number,
-    version: number,
-    text: string,
-    italic: Array<[number, number]>,
-    translations: Array<string>,
-    keywords: Array<string>,
-    note: string,
-    comment: string,
-    source: {
-      type: ExampleSourceServiceModelTypes,
-      author: string,
-      title: string,
-      page: number,
-      initialPublishingYear?: number,
-      publishedYear?: number,
-      publishedPlace?: string,
-      passageTitle?: string,
-      publishingDate?: string
-    },
-  ) {
-    return new ExampleProposalServiceModel(
-      this.identifierService.getId(),
-      purpose,
-      null,
-      initiator,
-      null,
-      exampleId,
-      version,
-      text,
-      italic,
-      translations,
-      keywords,
-      note,
-      comment,
-      source,
-      this,
-    );
+  public updateView() {
+
   }
 
+  // private makeModel(
+  //   initiator: number,
+  //   purpose: ExampleProposalPurposeServiceModelTypes,
+  //   exampleId: number,
+  //   version: number,
+  //   text: string,
+  //   italic: Array<[number, number]>,
+  //   translations: Array<string>,
+  //   keywords: Array<string>,
+  //   note: string,
+  //   comment: string,
+  //   source: {
+  //     type: ExampleSourceServiceModelTypes,
+  //     author: string,
+  //     title: string,
+  //     page: number,
+  //     initialPublishingYear?: number,
+  //     publishedYear?: number,
+  //     publishedPlace?: string,
+  //     passageTitle?: string,
+  //     publishingDate?: string
+  //   },
+  // ) {
+  //   return new ExampleProposalServiceModel(
+  //     this.identifierService.getId(),
+  //     purpose,
+  //     null,
+  //     initiator,
+  //     null,
+  //     exampleId,
+  //     version,
+  //     text,
+  //     italic,
+  //     translations,
+  //     keywords,
+  //     note,
+  //     comment,
+  //     source,
+  //     this,
+  //   );
+  // }
+  //
   // private makeModelFromPersistentData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes) {
   //   return new ExampleProposalServiceModel(
   //     this.identifierService.getId(),
@@ -152,9 +156,12 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       publishingDate?: string
     }
     ): number {
-    const newProposal = this.makeModel(
-      this.userService.getCurrentUser(),
+    const newProposal = new ExampleProposalServiceModel(
+      this.identifierService.getId(),
       ExampleProposalPurposeServiceModelTypes.submit,
+      null,
+      this.userService.getCurrentUser(),
+      null,
       exampleId,
       version,
       text,
@@ -163,29 +170,67 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       keywords,
       note,
       comment,
-      source
+      source,
+      this
     );
     this._exampleProposals.next(this._exampleProposals.value.push(newProposal));
     return newProposal.identifier;
   }
 
   public loadPendingProposalsInService(userId: number): void {
-    this.exampleProposalDataService.getProposalsByReviewer(userId).subscribe(ids => {
-      let fetchedProposals: List<ExampleProposalServiceModel> = List(ids.map(() => undefined));
-      let counter = 0;
-      ids.forEach((id, index) => {
-        this.exampleProposalDataService.get(id).subscribe(data => {
-          counter += 1;
-          fetchedProposals = fetchedProposals.update(
-            index,
-            () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
+    this.exampleProposalDataService.getProposalsByReviewer(userId)
+      .pipe(
+        map(ids => from(ids)),
+        mergeAll(),
+        mergeMap(id => this.exampleProposalDataService.get(id))
+      )
+      .subscribe(proposal => {
+        const i = this._exampleProposals.value.findIndex(model => model.id === proposal.id);
+        if (i !== -1) {
+          this._exampleProposals.next(
+            this._exampleProposals.value.update(i, oldModel => {
+              return new ExampleProposalServiceModel(
+                oldModel.identifier,
+                ExampleProposalPurposeServiceModelTypes.review,
+                proposal.id,
+                proposal.initiator,
+                proposal.status,
+                proposal.exampleId,
+                proposal.version,
+                proposal.text,
+                proposal.format.italic,
+                proposal.translations,
+                proposal.keywords,
+                proposal.note,
+                proposal.comment,
+                proposal.source,
+                this,
+              );
+            }));
+        } else {
+          this._exampleProposals.next(
+            this._exampleProposals.value.push(
+              new ExampleProposalServiceModel(
+                this.identifierService.getId(),
+                ExampleProposalPurposeServiceModelTypes.review,
+                proposal.id,
+                proposal.initiator,
+                proposal.status,
+                proposal.exampleId,
+                proposal.version,
+                proposal.text,
+                proposal.format.italic,
+                proposal.translations,
+                proposal.keywords,
+                proposal.note,
+                proposal.comment,
+                proposal.source,
+                this,
+              )
+            )
           );
-          if (counter === ids.length) {
-            this._exampleProposals.next(this.makeConcatenatedProposals(this._exampleProposals.value, fetchedProposals));
-          }
-        });
+        }
       });
-    });
   }
 
   public updateExampleProposalInService(
@@ -274,34 +319,33 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       model.comment,
       model.source
     );
-    this.exampleProposalDataService.post(this.getProposal(identifier)).subscribe(
-      (id) => {
-
-        this._exampleProposals.next(
-          this._exampleProposals.value.update(
-            this.getProposalIndex(identifier),
-            (m) => {
-              const temp = m;
-              temp.purpose = ExampleProposalPurposeServiceModelTypes.review;
-              return temp;
-            }
-          )
-        );
-
-        // ExampleProposalServiceImplementation.getPersistentExampleProposal(id).subscribe(
-        //   (data) => {
-        //     this._exampleProposals.next(
-        //       this._exampleProposals.value.update(
-        //         identifier,
-        //         () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.review)
-        //       )
-        //     );
-        //   },
-        //   () => {},
-        // );
-      },
-      () => {},
-    );
+    this.exampleProposalDataService.post(proposalData)
+      .pipe(
+        map(id => this.exampleProposalDataService.get(id)),
+        mergeAll(),
+      )
+      .subscribe(
+        (data) => {
+          const newModel = new ExampleProposalServiceModel(
+            identifier,
+            ExampleProposalPurposeServiceModelTypes.display,
+            data.id,
+            data.initiator,
+            data.status,
+            data.exampleId,
+            data.version,
+            data.text,
+            data.format.italic,
+            data.translations,
+            data.keywords,
+            data.note,
+            data.comment,
+            data.source,
+            undefined,
+          );
+          this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
+        }
+      );
   }
 
   public approveExampleProposal(identifier: number) {
@@ -313,7 +357,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
           (data) => {
             const newModel = new ExampleProposalServiceModel(
               identifier,
-              undefined,
+              ExampleProposalPurposeServiceModelTypes.display,
               data.id,
               data.initiator,
               data.status,
@@ -328,28 +372,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
               data.source,
               undefined,
             );
-    //         this._exampleProposals.next(
-    //           this._exampleProposals.value.update(
-    //             this.getProposalIndex(identifier),
-    //             () => new ExampleProposalServiceModel(
-    //               identifier,
-    //               undefined,
-    //               data.id,
-    //               data.initiator,
-    //               data.status,
-    //               data.exampleId,
-    //               data.version,
-    //               data.text,
-    //               data.format.italic,
-    //               data.translations,
-    //               data.keywords,
-    //               data.note,
-    //               data.comment,
-    //               data.source,
-    //               undefined,
-    //             );
-    //           );
-    //         )
+            this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
             }
           );
         },
@@ -358,16 +381,30 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   public rejectExampleProposal(identifier: number) {
-    ExampleProposalServiceImplementation.rejectPersistentExampleProposal(identifier).subscribe(
+    this.exampleProposalDataService.rejectProposal(this.getProposalIndex(identifier))
+      .subscribe(
       () => {
-        ExampleProposalServiceImplementation.getPersistentExampleProposal(this.getProposal(identifier).id).subscribe(
+        this.exampleProposalDataService.get(this.getProposal(identifier).id)
+          .subscribe(
           (data) => {
-            this._exampleProposals.next(
-              this._exampleProposals.value.update(
-                this.getProposalIndex(identifier),
-                () => this.makeModelFromPersistentData(data, ExampleProposalPurposeServiceModelTypes.display)
-              )
+            const newModel = new ExampleProposalServiceModel(
+              identifier,
+              ExampleProposalPurposeServiceModelTypes.display,
+              data.id,
+              data.initiator,
+              data.status,
+              data.exampleId,
+              data.version,
+              data.text,
+              data.format.italic,
+              data.translations,
+              data.keywords,
+              data.note,
+              data.comment,
+              data.source,
+              undefined,
             );
+            this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
           }
         );
       },

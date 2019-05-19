@@ -1,7 +1,4 @@
-import {BookSourceData} from '../../dto/book-source.data';
-import {JournalSourceData} from '../../dto/journal-source.data';
 import {ExampleProposalData} from '../../dto/example-proposal.data';
-import {SourceData} from '../../dto/source.data';
 import {Observable} from 'rxjs';
 
 export interface ExampleProposalDataService {
