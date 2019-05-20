@@ -14,9 +14,9 @@ export interface ExampleProposalService {
     exampleId: number,
     version: number,
     text: string,
-    italic: Array<[number, number]>,
-    translations: Array<string>,
-    keywords: Array<string>,
+    italic: List<[number, number]>,
+    translations: List<string>,
+    keywords: List<string>,
     note: string,
     comment: string,
     source: {
@@ -37,9 +37,9 @@ export interface ExampleProposalService {
   updateExampleProposalInService(
     identifier: number,
     text?: string,
-    italic?: Array<[number, number]>,
-    translations?: Array<string>,
-    keywords?: Array<string>,
+    italic?: List<[number, number]>,
+    translations?: List<string>,
+    keywords?: List<string>,
     note?: string,
     comment?: string,
     source?: {
@@ -55,7 +55,7 @@ export interface ExampleProposalService {
     }
   ): void;
 
-  removeExampleProposalInService(identifier: number): void;
+  // removeExampleProposalInService(identifier: number): void;
 
   submitExampleProposal(identifier: number): void;
 

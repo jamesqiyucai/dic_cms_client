@@ -2,8 +2,6 @@ import {Inject, Injectable} from '@angular/core';
 import {ExampleProposalService} from './example-proposal.service';
 import {BehaviorSubject, from, Observable} from 'rxjs';
 import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
-import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
-import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
 import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from '../../../core/example_proposal_serv_id/injection-token';
 import {ExampleProposalServiceIdentifierService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
 import {USER_SERVICE} from '../../../core/user/injection-token';
@@ -14,14 +12,13 @@ import {ExampleSourceServiceModelTypes} from '../../model/example_source/example
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../../../data_access/service/example_proposal/injection-token';
 import {ExampleProposalDataService} from '../../../data_access/service/example_proposal/example-proposal.data.service';
-import * as _ from 'lodash';
 import {map, mergeAll, mergeMap} from 'rxjs/operators';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
   private _proposals: Array<ExampleProposalServiceModel>;
-  public readonly types: ExampleProposalServiceModelTypesFactory;
   private _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
+  public readonly types: ExampleProposalServiceModelTypesFactory;
   public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
   constructor(
@@ -35,113 +32,29 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   private init() {
-    this._exampleProposals = new BehaviorSubject<List<ExampleProposalServiceModel>>(List([]));
+    this._proposals = [];
+    this._exampleProposals = new BehaviorSubject<List<ExampleProposalServiceModel>>(List(this._proposals));
   }
 
   private getProposal(identifier: number): ExampleProposalServiceModel {
-    return this._exampleProposals.getValue().find(proposal => proposal.identifier === identifier);
+    return this._proposals.find(proposal => proposal.identifier === identifier);
   }
 
   private getProposalIndex(identifier: number): number {
-    return this._exampleProposals.value.findIndex(proposal => proposal.identifier === identifier);
+    return this._proposals.findIndex(proposal => proposal.identifier === identifier);
   }
 
   public updateView() {
-
-  }
-
-  // private makeModel(
-  //   initiator: number,
-  //   purpose: ExampleProposalPurposeServiceModelTypes,
-  //   exampleId: number,
-  //   version: number,
-  //   text: string,
-  //   italic: Array<[number, number]>,
-  //   translations: Array<string>,
-  //   keywords: Array<string>,
-  //   note: string,
-  //   comment: string,
-  //   source: {
-  //     type: ExampleSourceServiceModelTypes,
-  //     author: string,
-  //     title: string,
-  //     page: number,
-  //     initialPublishingYear?: number,
-  //     publishedYear?: number,
-  //     publishedPlace?: string,
-  //     passageTitle?: string,
-  //     publishingDate?: string
-  //   },
-  // ) {
-  //   return new ExampleProposalServiceModel(
-  //     this.identifierService.getId(),
-  //     purpose,
-  //     null,
-  //     initiator,
-  //     null,
-  //     exampleId,
-  //     version,
-  //     text,
-  //     italic,
-  //     translations,
-  //     keywords,
-  //     note,
-  //     comment,
-  //     source,
-  //     this,
-  //   );
-  // }
-  //
-  // private makeModelFromPersistentData(data: ExampleProposalData, purpose: ExampleProposalPurposeServiceModelTypes) {
-  //   return new ExampleProposalServiceModel(
-  //     this.identifierService.getId(),
-  //     purpose,
-  //     data.id,
-  //     data.initiator,
-  //     data.status,
-  //     data.exampleId,
-  //     data.version,
-  //     data.text,
-  //     data.format.italic,
-  //     data.translations,
-  //     data.keywords,
-  //     data.note,
-  //     data.comment,
-  //     data.source,
-  //     this,
-  //   );
-  // }
-
-  private makeConcatenatedProposals(
-    currentProposals: List<ExampleProposalServiceModel>,
-    fetchedProposals: List<ExampleProposalServiceModel>
-  ): List<ExampleProposalServiceModel> {
-    let newProposals: List<ExampleProposalServiceModel>;
-    fetchedProposals.forEach(p => {
-      const i = currentProposals.findIndex(val => val.id === p.id);
-      if (i !== -1) {
-        newProposals = currentProposals.update(
-          i,
-          () => p,
-        );
-      } else {
-        newProposals = currentProposals.push(p);
-      }
-    });
-    return newProposals ? newProposals : List([]);
-  }
-
-  public removeExampleProposalInService(identifier: number): void {
-    this._exampleProposals.next(this._exampleProposals.value.delete(this.getProposalIndex(identifier)));
+    this._exampleProposals.next(List(this._proposals));
   }
 
   public createExampleProposalInService(
     exampleId: number,
     version: number,
     text: string,
-    italic: Array<[number, number]>,
-    translations: Array<string>,
-    keywords: Array<string>,
+    italic: List<[number, number]>,
+    translations: List<string>,
+    keywords: List<string>,
     note: string,
     comment: string,
     source: {
@@ -173,7 +86,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       source,
       this
     );
-    this._exampleProposals.next(this._exampleProposals.value.push(newProposal));
+    this._proposals.push(newProposal);
+    this.updateView();
     return newProposal.identifier;
   }
 
@@ -185,62 +99,50 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeMap(id => this.exampleProposalDataService.get(id))
       )
       .subscribe(proposal => {
-        const i = this._exampleProposals.value.findIndex(model => model.id === proposal.id);
+        const i = this._proposals.findIndex(model => model.id === proposal.id);
         if (i !== -1) {
-          this._exampleProposals.next(
-            this._exampleProposals.value.update(i, oldModel => {
-              return new ExampleProposalServiceModel(
-                oldModel.identifier,
-                ExampleProposalPurposeServiceModelTypes.review,
-                proposal.id,
-                proposal.initiator,
-                proposal.status,
-                proposal.exampleId,
-                proposal.version,
-                proposal.text,
-                proposal.format.italic,
-                proposal.translations,
-                proposal.keywords,
-                proposal.note,
-                proposal.comment,
-                proposal.source,
-                this,
-              );
-            }));
+          const proposalToUpdate = this._proposals[i];
+          proposalToUpdate.purpose = ExampleProposalPurposeServiceModelTypes.review;
+          proposalToUpdate.status = proposal.status;
+          proposalToUpdate.exampleId = proposal.exampleId;
+          proposalToUpdate.version = proposal.version;
+          proposalToUpdate.text = proposal.text;
+          proposalToUpdate.italic = List(proposal.format.italic);
+          proposalToUpdate.translations = List(proposal.translations);
+          proposalToUpdate.keywords = List(proposal.keywords);
+          proposalToUpdate.note = proposal.note;
+          proposalToUpdate.comment = proposal.comment;
+          proposalToUpdate.source = proposal.source;
         } else {
-          this._exampleProposals.next(
-            this._exampleProposals.value.push(
-              new ExampleProposalServiceModel(
-                this.identifierService.getId(),
-                ExampleProposalPurposeServiceModelTypes.review,
-                proposal.id,
-                proposal.initiator,
-                proposal.status,
-                proposal.exampleId,
-                proposal.version,
-                proposal.text,
-                proposal.format.italic,
-                proposal.translations,
-                proposal.keywords,
-                proposal.note,
-                proposal.comment,
-                proposal.source,
-                this,
-              )
-            )
-          );
-        }
-      });
+          this._proposals.push(
+            new ExampleProposalServiceModel(
+              this.identifierService.getId(),
+              ExampleProposalPurposeServiceModelTypes.review,
+              proposal.id,
+              proposal.initiator,
+              proposal.status,
+              proposal.exampleId,
+              proposal.version,
+              proposal.text,
+              List(proposal.format.italic),
+              List(proposal.translations),
+              List(proposal.keywords),
+              proposal.note,
+              proposal.comment,
+              proposal.source,
+              this,
+              ));
+        }});
   }
 
   public updateExampleProposalInService(
     identifier: number,
-    text: string = this.getProposal(identifier).text,
-    italic: Array<[number, number]> = this.getProposal(identifier).format.italic,
-    translations: Array<string> = this.getProposal(identifier).translations,
-    keywords: Array<string> = this.getProposal(identifier).keywords,
-    note: string = this.getProposal(identifier).note,
-    comment: string = this.getProposal(identifier).comment,
+    text: string,
+    italic: List<[number, number]>,
+    translations: List<string>,
+    keywords: List<string>,
+    note: string,
+    comment: string,
     source: {
       type: ExampleSourceServiceModelTypes,
       author: string,
@@ -251,73 +153,34 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       publishedPlace?: string,
       passageTitle?: string,
       publishingDate?: string
-    } = this.getProposal(identifier).source,
+    },
     ): void {
-    this._exampleProposals.next(this._exampleProposals.value.update(
-      this.getProposalIndex(identifier),
-      (proposal) => {
-        proposal.text = text;
-        proposal.format.italic = italic;
-        proposal.translations = translations;
-        proposal.keywords = keywords;
-        proposal.note = note;
-        proposal.comment = comment;
-
-
-        let proposalSource;
-
-        if (source) {
-          switch (source.type) {
-            case ExampleSourceServiceModelTypes.book: {
-              proposalSource = new ExampleSourceBookServiceModel(
-                source.author,
-                source.title,
-                source.page,
-                source.initialPublishingYear,
-                source.publishedYear,
-                source.publishedPlace
-              );
-              break;
-            }
-            case ExampleSourceServiceModelTypes.journal: {
-              proposalSource = new ExampleSourceJournalServiceModel(
-                source.author,
-                source.title,
-                source.page,
-                source.publishingDate,
-                source.passageTitle
-              );
-              break;
-            }
-          }
-        } else {
-          proposalSource = null;
-        }
-
-
-
-        proposal.source = proposalSource;
-        return proposal;
-      },
-    ));
+    const proposalToUpdate = this._proposals[this.getProposalIndex(identifier)];
+    proposalToUpdate.text = text;
+    proposalToUpdate.italic = List(italic);
+    proposalToUpdate.translations = List(translations);
+    proposalToUpdate.keywords = List(keywords);
+    proposalToUpdate.note = note;
+    proposalToUpdate.comment = comment;
+    proposalToUpdate.source = source;
   }
 
   public submitExampleProposal(identifier: number): void {
-    const model = _.cloneDeep(this.getProposal(identifier));
+    const proposalToSubmit = this.getProposal(identifier);
     const proposalData = this.exampleProposalDataService.makeExampleProposalData(
-      model.id,
-      model.initiator,
+      proposalToSubmit.id,
+      proposalToSubmit.initiator,
       this.userService.getCurrentUser(),
-      model.status,
-      model.exampleId,
-      model.version,
-      model.text,
-      model.format.italic,
-      model.translations,
-      model.keywords,
-      model.note,
-      model.comment,
-      model.source
+      proposalToSubmit.status,
+      proposalToSubmit.exampleId,
+      proposalToSubmit.version,
+      proposalToSubmit.text,
+      proposalToSubmit.italic,
+      proposalToSubmit.translations,
+      proposalToSubmit.keywords,
+      proposalToSubmit.note,
+      proposalToSubmit.comment,
+      proposalToSubmit.source
     );
     this.exampleProposalDataService.post(proposalData)
       .pipe(
@@ -326,89 +189,60 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       )
       .subscribe(
         (data) => {
-          const newModel = new ExampleProposalServiceModel(
-            identifier,
-            ExampleProposalPurposeServiceModelTypes.display,
-            data.id,
-            data.initiator,
-            data.status,
-            data.exampleId,
-            data.version,
-            data.text,
-            data.format.italic,
-            data.translations,
-            data.keywords,
-            data.note,
-            data.comment,
-            data.source,
-            undefined,
-          );
-          this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
+          proposalToSubmit.id = data.id;
+          proposalToSubmit.status = data.status;
+          proposalToSubmit.exampleId = data.exampleId;
+          proposalToSubmit.version = data.version;
+          proposalToSubmit.text = data.text;
+          proposalToSubmit.italic = List(data.format.italic);
+          proposalToSubmit.translations = List(data.translations);
+          proposalToSubmit.keywords = List(data.keywords);
+          proposalToSubmit.note = data.note;
+          proposalToSubmit.comment = data.comment;
+          proposalToSubmit.source = data.source;
         }
       );
   }
 
   public approveExampleProposal(identifier: number) {
-    this.exampleProposalDataService.approveProposal(this.getProposalIndex(identifier))
-      .subscribe(
-      () => {
-        this.exampleProposalDataService.get(this.getProposal(identifier).id)
-          .subscribe(
-          (data) => {
-            const newModel = new ExampleProposalServiceModel(
-              identifier,
-              ExampleProposalPurposeServiceModelTypes.display,
-              data.id,
-              data.initiator,
-              data.status,
-              data.exampleId,
-              data.version,
-              data.text,
-              data.format.italic,
-              data.translations,
-              data.keywords,
-              data.note,
-              data.comment,
-              data.source,
-              undefined,
-            );
-            this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
-            }
-          );
-        },
-      () => {},
-      );
+    const proposalToApprove = this.getProposal(identifier);
+    this.exampleProposalDataService.approveProposal(proposalToApprove.id)
+      .pipe(
+        mergeMap(() => this.exampleProposalDataService.get(proposalToApprove.id))
+      )
+      .subscribe((data) => {
+        proposalToApprove.id = data.id;
+        proposalToApprove.status = data.status;
+        proposalToApprove.exampleId = data.exampleId;
+        proposalToApprove.version = data.version;
+        proposalToApprove.text = data.text;
+        proposalToApprove.italic = List(data.format.italic);
+        proposalToApprove.translations = List(data.translations);
+        proposalToApprove.keywords = List(data.keywords);
+        proposalToApprove.note = data.note;
+        proposalToApprove.comment = data.comment;
+        proposalToApprove.source = data.source;
+      });
   }
 
   public rejectExampleProposal(identifier: number) {
-    this.exampleProposalDataService.rejectProposal(this.getProposalIndex(identifier))
-      .subscribe(
-      () => {
-        this.exampleProposalDataService.get(this.getProposal(identifier).id)
-          .subscribe(
-          (data) => {
-            const newModel = new ExampleProposalServiceModel(
-              identifier,
-              ExampleProposalPurposeServiceModelTypes.display,
-              data.id,
-              data.initiator,
-              data.status,
-              data.exampleId,
-              data.version,
-              data.text,
-              data.format.italic,
-              data.translations,
-              data.keywords,
-              data.note,
-              data.comment,
-              data.source,
-              undefined,
-            );
-            this._exampleProposals.next(this._exampleProposals.value.update(this.getProposalIndex(identifier), () => newModel));
-          }
-        );
-      },
-      () => {}
-    );
+    const proposalToReject = this.getProposal(identifier);
+    this.exampleProposalDataService.rejectProposal(proposalToReject.id)
+      .pipe(
+        mergeMap(() => this.exampleProposalDataService.get(proposalToReject.id))
+      )
+      .subscribe((data) => {
+        proposalToReject.id = data.id;
+        proposalToReject.status = data.status;
+        proposalToReject.exampleId = data.exampleId;
+        proposalToReject.version = data.version;
+        proposalToReject.text = data.text;
+        proposalToReject.italic = List(data.format.italic);
+        proposalToReject.translations = List(data.translations);
+        proposalToReject.keywords = List(data.keywords);
+        proposalToReject.note = data.note;
+        proposalToReject.comment = data.comment;
+        proposalToReject.source = data.source;
+      });
   }
 }

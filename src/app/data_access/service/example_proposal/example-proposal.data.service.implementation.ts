@@ -7,6 +7,7 @@ import {BookSourceData} from '../../dto/book-source.data';
 import {JournalSourceData} from '../../dto/journal-source.data';
 import {Observable} from 'rxjs';
 import {ExampleProposalDataService} from './example-proposal.data.service';
+import {List} from 'immutable';
 
 @Injectable()
 export class ExampleProposalDataServiceImplementation
@@ -43,9 +44,9 @@ export class ExampleProposalDataServiceImplementation
     exampleId: number,
     version: number,
     text: string,
-    italic: Array<[number, number]>,
-    translations: Array<string>,
-    keywords: Array<string>,
+    italic: List<[number, number]>,
+    translations: List<string>,
+    keywords: List<string>,
     note: string,
     comment: string,
     source: {
@@ -95,9 +96,9 @@ export class ExampleProposalDataServiceImplementation
       exampleId,
       version,
       text,
-      new FormatData(italic),
-      translations,
-      keywords,
+      new FormatData(italic.toArray()),
+      translations.toArray(),
+      keywords.toArray(),
       note,
       comment,
       newSource,

@@ -4,12 +4,13 @@ import {ExampleSourceBookServiceModel} from '../example_source/example-source-bo
 import {ExampleSourceJournalServiceModel} from '../example_source/example-source-journal.service.model';
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
+import * as _ from 'lodash';
 
 export class ExampleProposalServiceModel {
   public readonly identifier: number;
   private _purpose: ExampleProposalPurposeServiceModelTypes;
   private _id: number;
-  private _initiator: number;
+  public readonly initiator: number;
   private _status: string;
   private _exampleId: number;
   private _version: number;
@@ -52,7 +53,7 @@ export class ExampleProposalServiceModel {
     this.identifier = identifier;
     this._purpose = purpose;
     this._id = id;
-    this._initiator = initiator;
+    this.initiator = initiator;
     this._status = status;
     this._exampleId = exampleId;
     this._version = version;
@@ -101,6 +102,167 @@ export class ExampleProposalServiceModel {
   public set purpose(newPurpose: ExampleProposalPurposeServiceModelTypes) {
     if (this._purpose !== newPurpose) {
       this._purpose = newPurpose;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get id() {
+    return this._id;
+  }
+
+  public set id(newId: number) {
+    if (this._id !== newId) {
+      this._id = newId;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get status() {
+    return this._status;
+  }
+
+  public set status(newStatus: string) {
+    if (this._status !== newStatus) {
+      this._status = newStatus;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get exampleId() {
+    return this._exampleId;
+  }
+
+  public set exampleId(newExampleId: number) {
+    if (this._exampleId !== newExampleId) {
+      this._exampleId = newExampleId;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get version() {
+    return this._version;
+  }
+
+  public set version(newVersion: number) {
+    if (this._version !== newVersion) {
+      this._version = newVersion;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get text() {
+    return this._text;
+  }
+
+  public set text(newText: string) {
+    if (this._text !== newText) {
+      this._text = newText;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get italic() {
+    return List(this._italic);
+  }
+
+  public set italic(newItalic: List<[number, number]>) {
+    if (!newItalic.equals(this.italic)) {
+      this._italic = newItalic.toArray();
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get translations() {
+    return List(this._translations);
+  }
+
+  public set translations(newTranslations: List<string>) {
+    if (!newTranslations.equals(this.translations)) {
+      this._translations = newTranslations.toArray();
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get keywords() {
+    return List(this._keywords);
+  }
+
+  public set keywords(newKeywords: List<string>) {
+    if (!newKeywords.equals(this.keywords)) {
+      this._keywords = newKeywords.toArray();
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get note() {
+    return this._note;
+  }
+
+  public set note(newNote: string) {
+    if (this._note !== newNote) {
+      this._note = newNote;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get comment() {
+    return this._comment;
+  }
+
+  public set comment(newComment: string) {
+    if (this._comment !== newComment) {
+      this._comment = newComment;
+      this.exampleProposalService.updateView();
+    }
+  }
+
+  public get source() {
+    return _.cloneDeep(this._source);
+  }
+
+  public set source(
+    newSource: {
+      type: string,
+      author?: string,
+      title?: string,
+      page?: number,
+      passageTitle?: string,
+      publishingDate?: string,
+      initialPublishingYear?: number,
+      publishedYear?: number,
+      publishedPlace?: string,
+    }) {
+    let model: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
+    if (newSource) {
+      switch (newSource.type) {
+        case ExampleSourceServiceModelTypes.book: {
+          model = new ExampleSourceBookServiceModel(
+            newSource.author,
+            newSource.title,
+            newSource.page,
+            newSource.initialPublishingYear,
+            newSource.publishedYear,
+            newSource.publishedPlace
+          );
+          break;
+        }
+        case ExampleSourceServiceModelTypes.journal: {
+          model = new ExampleSourceJournalServiceModel(
+            newSource.author,
+            newSource.title,
+            newSource.page,
+            newSource.publishingDate,
+            newSource.passageTitle
+          );
+          break;
+        }
+      }
+    } else {
+      model = null;
+    }
+
+    if (!_.isEqual(model, this._source)) {
+      this._source = model;
       this.exampleProposalService.updateView();
     }
   }

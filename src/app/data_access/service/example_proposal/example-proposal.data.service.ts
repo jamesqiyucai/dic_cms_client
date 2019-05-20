@@ -1,5 +1,6 @@
 import {ExampleProposalData} from '../../dto/example-proposal.data';
 import {Observable} from 'rxjs';
+import {List} from 'immutable';
 
 export interface ExampleProposalDataService {
   makeExampleProposalData(
@@ -10,9 +11,9 @@ export interface ExampleProposalDataService {
     exampleId: number,
     version: number,
     text: string,
-    italic: Array<[number, number]>,
-    translations: Array<string>,
-    keywords: Array<string>,
+    italic: List<[number, number]>,
+    translations: List<string>,
+    keywords: List<string>,
     note: string,
     comment: string,
     source: {
