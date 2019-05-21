@@ -15,27 +15,6 @@ export class ExampleProposalDataServiceImplementation
   implements ExampleProposalDataService {
   protected domain = 'proposals';
 
-  // private makeBookSourceData(
-  //   author: string,
-  //   title: string,
-  //   page: number,
-  //   initialPublishingYear: number,
-  //   publishedYear: number,
-  //   publishedPlace: string,
-  // ) {
-  //   return new BookSourceData(author, title, page, initialPublishingYear, publishedYear, publishedPlace);
-  // }
-  //
-  // private makeJournalSourceData(
-  //   author: string,
-  //   title: string,
-  //   page: number,
-  //   passageTitle: string,
-  //   publishingDate: string,
-  // ) {
-  //   return new JournalSourceData(author, title, passageTitle, publishingDate, page);
-  // }
-  //
   public makeExampleProposalData(
     id: number,
     initiator: number,

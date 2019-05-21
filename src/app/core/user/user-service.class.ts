@@ -20,7 +20,7 @@ export class UserServiceImpl implements UserService {
     return this.user;
   }
 
-  public getUserName(id: number) {
+  public getUser(id: number) {
     return this.userNames.get(id);
   }
 }

@@ -7,7 +7,7 @@ export abstract class AbstractDataService<T> {
   protected constructor(protected http: HttpClient) {}
 
   public get(id: number): Observable<T> {
-    return this.http.get(`/api/${id}`) as Observable<T>;
+    return this.http.get(`/api/${this.domain}/${id}`) as Observable<T>;
   }
 
   public post<R>(entity: T): Observable<R> {

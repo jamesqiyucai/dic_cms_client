@@ -9,6 +9,12 @@ import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from './example_proposal_serv_id/injec
 import {ExampleProposalServIdServiceImpl} from './example_proposal_serv_id/example-proposal-serv-id.service';
 import {EXAMPLE_SERVICE} from '../service/entity/example/injection-token';
 import {ExampleServiceImplementation} from '../service/entity/example/example.service.implementation';
+import {EXAMPLE_PROPOSAL_SERVICE} from '../service/entity/example_proposal/injection-token';
+import {ExampleProposalServiceImplementation} from '../service/entity/example_proposal/example-proposal.service.implementation';
+import {
+  ExampleProposalDataServiceImplementation
+} from '../data_access/service/example_proposal/example-proposal.data.service.implementation';
+import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../data_access/service/example_proposal/injection-token';
 
 @NgModule({
   imports: [
@@ -19,6 +25,8 @@ import {ExampleServiceImplementation} from '../service/entity/example/example.se
     {provide: EXAMPLE_SERV_ID_SERVICE, useClass: ExampleServIdServiceImpl},
     {provide: EXAMPLE_SERVICE, useClass: ExampleServiceImplementation},
     {provide: EXAMPLE_PROPOSAL_SERV_ID_SERVICE, useClass: ExampleProposalServIdServiceImpl},
+    {provide: EXAMPLE_PROPOSAL_SERVICE, useClass: ExampleProposalServiceImplementation},
+    {provide: EXAMPLE_PROPOSAL_DATA_SERVICE, useClass: ExampleProposalDataServiceImplementation}
   ]
 })
 export class CoreModule {

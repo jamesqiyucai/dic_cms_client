@@ -55,28 +55,33 @@ export class ExampleProposalData {
     this.keywords = keywords;
     this.note = note;
     this.comment = comment;
-    switch (source.type) {
-      case 'book': {
-        this.source = new BookSourceData(
-          source.author,
-          source.title,
-          source.page,
-          source.initialPublishingYear,
-          source.publishedYear,
-          source.publishedPlace,
-        );
-        break;
+    if (source) {
+      switch (source.type) {
+        case 'book': {
+          this.source = new BookSourceData(
+            source.author,
+            source.title,
+            source.page,
+            source.initialPublishingYear,
+            source.publishedYear,
+            source.publishedPlace,
+          );
+          break;
+        }
+        case 'journal': {
+          this.source = new JournalSourceData(
+            source.author,
+            source.title,
+            source.passageTitle,
+            source.publishingDate,
+            source.page,
+          );
+          break;
+        }
       }
-      case 'journal': {
-        this.source = new JournalSourceData(
-          source.author,
-          source.title,
-          source.passageTitle,
-          source.publishingDate,
-          source.page,
-        );
-        break;
-      }
+
+    } else {
+      this.source = source;
     }
   }
 }

@@ -16,8 +16,8 @@ import {map, mergeAll, mergeMap} from 'rxjs/operators';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
-  private _proposals: Array<ExampleProposalServiceModel>;
-  private _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
+  private readonly _proposals: Array<ExampleProposalServiceModel>;
+  private readonly _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
   public readonly types: ExampleProposalServiceModelTypesFactory;
   public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
 
@@ -27,13 +27,9 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     @Inject(USER_SERVICE) private userService: UserService,
   ) {
     this.types = new ExampleProposalServiceModelTypesFactory();
-    this.init();
-    this.exampleProposals = this._exampleProposals.asObservable();
-  }
-
-  private init() {
     this._proposals = [];
     this._exampleProposals = new BehaviorSubject<List<ExampleProposalServiceModel>>(List(this._proposals));
+    this.exampleProposals = this._exampleProposals.asObservable();
   }
 
   private getProposal(identifier: number): ExampleProposalServiceModel {
@@ -189,6 +185,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       )
       .subscribe(
         (data) => {
+          console.log('succeeded');
           proposalToSubmit.id = data.id;
           proposalToSubmit.status = data.status;
           proposalToSubmit.exampleId = data.exampleId;

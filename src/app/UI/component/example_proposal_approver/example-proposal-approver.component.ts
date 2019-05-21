@@ -10,7 +10,6 @@ import {map} from 'rxjs/operators';
 import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
-import {ExampleProposalConstructorComponentDto} from '../example_proposal_constructor/example-proposal-constructor.component.dto';
 
 @Component({
   selector: 'app-example-proposal-approver',
@@ -119,9 +118,9 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
           id: serviceProposal.id,
           version: serviceProposal.version,
           text: serviceProposal.text,
-          format: { italics: List(serviceProposal.format.italic) },
-          translations: List(serviceProposal.translations),
-          keywords: List(serviceProposal.keywords),
+          format: { italics: serviceProposal.italic },
+          translations: serviceProposal.translations,
+          keywords: serviceProposal.keywords,
           comment: serviceProposal.comment,
           note: serviceProposal.note,
           source: componentSource,

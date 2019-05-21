@@ -55,8 +55,6 @@ export interface ExampleProposalService {
     }
   ): void;
 
-  // removeExampleProposalInService(identifier: number): void;
-
   submitExampleProposal(identifier: number): void;
 
   approveExampleProposal(identifier: number);
