@@ -69,8 +69,8 @@ export abstract class SourceComponent {
     this.title = newTitle;
   }
 
-  protected onPageChange(newPage: number) {
-    this.page = newPage;
+  protected onPageChange(newPage: string) {
+    this.page = Number(newPage);
   }
 
   public abstract getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;

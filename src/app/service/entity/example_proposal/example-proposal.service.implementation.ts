@@ -13,6 +13,8 @@ import {ExampleProposalServiceModelTypesFactory} from '../../model/example_propo
 import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../../../data_access/service/example_proposal/injection-token';
 import {ExampleProposalDataService} from '../../../data_access/service/example_proposal/example-proposal.data.service';
 import {map, mergeAll, mergeMap} from 'rxjs/operators';
+import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
+import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 
 @Injectable()
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
@@ -34,10 +36,6 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
 
   private getProposal(identifier: number): ExampleProposalServiceModel {
     return this._proposals.find(proposal => proposal.identifier === identifier);
-  }
-
-  private getProposalIndex(identifier: number): number {
-    return this._proposals.findIndex(proposal => proposal.identifier === identifier);
   }
 
   public updateView() {
@@ -94,38 +92,74 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeAll(),
         mergeMap(id => this.exampleProposalDataService.get(id))
       )
-      .subscribe(proposal => {
-        const i = this._proposals.findIndex(model => model.id === proposal.id);
+      .subscribe(data => {
+        if (data.source) {
+          if (data.source.publishingDate) {
+            const year = data.source.publishingDate.substring(0, 4);
+            const month = data.source.publishingDate.substring(4, 6);
+            const day = data.source.publishingDate.substring(6);
+            data.source.publishingDate = `${year}-${month}-${day}`;
+          }
+        }
+
+        let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+        if (data.source) {
+          switch (data.source.type) {
+            case 'book': {
+              sourceModel = new ExampleSourceBookServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.page,
+                data.source.initialPublishingYear,
+                data.source.publishedYear,
+                data.source.publishedPlace,
+              );
+              break;
+            }
+            case 'journal': {
+              sourceModel = new ExampleSourceJournalServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.pageNumber,
+                data.source.publishingDate,
+                data.source.passageTitle,
+              );
+              break;
+            }
+          }
+        }
+
+        const i = this._proposals.findIndex(model => model.id === data.id);
         if (i !== -1) {
           const proposalToUpdate = this._proposals[i];
           proposalToUpdate.purpose = ExampleProposalPurposeServiceModelTypes.review;
-          proposalToUpdate.status = proposal.status;
-          proposalToUpdate.exampleId = proposal.exampleId;
-          proposalToUpdate.version = proposal.version;
-          proposalToUpdate.text = proposal.text;
-          proposalToUpdate.italic = List(proposal.format.italic);
-          proposalToUpdate.translations = List(proposal.translations);
-          proposalToUpdate.keywords = List(proposal.keywords);
-          proposalToUpdate.note = proposal.note;
-          proposalToUpdate.comment = proposal.comment;
-          proposalToUpdate.source = proposal.source;
+          proposalToUpdate.status = data.status;
+          proposalToUpdate.exampleId = data.exampleId;
+          proposalToUpdate.version = data.version;
+          proposalToUpdate.text = data.text;
+          proposalToUpdate.italic = List(data.format.italic);
+          proposalToUpdate.translations = List(data.translations);
+          proposalToUpdate.keywords = List(data.keywords);
+          proposalToUpdate.note = data.note;
+          proposalToUpdate.comment = data.comment;
+          proposalToUpdate.source = sourceModel;
         } else {
           this._proposals.push(
             new ExampleProposalServiceModel(
               this.identifierService.getId(),
               ExampleProposalPurposeServiceModelTypes.review,
-              proposal.id,
-              proposal.initiator,
-              proposal.status,
-              proposal.exampleId,
-              proposal.version,
-              proposal.text,
-              List(proposal.format.italic),
-              List(proposal.translations),
-              List(proposal.keywords),
-              proposal.note,
-              proposal.comment,
-              proposal.source,
+              data.id,
+              data.initiator,
+              data.status,
+              data.exampleId,
+              data.version,
+              data.text,
+              List(data.format.italic),
+              List(data.translations),
+              List(data.keywords),
+              data.note,
+              data.comment,
+              data.source,
               this,
               ));
         }});
@@ -139,19 +173,9 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     keywords: List<string>,
     note: string,
     comment: string,
-    source: {
-      type: ExampleSourceServiceModelTypes,
-      author: string,
-      title: string,
-      page: number,
-      initialPublishingYear?: number,
-      publishedYear?: number,
-      publishedPlace?: string,
-      passageTitle?: string,
-      publishingDate?: string
-    },
+    source: ExampleSourceJournalServiceModel | ExampleSourceBookServiceModel,
     ): void {
-    const proposalToUpdate = this._proposals[this.getProposalIndex(identifier)];
+    const proposalToUpdate = this.getProposal(identifier);
     proposalToUpdate.text = text;
     proposalToUpdate.italic = List(italic);
     proposalToUpdate.translations = List(translations);
@@ -185,7 +209,33 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       )
       .subscribe(
         (data) => {
-          console.log('succeeded');
+          let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+          if (data.source) {
+            switch (data.source.type) {
+              case 'book': {
+                sourceModel = new ExampleSourceBookServiceModel(
+                  data.source.author,
+                  data.source.title,
+                  data.source.page,
+                  data.source.initialPublishingYear,
+                  data.source.publishedYear,
+                  data.source.publishedPlace,
+                );
+                break;
+              }
+              case 'journal': {
+                sourceModel = new ExampleSourceJournalServiceModel(
+                  data.source.author,
+                  data.source.title,
+                  data.source.pageNumber,
+                  data.source.publishingDate,
+                  data.source.passageTitle,
+                );
+                break;
+              }
+            }
+          }
+
           proposalToSubmit.id = data.id;
           proposalToSubmit.status = data.status;
           proposalToSubmit.exampleId = data.exampleId;
@@ -196,7 +246,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
           proposalToSubmit.keywords = List(data.keywords);
           proposalToSubmit.note = data.note;
           proposalToSubmit.comment = data.comment;
-          proposalToSubmit.source = data.source;
+
+          proposalToSubmit.source = sourceModel;
         }
       );
   }
@@ -208,6 +259,41 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeMap(() => this.exampleProposalDataService.get(proposalToApprove.id))
       )
       .subscribe((data) => {
+        if (data.source) {
+          if (data.source.publishingDate) {
+            const year = data.source.publishingDate.substring(0, 4);
+            const month = data.source.publishingDate.substring(4, 6);
+            const day = data.source.publishingDate.substring(6);
+            data.source.publishingDate = `${year}-${month}-${day}`;
+          }
+        }
+        let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+        if (data.source) {
+          switch (data.source.type) {
+            case 'book': {
+              sourceModel = new ExampleSourceBookServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.page,
+                data.source.initialPublishingYear,
+                data.source.publishedYear,
+                data.source.publishedPlace,
+              );
+              break;
+            }
+            case 'journal': {
+              sourceModel = new ExampleSourceJournalServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.pageNumber,
+                data.source.publishingDate,
+                data.source.passageTitle,
+              );
+              break;
+            }
+          }
+        }
+
         proposalToApprove.id = data.id;
         proposalToApprove.status = data.status;
         proposalToApprove.exampleId = data.exampleId;
@@ -218,7 +304,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         proposalToApprove.keywords = List(data.keywords);
         proposalToApprove.note = data.note;
         proposalToApprove.comment = data.comment;
-        proposalToApprove.source = data.source;
+        proposalToApprove.source = sourceModel;
       });
   }
 
@@ -229,6 +315,42 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeMap(() => this.exampleProposalDataService.get(proposalToReject.id))
       )
       .subscribe((data) => {
+        if (data.source) {
+          if (data.source.publishingDate) {
+            const year = data.source.publishingDate.substring(0, 4);
+            const month = data.source.publishingDate.substring(4, 6);
+            const day = data.source.publishingDate.substring(6);
+            data.source.publishingDate = `${year}-${month}-${day}`;
+          }
+        }
+
+        let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+        if (data.source) {
+          switch (data.source.type) {
+            case 'book': {
+              sourceModel = new ExampleSourceBookServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.page,
+                data.source.initialPublishingYear,
+                data.source.publishedYear,
+                data.source.publishedPlace,
+              );
+              break;
+            }
+            case 'journal': {
+              sourceModel = new ExampleSourceJournalServiceModel(
+                data.source.author,
+                data.source.title,
+                data.source.pageNumber,
+                data.source.publishingDate,
+                data.source.passageTitle,
+              );
+              break;
+            }
+          }
+        }
+
         proposalToReject.id = data.id;
         proposalToReject.status = data.status;
         proposalToReject.exampleId = data.exampleId;
@@ -239,7 +361,9 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         proposalToReject.keywords = List(data.keywords);
         proposalToReject.note = data.note;
         proposalToReject.comment = data.comment;
-        proposalToReject.source = data.source;
+
+
+        proposalToReject.source = sourceModel;
       });
   }
 }

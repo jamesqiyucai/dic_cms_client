@@ -22,6 +22,7 @@ export class ExampleSourceJournalComponent extends SourceComponent {
   private set passageTitle(newPassageTitle: string) {
     if (this.passageTitle !== newPassageTitle) {
       this._passageTitle = newPassageTitle;
+      this.fireSourceDataChangeEvent();
     }
   }
 
@@ -32,17 +33,16 @@ export class ExampleSourceJournalComponent extends SourceComponent {
   private set publishingDate(newPublishingDate: string) {
     if (this.publishingDate !== newPublishingDate) {
       this._publishingDate = newPublishingDate;
+      this.fireSourceDataChangeEvent();
     }
   }
 
   private onPassageTitleChange(newTitle: string) {
     this.passageTitle = newTitle;
-    this.fireSourceDataChangeEvent();
   }
 
   private onPublishingDateChange(newDate: string) {
     this.publishingDate = newDate;
-    this.fireSourceDataChangeEvent();
   }
 
   protected fireSourceDataChangeEvent() {
@@ -50,30 +50,11 @@ export class ExampleSourceJournalComponent extends SourceComponent {
   }
 
   public update(data: ExampleSourceJournalComponentDto) {
-    let updatedAnything: boolean;
-    if (this.author !== data.author) {
-      this.author = data.author;
-      updatedAnything = true;
-    }
-    if (this.title !== data.title) {
-      this.title = data.title;
-      updatedAnything = true;
-    }
-    if (this.page !== data.page) {
-      this.page =  data.page;
-      updatedAnything = true;
-    }
-    if (this.passageTitle !== data.passageTitle) {
-      this.passageTitle = data.passageTitle;
-      updatedAnything = true;
-    }
-    if (this.publishingDate !== data.publishingDate) {
-      this.publishingDate = data.publishingDate;
-      updatedAnything = true;
-    }
-    if (updatedAnything === true) {
-      this.fireSourceDataChangeEvent();
-    }
+    this.author = data.author;
+    this.title = data.title;
+    this.page =  data.page;
+    this.passageTitle = data.passageTitle;
+    this.publishingDate = data.publishingDate;
   }
 
   public getDto(): ExampleSourceJournalComponentDto {

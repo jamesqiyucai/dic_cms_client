@@ -5,6 +5,7 @@ import {ExampleSourceJournalServiceModel} from '../example_source/example-source
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
+import {ExampleSource} from '../example_source/example-source';
 
 export class ExampleProposalServiceModel {
   public readonly identifier: number;
@@ -20,7 +21,7 @@ export class ExampleProposalServiceModel {
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
-  private _source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
+  private _source: ExampleSource;
   private exampleProposalService: ExampleProposalService;
 
   constructor(
@@ -220,49 +221,9 @@ export class ExampleProposalServiceModel {
     return _.cloneDeep(this._source);
   }
 
-  public set source(
-    newSource: {
-      type: string,
-      author?: string,
-      title?: string,
-      page?: number,
-      passageTitle?: string,
-      publishingDate?: string,
-      initialPublishingYear?: number,
-      publishedYear?: number,
-      publishedPlace?: string,
-    }) {
-    let model: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
-    if (newSource) {
-      switch (newSource.type) {
-        case ExampleSourceServiceModelTypes.book: {
-          model = new ExampleSourceBookServiceModel(
-            newSource.author,
-            newSource.title,
-            newSource.page,
-            newSource.initialPublishingYear,
-            newSource.publishedYear,
-            newSource.publishedPlace
-          );
-          break;
-        }
-        case ExampleSourceServiceModelTypes.journal: {
-          model = new ExampleSourceJournalServiceModel(
-            newSource.author,
-            newSource.title,
-            newSource.page,
-            newSource.publishingDate,
-            newSource.passageTitle
-          );
-          break;
-        }
-      }
-    } else {
-      model = null;
-    }
-
-    if (!_.isEqual(model, this._source)) {
-      this._source = model;
+  public set source(newSource: ExampleSource) {
+    if (!_.isEqual(newSource, this._source)) {
+      this._source = newSource;
       this.exampleProposalService.updateView();
     }
   }

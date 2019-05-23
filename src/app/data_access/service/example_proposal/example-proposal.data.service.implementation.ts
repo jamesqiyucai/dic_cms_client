@@ -60,7 +60,7 @@ export class ExampleProposalDataServiceImplementation
             source.author,
             source.title,
             source.passageTitle,
-            source.publishingDate,
+            source.publishingDate ? source.publishingDate.replace(/-/g, '') : null,
             source.page,
           );
           break;

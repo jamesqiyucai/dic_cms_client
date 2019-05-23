@@ -345,6 +345,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
 
   private onSubmit() {
     this.exampleProposalService.submitExampleProposal(this.exampleProposalIdentifier);
+    this.lock();
   }
 
   private onNew() {

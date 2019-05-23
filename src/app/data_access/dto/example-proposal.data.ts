@@ -1,5 +1,4 @@
 import {FormatData} from './format.data';
-import {SourceData} from './source.data';
 import {BookSourceData} from './book-source.data';
 import {JournalSourceData} from './journal-source.data';
 
@@ -16,7 +15,18 @@ export class ExampleProposalData {
   public keywords: Array<string>;
   public note: string;
   public comment: string;
-  public source: SourceData;
+  public source: {
+    type: string,
+    author: string;
+    title: string;
+    page?: number;
+    pageNumber?: number;
+    initialPublishingYear?: number;
+    publishedYear?: number;
+    publishedPlace?: string;
+    passageTitle?: string;
+    publishingDate?: string;
+  };
 
   constructor(
     id: number,
@@ -31,17 +41,7 @@ export class ExampleProposalData {
     keywords: Array<string>,
     note: string,
     comment: string,
-    source: {
-      type: string,
-      author: string;
-      title: string;
-      page: number;
-      initialPublishingYear?: number;
-      publishedYear?: number;
-      publishedPlace?: string;
-      passageTitle?: string;
-      publishingDate?: string;
-    },
+    source: BookSourceData | JournalSourceData,
   ) {
     this.id = id;
     this.initiator = initiator;
@@ -55,33 +55,34 @@ export class ExampleProposalData {
     this.keywords = keywords;
     this.note = note;
     this.comment = comment;
-    if (source) {
-      switch (source.type) {
-        case 'book': {
-          this.source = new BookSourceData(
-            source.author,
-            source.title,
-            source.page,
-            source.initialPublishingYear,
-            source.publishedYear,
-            source.publishedPlace,
-          );
-          break;
-        }
-        case 'journal': {
-          this.source = new JournalSourceData(
-            source.author,
-            source.title,
-            source.passageTitle,
-            source.publishingDate,
-            source.page,
-          );
-          break;
-        }
-      }
-
-    } else {
-      this.source = source;
-    }
+    this.source = source;
+    // if (source) {
+    //   switch (source.type) {
+    //     case 'book': {
+    //       this.source = new BookSourceData(
+    //         source.author,
+    //         source.title,
+    //         source.page,
+    //         source.initialPublishingYear,
+    //         source.publishedYear,
+    //         source.publishedPlace,
+    //       );
+    //       break;
+    //     }
+    //     case 'journal': {
+    //       this.source = new JournalSourceData(
+    //         source.author,
+    //         source.title,
+    //         source.passageTitle,
+    //         source.publishingDate,
+    //         source.page,
+    //       );
+    //       break;
+    //     }
+    //   }
+    //
+    // } else {
+    //   this.source = source;
+    // }
   }
 }
