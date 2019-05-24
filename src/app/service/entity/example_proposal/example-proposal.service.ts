@@ -3,10 +3,16 @@ import {ExampleProposalServiceModel} from '../../model/example_proposal/example-
 import {List} from 'immutable';
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
+import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
+import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 
 export interface ExampleProposalService {
   types: ExampleProposalServiceModelTypesFactory;
   exampleProposals: Observable<List<ExampleProposalServiceModel>>;
+
+  isBook(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceBookServiceModel;
+
+  isJournal(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceJournalServiceModel;
 
   updateView(): void;
 

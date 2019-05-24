@@ -80,36 +80,31 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
       map(proposals => proposals.filter(proposal => proposal.purpose === this.exampleProposalService.types.ExampleProposalPurpose.review))
     ).subscribe(proposals => {
       this._pendingItems = proposals.map(serviceProposal => {
-        let componentSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+        let componentSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto = null;
+
+
 
         if (serviceProposal.source) {
-          switch (serviceProposal.source.type) {
-            case this.exampleProposalService.types.ExampleProposalSourceType.book: {
-              componentSource = {
-                type: ExampleSourceComponentTypes.book,
-                author: serviceProposal.source.author,
-                title: serviceProposal.source.title,
-                page: serviceProposal.source.page,
-                initialPublishingYear: serviceProposal.source.initialPublishingYear,
-                publishedYear: serviceProposal.source.publishedYear,
-                publishedPlace: serviceProposal.source.publishedPlace,
-              };
-              break;
-            }
-            case this.exampleProposalService.types.ExampleProposalSourceType.journal: {
-              componentSource = {
-                type: ExampleSourceComponentTypes.journal,
-                author: serviceProposal.source.author,
-                title: serviceProposal.source.title,
-                page: serviceProposal.source.page,
-                passageTitle: serviceProposal.source.passageTitle,
-                publishingDate: serviceProposal.source.publishingDate,
-              };
-              break;
-            }
+          if (this.exampleProposalService.isBook(serviceProposal.source)) {
+            componentSource = {
+              type: ExampleSourceComponentTypes.book,
+              author: serviceProposal.source.author,
+              title: serviceProposal.source.title,
+              page: serviceProposal.source.page,
+              initialPublishingYear: serviceProposal.source.initialPublishingYear,
+              publishedYear: serviceProposal.source.publishedYear,
+              publishedPlace: serviceProposal.source.publishedPlace,
+            };
+          } else if (this.exampleProposalService.isJournal(serviceProposal.source)) {
+            componentSource = {
+              type: ExampleSourceComponentTypes.journal,
+              author: serviceProposal.source.author,
+              title: serviceProposal.source.title,
+              page: serviceProposal.source.page,
+              passageTitle: serviceProposal.source.passageTitle,
+              publishingDate: serviceProposal.source.publishingDate,
+            };
           }
-        } else {
-          componentSource = null;
         }
 
         const componentProposal: ExampleProposalApproverComponentDto = {

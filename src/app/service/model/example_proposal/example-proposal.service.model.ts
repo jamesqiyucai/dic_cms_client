@@ -5,7 +5,6 @@ import {ExampleSourceJournalServiceModel} from '../example_source/example-source
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
-import {ExampleSource} from '../example_source/example-source';
 
 export class ExampleProposalServiceModel {
   public readonly identifier: number;
@@ -21,7 +20,7 @@ export class ExampleProposalServiceModel {
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
-  private _source: ExampleSource;
+  private _source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
   private exampleProposalService: ExampleProposalService;
 
   constructor(
@@ -221,7 +220,7 @@ export class ExampleProposalServiceModel {
     return _.cloneDeep(this._source);
   }
 
-  public set source(newSource: ExampleSource) {
+  public set source(newSource: ExampleSourceJournalServiceModel | ExampleSourceBookServiceModel) {
     if (!_.isEqual(newSource, this._source)) {
       this._source = newSource;
       this.exampleProposalService.updateView();

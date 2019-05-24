@@ -38,6 +38,14 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return this._proposals.find(proposal => proposal.identifier === identifier);
   }
 
+  public isBook(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceBookServiceModel {
+    return (<ExampleSourceBookServiceModel>source).type === 'book';
+  }
+
+  public isJournal(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceJournalServiceModel {
+    return (<ExampleSourceJournalServiceModel>source).type === 'journal';
+  }
+
   public updateView() {
     this._exampleProposals.next(List(this._proposals));
   }

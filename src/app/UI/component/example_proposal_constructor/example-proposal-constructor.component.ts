@@ -137,36 +137,29 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
         this.lock();
         this._canSubmit = false;
       }
-      let newSourceData: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+      let newSourceData: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto = null;
 
       if (serviceData.source) {
-        switch (serviceData.source.type) {
-          case this.exampleProposalService.types.ExampleProposalSourceType.book: {
-            newSourceData = {
-              type: ExampleSourceComponentTypes.book,
-              author: serviceData.source.author,
-              title: serviceData.source.title,
-              page: serviceData.source.page,
-              initialPublishingYear: serviceData.source.initialPublishingYear,
-              publishedYear: serviceData.source.publishedYear,
-              publishedPlace: serviceData.source.publishedPlace,
-            };
-            break;
-          }
-          case this.exampleProposalService.types.ExampleProposalSourceType.journal: {
-            newSourceData = {
-              type: ExampleSourceComponentTypes.journal,
-              author: serviceData.source.author,
-              title: serviceData.source.title,
-              page: serviceData.source.page,
-              passageTitle: serviceData.source.passageTitle,
-              publishingDate: serviceData.source.publishingDate,
-            };
-            break;
-          }
+        if (this.exampleProposalService.isBook(serviceData.source)) {
+          newSourceData = {
+            type: ExampleSourceComponentTypes.book,
+            author: serviceData.source.author,
+            title: serviceData.source.title,
+            page: serviceData.source.page,
+            initialPublishingYear: serviceData.source.initialPublishingYear,
+            publishedYear: serviceData.source.publishedYear,
+            publishedPlace: serviceData.source.publishedPlace,
+          };
+        } else if (this.exampleProposalService.isJournal(serviceData.source)) {
+          newSourceData = {
+            type: ExampleSourceComponentTypes.journal,
+            author: serviceData.source.author,
+            title: serviceData.source.title,
+            page: serviceData.source.page,
+            passageTitle: serviceData.source.passageTitle,
+            publishingDate: serviceData.source.publishingDate,
+          };
         }
-      } else {
-        newSourceData = null;
       }
 
       const newProposalData: ExampleProposalConstructorComponentDto = {
