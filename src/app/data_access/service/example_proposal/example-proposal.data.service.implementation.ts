@@ -94,11 +94,11 @@ export class ExampleProposalDataServiceImplementation
   }
 
   public approveProposal(id: number) {
-    return this.http.post(`/api/${id}/approve`, null) as Observable<any>;
+    return this.http.post(`/api/${this.domain}/${id}/approve`, null) as Observable<any>;
   }
 
   public rejectProposal(id: number) {
-    return this.http.post(`/api/${id}/reject`, null) as Observable<any>;
+    return this.http.post(`/api/${this.domain}/${id}/reject`, null) as Observable<any>;
   }
 
 }

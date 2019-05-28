@@ -77,7 +77,7 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.subscription = this.exampleProposalService.exampleProposals.pipe(
-      map(proposals => proposals.filter(proposal => proposal.purpose === this.exampleProposalService.types.ExampleProposalPurpose.review))
+      map(proposals => proposals.filter(proposal => proposal.status === 'pending'))
     ).subscribe(proposals => {
       this._pendingItems = proposals.map(serviceProposal => {
         let componentSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto = null;

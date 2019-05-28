@@ -101,14 +101,14 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeMap(id => this.exampleProposalDataService.get(id))
       )
       .subscribe(data => {
-        if (data.source) {
-          if (data.source.publishingDate) {
-            const year = data.source.publishingDate.substring(0, 4);
-            const month = data.source.publishingDate.substring(4, 6);
-            const day = data.source.publishingDate.substring(6);
-            data.source.publishingDate = `${year}-${month}-${day}`;
-          }
-        }
+        // if (data.source) {
+        //   if (data.source.publishingDate) {
+        //     const year = data.source.publishingDate.substring(0, 4);
+        //     const month = data.source.publishingDate.substring(4, 6);
+        //     const day = data.source.publishingDate.substring(6);
+        //     data.source.publishingDate = `${year}-${month}-${day}`;
+        //   }
+        // }
 
         let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
         if (data.source) {
@@ -170,6 +170,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
               data.source,
               this,
               ));
+          this._exampleProposals.next(List(this._proposals));
         }});
   }
 
@@ -358,7 +359,8 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
             }
           }
         }
-
+        proposalToReject.purpose = ExampleProposalPurposeServiceModelTypes.display;
+        proposalToReject.status = data.status;
         proposalToReject.id = data.id;
         proposalToReject.status = data.status;
         proposalToReject.exampleId = data.exampleId;

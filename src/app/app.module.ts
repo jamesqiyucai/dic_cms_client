@@ -6,6 +6,7 @@ import { ToolkitModule } from './toolkit/toolkit.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ExampleProposalConstructorModule} from './UI/component/example_proposal_constructor/example-proposal-constructor.module';
 import {UserDesignatorModule} from './UI/component/user_designator/user-designator.module';
+import {ExampleProposalApproverModule} from './UI/component/example_proposal_approver/example-proposal-approver.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {UserDesignatorModule} from './UI/component/user_designator/user-designat
     ToolkitModule,
     ExampleProposalConstructorModule,
     UserDesignatorModule,
+    ExampleProposalApproverModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
