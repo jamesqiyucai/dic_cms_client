@@ -1,7 +1,8 @@
-<!--<div>-->
-<!--  <div>-->
-<!--    <a>NewProposal</a>-->
-<!--    <a *ngIf="showReview()">ReviewProposal</a>-->
-<!--    <a>LogOut</a>-->
-<!--  </div>-->
-<!--</div>-->
+<div>
+  <div>
+    <a routerLink="/home/proposals/new">NewProposal</a>
+    <a *ngIf="showReview()" routerLink="/home/proposals/review">ReviewProposal</a>
+    <a (click)="onLogOut()" routerLink="">LogOut</a>
+  </div>
+  <router-outlet></router-outlet>
+</div>
