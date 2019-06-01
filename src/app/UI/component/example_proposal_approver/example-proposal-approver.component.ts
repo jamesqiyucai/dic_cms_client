@@ -18,7 +18,7 @@ import {ExampleSourceComponentTypes} from '../example_source/example-source.comp
 export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
   @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
   private _pendingItems: Array<ExampleProposalApproverComponentDto>;
-  private _focusedItemIndex: number;
+  private _focusedItemIndex: number = null;
   private subscription;
 
   constructor(
@@ -33,6 +33,14 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
 
   private get focusedItemIndex() {
     return this._focusedItemIndex;
+  }
+
+  private get showDetail() {
+    if (this.focusedItemIndex === null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   private set focusedItemIndex(newIndex: number) {
@@ -53,15 +61,15 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
   private updateView() {
     const itemToBeDisplayed = this.pendingItems.get(this.focusedItemIndex);
     this.exampleEditor.update(
-      itemToBeDisplayed.id,
-      itemToBeDisplayed.version,
-      itemToBeDisplayed.text,
-      itemToBeDisplayed.format.italics,
-      itemToBeDisplayed.keywords,
-      itemToBeDisplayed.translations,
-      itemToBeDisplayed.note,
-      itemToBeDisplayed.comment,
-      itemToBeDisplayed.source,
+      itemToBeDisplayed ? itemToBeDisplayed.id : null,
+      itemToBeDisplayed ? itemToBeDisplayed.version : null,
+      itemToBeDisplayed ? itemToBeDisplayed.text : '',
+      itemToBeDisplayed ? itemToBeDisplayed.format.italics : List(),
+      itemToBeDisplayed ? itemToBeDisplayed.keywords : List(),
+      itemToBeDisplayed ? itemToBeDisplayed.translations : List(),
+      itemToBeDisplayed ? itemToBeDisplayed.note : '',
+      itemToBeDisplayed ? itemToBeDisplayed.comment : '',
+      itemToBeDisplayed ? itemToBeDisplayed.source : null,
     );
   }
 
@@ -79,7 +87,9 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
     this.subscription = this.exampleProposalService.exampleProposals.pipe(
       map(proposals => proposals.filter(proposal => proposal.status === 'pending'))
     ).subscribe(proposals => {
-      this._pendingItems = proposals.map(serviceProposal => {
+      this.focusedItemIndex = null;
+
+      const newPendingItems = proposals.map(serviceProposal => {
         let componentSource: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto = null;
 
 
@@ -122,7 +132,8 @@ export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
         };
 
         return componentProposal;
-      }).toArray();
+      });
+      this._pendingItems = newPendingItems.toArray();
     });
 
     this.exampleProposalService.loadPendingProposalsInService(this.userService.getCurrentUser());

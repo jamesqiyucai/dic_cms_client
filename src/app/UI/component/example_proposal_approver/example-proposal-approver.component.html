@@ -10,7 +10,7 @@
       (select)="onItemFocus(i)"
     ></app-example-proposal-approver-pending-item>
   </div>
-  <div>
+  <div [hidden]="!showDetail">
     <app-example-editor></app-example-editor>
     <button (click)="onApprove()">Approve</button>
     <button (click)="onReject()">Reject</button>

@@ -37,17 +37,7 @@ export class ExampleProposalServiceModel {
     keywords: List<string>,
     note: string,
     comment: string,
-    source: {
-      type: string,
-      author?: string,
-      title?: string,
-      page?: number,
-      passageTitle?: string,
-      publishingDate?: string,
-      initialPublishingYear?: number,
-      publishedYear?: number,
-      publishedPlace?: string,
-    },
+    source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel,
     exampleProposalService: ExampleProposalService,
   ) {
     this.identifier = identifier;
@@ -65,29 +55,7 @@ export class ExampleProposalServiceModel {
     this._comment = comment;
 
     if (source) {
-      switch (source.type) {
-        case ExampleSourceServiceModelTypes.book: {
-          this._source = new ExampleSourceBookServiceModel(
-            source.author,
-            source.title,
-            source.page,
-            source.initialPublishingYear,
-            source.publishedYear,
-            source.publishedPlace
-          );
-          break;
-        }
-        case ExampleSourceServiceModelTypes.journal: {
-          this._source = new ExampleSourceJournalServiceModel(
-            source.author,
-            source.title,
-            source.page,
-            source.publishingDate,
-            source.passageTitle
-          );
-          break;
-        }
-      }
+      this._source = source;
     } else {
       this._source = null;
     }

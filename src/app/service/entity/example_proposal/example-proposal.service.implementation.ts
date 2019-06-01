@@ -71,6 +71,34 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       publishingDate?: string
     }
     ): number {
+    let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+    if (source) {
+      switch (source.type) {
+        case 'book': {
+          sourceModel = new ExampleSourceBookServiceModel(
+            source.author,
+            source.title,
+            source.page,
+            source.initialPublishingYear,
+            source.publishedYear,
+            source.publishedPlace,
+          );
+          break;
+        }
+        case 'journal': {
+          sourceModel = new ExampleSourceJournalServiceModel(
+            source.author,
+            source.title,
+            source.page,
+            source.publishingDate,
+            source.passageTitle,
+          );
+          break;
+        }
+      }
+    }
+
+
     const newProposal = new ExampleProposalServiceModel(
       this.identifierService.getId(),
       ExampleProposalPurposeServiceModelTypes.submit,
@@ -85,7 +113,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
       keywords,
       note,
       comment,
-      source,
+      sourceModel,
       this
     );
     this._proposals.push(newProposal);
@@ -167,7 +195,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
               List(data.keywords),
               data.note,
               data.comment,
-              data.source,
+              sourceModel,
               this,
               ));
           this._exampleProposals.next(List(this._proposals));
@@ -268,14 +296,14 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
         mergeMap(() => this.exampleProposalDataService.get(proposalToApprove.id))
       )
       .subscribe((data) => {
-        if (data.source) {
-          if (data.source.publishingDate) {
-            const year = data.source.publishingDate.substring(0, 4);
-            const month = data.source.publishingDate.substring(4, 6);
-            const day = data.source.publishingDate.substring(6);
-            data.source.publishingDate = `${year}-${month}-${day}`;
-          }
-        }
+        // if (data.source) {
+        //   if (data.source.publishingDate) {
+        //     const year = data.source.publishingDate.substring(0, 4);
+        //     const month = data.source.publishingDate.substring(4, 6);
+        //     const day = data.source.publishingDate.substring(6);
+        //     data.source.publishingDate = `${year}-${month}-${day}`;
+        //   }
+        // }
         let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
         if (data.source) {
           switch (data.source.type) {
