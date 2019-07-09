@@ -8,12 +8,14 @@ import {JournalSourceData} from '../../dto/journal-source.data';
 import {Observable} from 'rxjs';
 import {ExampleProposalDataService} from './example-proposal.data.service';
 import {List} from 'immutable';
+import {ServerErrorListener} from '../../server-error-listener';
 
 @Injectable()
 export class ExampleProposalDataServiceImplementation
   extends AbstractDataService<ExampleProposalData>
   implements ExampleProposalDataService {
   protected domain = 'proposals';
+  private serverErrorListeners: ServerErrorListener[];
 
   public makeExampleProposalData(
     id: number,
@@ -99,6 +101,10 @@ export class ExampleProposalDataServiceImplementation
 
   public rejectProposal(id: number) {
     return this.http.post(`/api/${this.domain}/${id}/reject`, null) as Observable<any>;
+  }
+
+  public injectServerErrorListener(listener: ServerErrorListener): void {
+    this.serverErrorListeners.push(listener);
   }
 
 }

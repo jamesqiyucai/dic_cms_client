@@ -1,10 +1,12 @@
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 export abstract class AbstractDataService<T> {
   protected abstract domain: string;
 
   protected constructor(protected http: HttpClient) {}
+
+  protected handleError(error: HttpErrorResponse) {}
 
   public get(id: number): Observable<T> {
     return this.http.get(`/api/${this.domain}/${id}`) as Observable<T>;

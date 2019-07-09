@@ -1,6 +1,7 @@
 import {ExampleProposalData} from '../../dto/example-proposal.data';
 import {Observable} from 'rxjs';
 import {List} from 'immutable';
+import {ServerErrorListener} from '../../server-error-listener';
 
 export interface ExampleProposalDataService {
   makeExampleProposalData(
@@ -38,5 +39,7 @@ export interface ExampleProposalDataService {
   approveProposal(id: number): Observable<any>;
 
   rejectProposal(id: number): Observable<any>;
+
+  injectServerErrorListener(listener: ServerErrorListener): void;
 
 }
