@@ -40,6 +40,4 @@ export interface ExampleProposalDataService {
 
   rejectProposal(id: number): Observable<any>;
 
-  injectServerErrorListener(listener: ServerErrorListener): void;
-
 }

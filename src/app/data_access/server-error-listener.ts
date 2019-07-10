@@ -1,4 +1,4 @@
 export interface ServerErrorListener {
-  notifyError(): void;
+  notifyInternalServerError(): void;
 }
 

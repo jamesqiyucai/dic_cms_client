@@ -15,7 +15,6 @@ export class ExampleProposalDataServiceImplementation
   extends AbstractDataService<ExampleProposalData>
   implements ExampleProposalDataService {
   protected domain = 'proposals';
-  private serverErrorListeners: ServerErrorListener[];
 
   public makeExampleProposalData(
     id: number,
@@ -101,10 +100,6 @@ export class ExampleProposalDataServiceImplementation
 
   public rejectProposal(id: number) {
     return this.http.post(`/api/${this.domain}/${id}/reject`, null) as Observable<any>;
-  }
-
-  public injectServerErrorListener(listener: ServerErrorListener): void {
-    this.serverErrorListeners.push(listener);
   }
 
 }
