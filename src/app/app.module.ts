@@ -9,12 +9,15 @@ import {UserDesignatorModule} from './UI/component/user_designator/user-designat
 import {ExampleProposalApproverModule} from './UI/component/example_proposal_approver/example-proposal-approver.module';
 import {AppRoutingModule} from './routing/app-routing.module';
 import {HomeModule} from './UI/component/home/home.module';
+import {InternalServerErrorLoggerModule} from './UI/component/internal_server_error_logger/internal-server-error-logger.module';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
     CoreModule,
@@ -24,6 +27,7 @@ import {HomeModule} from './UI/component/home/home.module';
     ExampleProposalApproverModule,
     HomeModule,
     AppRoutingModule,
+    InternalServerErrorLoggerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

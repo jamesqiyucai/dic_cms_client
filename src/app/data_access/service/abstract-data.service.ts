@@ -6,9 +6,7 @@ import { catchError } from 'rxjs/operators';
 export abstract class AbstractDataService<T> {
   protected abstract domain: string;
 
-  protected errorListeners: ServerErrorListener[] = [];
-
-  protected constructor(protected http: HttpClient) {}
+  private errorListeners: ServerErrorListener[];
 
   protected handleError(error: HttpErrorResponse) {
     const statusCode = error.status.toString();
@@ -20,23 +18,24 @@ export abstract class AbstractDataService<T> {
     return throwError('Error Occured');
   }
 
+  protected constructor(protected http: HttpClient) {
+    this.errorListeners = [];
+  }
+
+
   public get(id: number): Observable<T> {
     // return this.http.get(`/api/${this.domain}/${id}`) as Observable<T>;
     return <Observable<T>>this.http.get(`/api/${this.domain}/${id}`)
       .pipe(
-        catchError(this.handleError)
+        catchError(this.handleError.bind(this))
       );
   }
 
   public post<R>(entity: T): Observable<R> {
     return <Observable<R>>this.http.post(`/api/${this.domain}`, entity)
       .pipe(
-        catchError(this.handleError)
+        catchError(this.handleError.bind(this))
       );
-  }
-
-  public countErrorListeners(): number {
-    return this.errorListeners.length - 1;
   }
 
   public injectErrorListener(listener: ServerErrorListener) {
