@@ -1,34 +1,28 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {EXAMPLE_PROPOSAL_DATA_SERVICE} from './data_access/service/example_proposal/injection-token';
-import {ExampleProposalDataService} from './data_access/service/example_proposal/example-proposal.data.service';
-import {ServerErrorListener} from './data_access/server-error-listener';
 import {ServerErrorListenerImplementation} from './UI/component/internal_server_error_logger/server-error-listener.implementation';
-// tslint:disable-next-line:max-line-length
-import {InternalServerErrorLoggerComponentInterface} from './UI/component/internal_server_error_logger/internal-server-error-logger.component.interface';
+import {REMOTE_RESOURCES_FACTORY} from './data_access/remote_resource_factory/injection-token';
+import {RemoteResourcesFactory} from './data_access/remote_resource_factory/remote-resources-factory';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, InternalServerErrorLoggerComponentInterface {
+export class AppComponent implements OnInit {
   constructor(
     private router: Router,
-    @Inject(EXAMPLE_PROPOSAL_DATA_SERVICE) private exampleProposalDataService: ExampleProposalDataService
-    ) {}
+    @Inject(REMOTE_RESOURCES_FACTORY) rrf: RemoteResourcesFactory
+    ) {
+    // register a listener into RRF
+    const handler = () => {
+      this.router.navigate(['internal_server_error']);
+    };
+    rrf.register(new ServerErrorListenerImplementation(handler));
+  }
 
   ngOnInit(): void {
     this.router.navigate(['']);
-    this.exampleProposalDataService.injectErrorListener(this.makeListener());
-  }
-
-  private makeListener(): ServerErrorListener {
-    return new ServerErrorListenerImplementation(this);
-  }
-
-  logError(): void {
-    this.router.navigate(['internal_server_error']);
   }
 
 }

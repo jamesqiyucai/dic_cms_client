@@ -1,6 +1,7 @@
 import {FormatData} from './format.data';
 import {BookSourceData} from './book-source.data';
 import {JournalSourceData} from './journal-source.data';
+import {TranslationData} from './translation.data';
 
 export class ExampleProposalData {
   public id: number;
@@ -11,7 +12,7 @@ export class ExampleProposalData {
   public version: number;
   public text: string;
   public format: FormatData;
-  public translations: Array<string>;
+  public translations: Array<TranslationData>;
   public keywords: Array<string>;
   public note: string;
   public comment: string;
@@ -37,7 +38,7 @@ export class ExampleProposalData {
     version: number,
     text: string,
     format: FormatData,
-    translations: Array<string>,
+    translations: Array<TranslationData>,
     keywords: Array<string>,
     note: string,
     comment: string,
@@ -51,38 +52,10 @@ export class ExampleProposalData {
     this.version = version;
     this.text = text;
     this.format = format;
-    this.translations = translations;
+    this.translations = translations.map((content) => new TranslationData(null, content));
     this.keywords = keywords;
     this.note = note;
     this.comment = comment;
     this.source = source;
-    // if (source) {
-    //   switch (source.type) {
-    //     case 'book': {
-    //       this.source = new BookSourceData(
-    //         source.author,
-    //         source.title,
-    //         source.page,
-    //         source.initialPublishingYear,
-    //         source.publishedYear,
-    //         source.publishedPlace,
-    //       );
-    //       break;
-    //     }
-    //     case 'journal': {
-    //       this.source = new JournalSourceData(
-    //         source.author,
-    //         source.title,
-    //         source.passageTitle,
-    //         source.publishingDate,
-    //         source.page,
-    //       );
-    //       break;
-    //     }
-    //   }
-    //
-    // } else {
-    //   this.source = source;
-    // }
   }
 }

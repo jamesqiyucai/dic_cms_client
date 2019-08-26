@@ -1,10 +1,10 @@
 import {ExampleProposalPurposeServiceModelTypes} from './example-proposal-purpose.service.model.types';
-import {ExampleSourceServiceModelTypes} from '../example_source/example-source.service.model.types';
 import {ExampleSourceBookServiceModel} from '../example_source/example-source-book.service.model';
 import {ExampleSourceJournalServiceModel} from '../example_source/example-source-journal.service.model';
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
+import {ExampleProposalTranslationModel} from './example-proposal-translation.model';
 
 export class ExampleProposalServiceModel {
   public readonly identifier: number;
@@ -16,7 +16,7 @@ export class ExampleProposalServiceModel {
   private _version: number;
   private _text: string;
   private _italic: Array<[number, number]>;
-  private _translations: Array<string>;
+  private _translations: Array<ExampleProposalTranslationModel>;
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
@@ -33,7 +33,7 @@ export class ExampleProposalServiceModel {
     version: number,
     text: string,
     italic: List<[number, number]>,
-    translations: List<string>,
+    translations: List<ExampleProposalTranslationModel>,
     keywords: List<string>,
     note: string,
     comment: string,
@@ -141,10 +141,10 @@ export class ExampleProposalServiceModel {
   }
 
   public get translations() {
-    return List(this._translations);
+    return List(this._translations.map(t => t.text));
   }
 
-  public set translations(newTranslations: List<string>) {
+  public set translations(newTranslations: List<ExampleProposalTranslationModel>) {
     if (!newTranslations.equals(this.translations)) {
       this._translations = newTranslations.toArray();
       this.exampleProposalService.updateView();

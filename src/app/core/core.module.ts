@@ -11,10 +11,8 @@ import {EXAMPLE_SERVICE} from '../service/entity/example/injection-token';
 import {ExampleServiceImplementation} from '../service/entity/example/example.service.implementation';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../service/entity/example_proposal/injection-token';
 import {ExampleProposalServiceImplementation} from '../service/entity/example_proposal/example-proposal.service.implementation';
-import {
-  ExampleProposalDataServiceImplementation
-} from '../data_access/service/example_proposal/example-proposal.data.service.implementation';
-import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../data_access/service/example_proposal/injection-token';
+import {REMOTE_RESOURCES_FACTORY} from '../data_access/remote_resource_factory/injection-token';
+import {RemoteResourceFactoryImplementation} from '../data_access/remote_resource_factory/remote-resource-factory.implementation';
 
 @NgModule({
   imports: [
@@ -26,7 +24,7 @@ import {EXAMPLE_PROPOSAL_DATA_SERVICE} from '../data_access/service/example_prop
     {provide: EXAMPLE_SERVICE, useClass: ExampleServiceImplementation},
     {provide: EXAMPLE_PROPOSAL_SERV_ID_SERVICE, useClass: ExampleProposalServIdServiceImpl},
     {provide: EXAMPLE_PROPOSAL_SERVICE, useClass: ExampleProposalServiceImplementation},
-    {provide: EXAMPLE_PROPOSAL_DATA_SERVICE, useClass: ExampleProposalDataServiceImplementation}
+    {provide: REMOTE_RESOURCES_FACTORY, useClass: RemoteResourceFactoryImplementation}
   ]
 })
 export class CoreModule {
