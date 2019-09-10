@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs';
-import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
+import {ExampleProposalServ} from '../../model/example_proposal/example-proposal-serv';
 import {List} from 'immutable';
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
@@ -8,7 +8,7 @@ import {ExampleSourceJournalServiceModel} from '../../model/example_source/examp
 
 export interface ExampleProposalService {
   types: ExampleProposalServiceModelTypesFactory;
-  exampleProposals: Observable<List<ExampleProposalServiceModel>>;
+  exampleProposals: Observable<List<ExampleProposalServ>>;
 
   isBook(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceBookServiceModel;
 

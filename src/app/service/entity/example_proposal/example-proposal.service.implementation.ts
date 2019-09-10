@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ExampleProposalService} from './example-proposal.service';
 import {BehaviorSubject, from, Observable} from 'rxjs';
-import {ExampleProposalServiceModel} from '../../model/example_proposal/example-proposal.service.model';
+import {ExampleProposalServ} from '../../model/example_proposal/example-proposal-serv';
 import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from '../../../core/example_proposal_serv_id/injection-token';
 import {ExampleProposalServiceIdentifierService} from '../../../core/example_proposal_serv_id/example-proposal-serv-id-service.interface';
 import {USER_SERVICE} from '../../../core/user/injection-token';
@@ -30,10 +30,10 @@ import {SourceData} from './dto/source.data';
 export class ExampleProposalServiceImplementation implements ExampleProposalService {
   private exampleProposalExceptionTranslator = new ExampleProposalExceptionTranslator();
   private remoteProposals: RemoteResource;
-  private readonly _proposals: Array<ExampleProposalServiceModel>;
-  private readonly _exampleProposals: BehaviorSubject<List<ExampleProposalServiceModel>>;
+  private readonly _proposals: Array<ExampleProposalServ>;
+  private readonly _exampleProposals: BehaviorSubject<List<ExampleProposalServ>>;
   public readonly types: ExampleProposalServiceModelTypesFactory;
-  public readonly exampleProposals: Observable<List<ExampleProposalServiceModel>>;
+  public readonly exampleProposals: Observable<List<ExampleProposalServ>>;
 
   constructor(
     @Inject(REMOTE_RESOURCES_FACTORY) private remoteResourcesFactory: RemoteResourcesFactory,
@@ -44,7 +44,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     this.remoteProposals = remoteResourcesFactory.bind('/api/proposals', this.exampleProposalExceptionTranslator);
     this.types = new ExampleProposalServiceModelTypesFactory();
     this._proposals = [];
-    this._exampleProposals = new BehaviorSubject<List<ExampleProposalServiceModel>>(List(this._proposals));
+    this._exampleProposals = new BehaviorSubject<List<ExampleProposalServ>>(List(this._proposals));
     this.exampleProposals = this._exampleProposals.asObservable();
   }
 
@@ -117,7 +117,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     );
   }
 
-  private getProposal(identifier: number): ExampleProposalServiceModel {
+  private getProposal(identifier: number): ExampleProposalServ {
     return this._proposals.find(proposal => proposal.identifier === identifier);
   }
 
@@ -135,7 +135,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return this.http.post(`/api/proposals/${id}/reject`, null) as Observable<any>;
   }
 
-  private updateModelWithRemoteProposal(data: ExampleProposalData, model: ExampleProposalServiceModel): void {
+  private updateModelWithRemoteProposal(data: ExampleProposalData, model: ExampleProposalServ): void {
     model.id = data.id;
     model.status = data.status;
     model.exampleId = data.exampleId;
@@ -214,7 +214,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     }
     ): number {
 
-    const newProposal = new ExampleProposalServiceModel(
+    const newProposal = new ExampleProposalServ(
       this.identifierService.getId(),
       ExampleProposalPurposeServiceModelTypes.submit,
       null,
@@ -260,7 +260,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
           proposalToUpdate.source = this.makeSourceModelFromData(data.source);
         } else {
           this._proposals.push(
-            new ExampleProposalServiceModel(
+            new ExampleProposalServ(
               this.identifierService.getId(),
               ExampleProposalPurposeServiceModelTypes.review,
               data.id,

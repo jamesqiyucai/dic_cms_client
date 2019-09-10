@@ -4,9 +4,9 @@ import {ExampleSourceJournalServiceModel} from '../example_source/example-source
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
-import {ExampleProposalTranslationModel} from './example-proposal-translation.model';
+import {TranslationServ} from '../../translation-serv';
 
-export class ExampleProposalServiceModel {
+export class ExampleProposalServ {
   public readonly identifier: number;
   private _purpose: ExampleProposalPurposeServiceModelTypes;
   private _id: number;
@@ -16,7 +16,7 @@ export class ExampleProposalServiceModel {
   private _version: number;
   private _text: string;
   private _italic: Array<[number, number]>;
-  private _translations: Array<ExampleProposalTranslationModel>;
+  private _translations: Array<TranslationServ>;
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
@@ -33,7 +33,7 @@ export class ExampleProposalServiceModel {
     version: number,
     text: string,
     italic: List<[number, number]>,
-    translations: List<ExampleProposalTranslationModel>,
+    translations: List<TranslationServ>,
     keywords: List<string>,
     note: string,
     comment: string,
@@ -144,7 +144,7 @@ export class ExampleProposalServiceModel {
     return List(this._translations.map(t => t.text));
   }
 
-  public set translations(newTranslations: List<ExampleProposalTranslationModel>) {
+  public set translations(newTranslations: List<TranslationServ>) {
     if (!newTranslations.equals(this.translations)) {
       this._translations = newTranslations.toArray();
       this.exampleProposalService.updateView();
