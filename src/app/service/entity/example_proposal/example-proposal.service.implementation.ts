@@ -11,7 +11,7 @@ import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_propo
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 import {map, mergeAll, mergeMap} from 'rxjs/operators';
-import {ExampleSourceBookServiceModel} from '../../model/example_source/example-source-book.service.model';
+import {BookSourceService} from '../../book-source-service';
 import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 import {REMOTE_RESOURCES_FACTORY} from '../../../data_access/remote_resource_factory/injection-token';
 import {RemoteResourcesFactory} from '../../../data_access/remote_resource_factory/remote-resources-factory';
@@ -151,11 +151,11 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
   }
 
   private makeSourceModelFromData(source: SourceData) {
-    let sourceModel: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel = null;
+    let sourceModel: BookSourceService | ExampleSourceJournalServiceModel = null;
     if (source) {
       switch (source.type) {
         case 'book': {
-          sourceModel = new ExampleSourceBookServiceModel(
+          sourceModel = new BookSourceService(
             source.author,
             source.title,
             (source as BookSourceData).page,
@@ -180,11 +180,11 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     return sourceModel;
   }
 
-  public isBook(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceBookServiceModel {
-    return (<ExampleSourceBookServiceModel>source).type === 'book';
+  public isBook(source: BookSourceService | ExampleSourceJournalServiceModel): source is BookSourceService {
+    return (<BookSourceService>source).type === 'book';
   }
 
-  public isJournal(source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel): source is ExampleSourceJournalServiceModel {
+  public isJournal(source: BookSourceService | ExampleSourceJournalServiceModel): source is ExampleSourceJournalServiceModel {
     return (<ExampleSourceJournalServiceModel>source).type === 'journal';
   }
 
@@ -289,7 +289,7 @@ export class ExampleProposalServiceImplementation implements ExampleProposalServ
     keywords: List<string>,
     note: string,
     comment: string,
-    source: ExampleSourceJournalServiceModel | ExampleSourceBookServiceModel,
+    source: ExampleSourceJournalServiceModel | BookSourceService,
     ): void {
     const proposalToUpdate = this.getProposal(identifier);
     proposalToUpdate.text = text;

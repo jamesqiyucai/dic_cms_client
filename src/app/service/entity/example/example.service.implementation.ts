@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ExampleService} from './example.service';
 import {ExampleServiceModelTypesFactory} from '../../model/example/example.service.model.types.factory';
-import {ExampleServiceModel} from '../../model/example/example.service.model';
+import {ExampleService} from '../../example-service.impl';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {List} from 'immutable';
 import {EXAMPLE_SERV_ID_SERVICE} from '../../../core/example_serv_id/injection-token';
@@ -11,8 +11,8 @@ import {ExampleData} from './example.data';
 
 @Injectable()
 export class ExampleServiceImplementation implements ExampleService {
-  private _examples: BehaviorSubject<List<ExampleServiceModel>>;
-  public readonly examples: Observable<List<ExampleServiceModel>>;
+  private _examples: BehaviorSubject<List<ExampleService>>;
+  public readonly examples: Observable<List<ExampleService>>;
   public readonly types: ExampleServiceModelTypesFactory;
 
   private static getPersistentExample(id: number): Observable<ExampleData> {
@@ -33,11 +33,11 @@ export class ExampleServiceImplementation implements ExampleService {
   }
 
   private init() {
-    this._examples = new BehaviorSubject<List<ExampleServiceModel>>(List([]));
+    this._examples = new BehaviorSubject<List<ExampleService>>(List([]));
   }
 
-  private makeModelFromPersistentData(data: ExampleData): ExampleServiceModel {
-    return new ExampleServiceModel(
+  private makeModelFromPersistentData(data: ExampleData): ExampleService {
+    return new ExampleService(
       this.identifierService.getId(),
       data.id,
       data.version,
@@ -51,7 +51,7 @@ export class ExampleServiceImplementation implements ExampleService {
     );
   }
 
-  private makeDataFromModel(model: ExampleServiceModel): ExampleData {
+  private makeDataFromModel(model: ExampleService): ExampleData {
     return undefined;
   }
 
@@ -60,10 +60,10 @@ export class ExampleServiceImplementation implements ExampleService {
   }
 
   private makeNewExamplesWithFetchedExamples(
-    currentExamples: List<ExampleServiceModel>,
-    fetchedExamples: List<ExampleServiceModel>
-  ): List<ExampleServiceModel> {
-    let newExamples: List<ExampleServiceModel>;
+    currentExamples: List<ExampleService>,
+    fetchedExamples: List<ExampleService>
+  ): List<ExampleService> {
+    let newExamples: List<ExampleService>;
     fetchedExamples.forEach(e => {
       const i = currentExamples.findIndex(val => val.id === e.id);
       if (i === -1) {
@@ -84,7 +84,7 @@ export class ExampleServiceImplementation implements ExampleService {
 
   public loadPersistentExamplesInService(keyword: string): void {
     ExampleServiceImplementation.getPersistentExampleIds(keyword).subscribe(ids => {
-      let fetchedExamples: List<ExampleServiceModel> = List(ids.map(id => undefined));
+      let fetchedExamples: List<ExampleService> = List(ids.map(id => undefined));
       let counter = 0;
       ids.forEach((id, index) => {
         ExampleServiceImplementation.getPersistentExample(id).subscribe(data => {

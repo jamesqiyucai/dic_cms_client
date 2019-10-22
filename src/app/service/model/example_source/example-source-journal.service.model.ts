@@ -1,7 +1,7 @@
 import {ExampleSourceServiceModelTypes} from './example-source.service.model.types';
-import {ExampleSource} from './example-source';
+import {SourceService} from '../../source-service';
 
-export class  ExampleSourceJournalServiceModel implements ExampleSource {
+export class  ExampleSourceJournalServiceModel implements SourceService {
   private _publishingDate: string;
   public readonly type: ExampleSourceServiceModelTypes;
 

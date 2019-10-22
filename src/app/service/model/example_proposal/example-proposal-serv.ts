@@ -1,10 +1,10 @@
 import {ExampleProposalPurposeServiceModelTypes} from './example-proposal-purpose.service.model.types';
-import {ExampleSourceBookServiceModel} from '../example_source/example-source-book.service.model';
+import {BookSourceService} from '../../book-source-service';
 import {ExampleSourceJournalServiceModel} from '../example_source/example-source-journal.service.model';
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
-import {TranslationServ} from '../../translation-serv';
+import {TranslationServiceImpl} from '../../translation-service.impl';
 
 export class ExampleProposalServ {
   public readonly identifier: number;
@@ -16,11 +16,11 @@ export class ExampleProposalServ {
   private _version: number;
   private _text: string;
   private _italic: Array<[number, number]>;
-  private _translations: Array<TranslationServ>;
+  private _translations: Array<TranslationServiceImpl>;
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
-  private _source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel;
+  private _source: BookSourceService | ExampleSourceJournalServiceModel;
   private exampleProposalService: ExampleProposalService;
 
   constructor(
@@ -33,11 +33,11 @@ export class ExampleProposalServ {
     version: number,
     text: string,
     italic: List<[number, number]>,
-    translations: List<TranslationServ>,
+    translations: List<TranslationServiceImpl>,
     keywords: List<string>,
     note: string,
     comment: string,
-    source: ExampleSourceBookServiceModel | ExampleSourceJournalServiceModel,
+    source: BookSourceService | ExampleSourceJournalServiceModel,
     exampleProposalService: ExampleProposalService,
   ) {
     this.identifier = identifier;
@@ -144,7 +144,7 @@ export class ExampleProposalServ {
     return List(this._translations.map(t => t.text));
   }
 
-  public set translations(newTranslations: List<TranslationServ>) {
+  public set translations(newTranslations: List<TranslationServiceImpl>) {
     if (!newTranslations.equals(this.translations)) {
       this._translations = newTranslations.toArray();
       this.exampleProposalService.updateView();
@@ -188,7 +188,7 @@ export class ExampleProposalServ {
     return _.cloneDeep(this._source);
   }
 
-  public set source(newSource: ExampleSourceJournalServiceModel | ExampleSourceBookServiceModel) {
+  public set source(newSource: ExampleSourceJournalServiceModel | BookSourceService) {
     if (!_.isEqual(newSource, this._source)) {
       this._source = newSource;
       this.exampleProposalService.updateView();
