@@ -11,7 +11,7 @@ import {ExampleProposalPurposeServiceModelTypes} from '../../model/example_propo
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
 import {map, mergeAll, mergeMap} from 'rxjs/operators';
-import {BookSourceService} from '../../book-source-service';
+import {BookSourceService} from '../../example/book-source-service';
 import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 import {REMOTE_RESOURCES_FACTORY} from '../../../data_access/remote_resource_factory/injection-token';
 import {RemoteResourcesFactory} from '../../../data_access/remote_resource_factory/remote-resources-factory';

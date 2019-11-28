@@ -1,4 +1,4 @@
-import {AbstractTranslation} from '../common_entities/abstract-translation';
+import {AbstractTranslation} from '../../common_entities/abstract-translation';
 import {TranslationService} from './translation-service';
 
 export class TranslationServiceImpl extends AbstractTranslation implements TranslationService {

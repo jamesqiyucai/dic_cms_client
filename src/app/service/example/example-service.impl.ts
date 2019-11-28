@@ -1,11 +1,8 @@
-import {ExampleSourceServiceModelTypes} from './model/example_source/example-source.service.model.types';
-import {BookSourceService} from './book-source-service';
-import {ExampleSourceJournalServiceModel} from './model/example_source/example-source-journal.service.model';
-import {TranslationServiceImpl} from './translation-service.impl';
 import {ExampleService} from './example-service';
 import {TranslationService} from './translation-service';
 import {SourceService} from './source-service';
 import {List} from 'immutable';
+import {moveItemInArray} from '@angular/cdk/drag-drop';
 
 export class ExampleServiceImpl implements ExampleService {
   constructor(
@@ -42,11 +39,38 @@ export class ExampleServiceImpl implements ExampleService {
   public get keywords() {
     return List<string>(this._keywords);
   }
+  public addKeyword(atIndex: number, word: string) {
+    this._keywords.splice(atIndex, 0, word);
+  }
+  public removeKeyword(atIndex: number) {
+    this._keywords.splice(atIndex, 1);
+  }
+  public moveKeyword(fromIndex: number, toIndex: number) {
+    moveItemInArray(this._keywords, fromIndex, toIndex);
+  }
   public get italics() {
     return List<[number, number]>(this._italics);
   }
+  public addItalic(atIndex: number, italic: [number, number]) {
+    this._italics.splice(atIndex, 0, italic);
+  }
+  public removeItalic(atIndex: number) {
+    this._italics.splice(atIndex, 1);
+  }
+  public moveItalic(fromIndex: number, toIndex: number) {
+    moveItemInArray(this._italics, fromIndex, toIndex);
+  }
   public get translations() {
     return List<TranslationService>(this._translations);
+  }
+  public addTranslation(atIndex: number, translation: TranslationService) {
+    this._translations.splice(atIndex, 0, translation);
+  }
+  public removeTranslation(atIndex: number) {
+    this._translations.splice(atIndex, 1);
+  }
+  public moveTranslation(fromIndex: number, toIndex: number) {
+    moveItemInArray(this._translations, fromIndex, toIndex);
   }
   public get note() {
     return this._note;
@@ -64,7 +88,7 @@ export class ExampleServiceImpl implements ExampleService {
     return this._source;
   }
   public setSource(newSource: SourceService) {
-
+    this._source = newSource;
   }
 //   public format: {
 //     italic: Array<[number, number]>

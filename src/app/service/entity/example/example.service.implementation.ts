@@ -1,7 +1,7 @@
 import {Inject, Injectable} from '@angular/core';
 import {ExampleService} from './example.service';
 import {ExampleServiceModelTypesFactory} from '../../model/example/example.service.model.types.factory';
-import {ExampleService} from '../../example-service.impl';
+import {ExampleService} from '../../example/example-service.impl';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {List} from 'immutable';
 import {EXAMPLE_SERV_ID_SERVICE} from '../../../core/example_serv_id/injection-token';

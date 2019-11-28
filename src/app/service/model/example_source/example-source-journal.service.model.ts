@@ -1,5 +1,5 @@
 import {ExampleSourceServiceModelTypes} from './example-source.service.model.types';
-import {SourceService} from '../../source-service';
+import {SourceService} from '../../example/source-service';
 
 export class  ExampleSourceJournalServiceModel implements SourceService {
   private _publishingDate: string;

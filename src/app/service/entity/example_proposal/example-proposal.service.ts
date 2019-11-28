@@ -3,7 +3,7 @@ import {ExampleProposalServ} from '../../model/example_proposal/example-proposal
 import {List} from 'immutable';
 import {ExampleSourceServiceModelTypes} from '../../model/example_source/example-source.service.model.types';
 import {ExampleProposalServiceModelTypesFactory} from '../../model/example_proposal/example-proposal.service.model.types.factory';
-import {BookSourceService} from '../../book-source-service';
+import {BookSourceService} from '../../example/book-source-service';
 import {ExampleSourceJournalServiceModel} from '../../model/example_source/example-source-journal.service.model';
 
 export interface ExampleProposalService {

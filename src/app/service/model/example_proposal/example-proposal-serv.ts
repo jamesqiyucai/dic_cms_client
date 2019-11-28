@@ -1,10 +1,10 @@
 import {ExampleProposalPurposeServiceModelTypes} from './example-proposal-purpose.service.model.types';
-import {BookSourceService} from '../../book-source-service';
+import {BookSourceService} from '../../example/book-source-service';
 import {ExampleSourceJournalServiceModel} from '../example_source/example-source-journal.service.model';
 import {ExampleProposalService} from '../../entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
-import {TranslationServiceImpl} from '../../translation-service.impl';
+import {TranslationServiceImpl} from '../../example/translation-service.impl';
 
 export class ExampleProposalServ {
   public readonly identifier: number;
