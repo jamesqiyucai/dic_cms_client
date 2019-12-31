@@ -2,7 +2,7 @@ import {NgModule, Optional, SkipSelf} from '@angular/core';
 import {throwIfAlreadyLoaded} from './module-import-guard';
 import {HttpClientModule} from '@angular/common/http';
 import {USER_SERVICE} from './user/injection-token';
-import {UserServiceImpl} from './user/user-service.class';
+import {UserServiceImpl} from './user/user-service-impl';
 import {EXAMPLE_SERV_ID_SERVICE} from './example_serv_id/injection-token';
 import {ExampleServIdServiceImpl} from './example_serv_id/example-serv-id.service';
 import {EXAMPLE_PROPOSAL_SERV_ID_SERVICE} from './example_proposal_serv_id/injection-token';

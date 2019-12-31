@@ -24,7 +24,7 @@
         </svg>
       </div>
       <div class="editable">
-        <label>Translation {{i+1}}:<input #translationInput [disabled]="!unlocked" [value]="translation" (input)="onTranslationModify(i, translationInput.value)"></label>
+        <label>Translation {{i+1}}:<input #translationInput [disabled]="!unlocked" [value]="translation.text" (input)="onTranslationModify(i, translationInput.value)"></label>
       </div>
     </div>
   </div>
@@ -57,7 +57,7 @@
     </label>
   </div>
   <select #sourceSelect [disabled]="!unlocked" (change)="onSourceChoose(sourceSelect.value)">
-    <option value='' [selected]="sourceNull">-</option>
+    <option value=null [selected]="sourceNull">-</option>
     <option value="journal">Journal</option>
     <option value="book">Book</option>
   </select>

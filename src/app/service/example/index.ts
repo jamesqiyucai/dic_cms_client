@@ -1,4 +1,10 @@
-export { ExampleService } from './example-service';
-export { ExampleRepository } from './example-repository';
-export { TranslationService } from './translation-service';
-export { SourceService } from './source-service';
+export { ExampleHandle } from './example-handle';
+export { ExampleTranslationHandle } from './example-translation-handle';
+export { ExampleSourceHandle } from './example-source-handle';
+export { ExampleBookSourceHandle } from './example-book-source-handle';
+export { ExampleJournalSourceHandle } from './example-journal-source-handle';
+export { ExampleTranslationDocumentContent } from './example-translation-document-content';
+export { ExampleSourceDocumentContent } from './example-source-document-content';
+export { ExampleBookSourceDocumentContent } from './example-book-source-document-content';
+export { ExampleJournalSourceDocumentContent } from './example-journal-source-document-content';
+export { ExampleDocumentContent } from './example-document-content';

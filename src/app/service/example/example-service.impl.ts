@@ -1,20 +1,20 @@
-import {ExampleService} from './example-service';
-import {TranslationService} from './translation-service';
-import {SourceService} from './source-service';
+import {ExampleHandle} from './example-handle';
+import {ExampleTranslationHandle} from './example-translation-handle';
+import {ExampleSourceHandle} from './example-source-handle';
 import {List} from 'immutable';
 import {moveItemInArray} from '@angular/cdk/drag-drop';
 
-export class ExampleServiceImpl implements ExampleService {
+export class ExampleServiceImpl implements ExampleHandle {
   constructor(
     private _ID: number,
     private _version: number,
     private _text: string,
     private _keywords: string[],
     private _italics: [number, number][],
-    private _translations: TranslationService[],
+    private _translations: ExampleTranslationHandle[],
     private _note: string,
     private _comment: string,
-    private _source: SourceService
+    private _source: ExampleSourceHandle
   ) {}
   public get ID() {
     return this._ID;
@@ -61,9 +61,9 @@ export class ExampleServiceImpl implements ExampleService {
     moveItemInArray(this._italics, fromIndex, toIndex);
   }
   public get translations() {
-    return List<TranslationService>(this._translations);
+    return List<ExampleTranslationHandle>(this._translations);
   }
-  public addTranslation(atIndex: number, translation: TranslationService) {
+  public addTranslation(atIndex: number, translation: ExampleTranslationHandle) {
     this._translations.splice(atIndex, 0, translation);
   }
   public removeTranslation(atIndex: number) {
@@ -87,7 +87,7 @@ export class ExampleServiceImpl implements ExampleService {
   public get source() {
     return this._source;
   }
-  public setSource(newSource: SourceService) {
+  public setSource(newSource: ExampleSourceHandle) {
     this._source = newSource;
   }
 //   public format: {
@@ -99,7 +99,7 @@ export class ExampleServiceImpl implements ExampleService {
 //     public version: number,
 //     public text: string,
 //     italic: Array<[number, number]>,
-//     public translations: TranslationServiceImpl[],
+//     public translations: ExampleTranslationDocumentContent[],
 //     public keywords: string[],
 //     public note: string,
 //     public comment: string,
@@ -122,7 +122,7 @@ export class ExampleServiceImpl implements ExampleService {
 //     if (source) {
 //       switch (source.type) {
 //         case ExampleSourceServiceModelTypes.book: {
-//           this.source = new BookSourceService(
+//           this.source = new ExampleBookSourceHandle(
 //             source.author,
 //             source.title,
 //             source.page,

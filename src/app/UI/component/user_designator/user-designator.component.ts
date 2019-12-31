@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {USER_SERVICE} from '../../../core/user/injection-token';
-import {UserService} from '../../../core/user/user-service.interface';
+import {UserService} from '../../../core/user/user-service';
 
 @Component({
   selector: 'app-user-designator',

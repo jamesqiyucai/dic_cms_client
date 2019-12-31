@@ -1,13 +1,12 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ExampleEditorComponent} from '../example_editor/example-editor.component';
-import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
 import {List} from 'immutable';
 import * as _ from 'lodash';
 import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleProposalConstructorComponentDto} from './example-proposal-constructor.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
+import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
 
 @Component({
   selector: 'app-example-proposal-constructor',
@@ -31,12 +30,12 @@ import {ExampleSourceComponentTypes} from '../example_source/example-source.comp
 })
 export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
-  private _exampleProposalIdentifier: number;
+  private proposalHandle: ProposalHandle;
   private _exampleId: number;
   private _exampleVersion: number;
   private _text: string;
   private _italics: Array<[number, number]>;
-  private _translations: Array<string>;
+  private _translations: Array<{id: number, text: string}>;
   private _keywords: Array<string>;
   private _note: string;
   private _comment: string;
@@ -46,7 +45,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   private subscription;
 
 
-  constructor(@Inject(EXAMPLE_PROPOSAL_SERVICE) private exampleProposalService: ExampleProposalService) {}
+  constructor(@Inject(PROPOSAL_REPOSITORY) private proposalRepository: ProposalRepository) {}
 
   private updateView() {
     this.exampleEditor.update(
@@ -68,7 +67,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
       switch (this.source.type) {
         case ExampleSourceComponentTypes.book: {
           source = {
-            type: this.exampleProposalService.types.ExampleProposalSourceType.book,
+            type: 'book',
             author: this.source.author,
             title: this.source.title,
             page: this.source.page,
@@ -80,7 +79,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
         }
         case ExampleSourceComponentTypes.journal: {
           source = {
-            type: this.exampleProposalService.types.ExampleProposalSourceType.journal,
+            type: 'journal',
             author: this.source.author,
             title: this.source.title,
             page: this.source.page,
@@ -91,16 +90,13 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
         }
       }
     }
-    this.exampleProposalService.updateExampleProposalInService(
-      this.exampleProposalIdentifier,
-      this.text,
-      this.italics,
-      this.translations,
-      this.keywords,
-      this.note,
-      this.comment,
-      source,
-    );
+    this.proposalHandle.text = this.text;
+    this.proposalHandle.keywords = this.keywords;
+    this.proposalHandle.italics = this.italics;
+    this.proposalHandle.translations = this.translations;
+    this.proposalHandle.note = this.note;
+    this.proposalHandle.comment = this.comment;
+    this.proposalHandle.source = this.source;
   }
 
   private init(): void {
@@ -109,15 +105,16 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     this._exampleVersion = null;
     this._text = 'Example Text Goes Here.';
     this._italics = [];
-    this._translations = ['新翻译'];
+    this._translations = [{id: undefined, text: '新翻译'}];
     this._keywords = [''];
     this._note = '';
     this._comment = '';
     this._source = null;
 
     this.updateView();
+    this.proposalHandle = this.proposalRepository.createProposal();
 
-    this._exampleProposalIdentifier = this.exampleProposalService.createExampleProposalInService(
+    this.proposalHandle = this.exampleProposalService.createExampleProposalInService(
       this.exampleId,
       this.exampleVersion,
       this.text,
@@ -132,7 +129,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
 
 
     this.subscription = this.exampleProposalService.exampleProposals.subscribe(proposals => {
-      const serviceData = proposals.find(proposal => proposal.identifier === this.exampleProposalIdentifier);
+      const serviceData = proposals.find(proposal => proposal.identifier === this.proposalHandle);
       if (serviceData.purpose === this.exampleProposalService.types.ExampleProposalPurpose.review) {
         this.lock();
         this._canSubmit = false;
@@ -182,16 +179,16 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     return this._canSubmit;
   }
 
-  private get exampleProposalIdentifier() {
-    return this._exampleProposalIdentifier;
-  }
-
-  private set exampleProposalIdentifier(newIdentifier: number) {
-    if (this.exampleProposalIdentifier !== newIdentifier) {
-      this._exampleProposalIdentifier = newIdentifier;
-      this.updateModel();
-    }
-  }
+  // private get proposalHandle() {
+  //   return this._proposalHandle;
+  // }
+  //
+  // private set proposalHandle(newIdentifier: number) {
+  //   if (this.proposalHandle !== newIdentifier) {
+  //     this._proposalHandle = newIdentifier;
+  //     this.updateModel();
+  //   }
+  // }
 
   private get exampleId() {
     return this._exampleId;
@@ -244,7 +241,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     return List(this._translations);
   }
 
-  private set translations(newTranslations: List<string>) {
+  private set translations(newTranslations: List<{id: number, text: string}>) {
     if (!this.translations.equals(newTranslations)) {
       this._translations = newTranslations.toArray();
       this.updateView();
@@ -316,7 +313,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
     this.italics = newRanges;
   }
 
-  private onTranslationsChange(newTranslations: List<string>) {
+  private onTranslationsChange(newTranslations: List<{id: number, text: string}>) {
     this.translations = newTranslations;
   }
 
@@ -337,7 +334,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   }
 
   private onSubmit() {
-    this.exampleProposalService.submitExampleProposal(this.exampleProposalIdentifier);
+    this.exampleProposalService.submitExampleProposal(this.proposalHandle);
     this.lock();
   }
 
@@ -367,7 +364,7 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
   }
 
   public update(data: ExampleProposalConstructorComponentDto) {
-    this.exampleProposalIdentifier = data.identifier;
+    this.proposalHandle = data.identifier;
     this.exampleId = data.id;
     this.exampleVersion = data.version;
     this.text = data.text;

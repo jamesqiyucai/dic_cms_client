@@ -3,7 +3,7 @@ import {ExampleEditorComponent} from '../example_editor/example-editor.component
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
 import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
 import {USER_SERVICE} from '../../../core/user/injection-token';
-import {UserService} from '../../../core/user/user-service.interface';
+import {UserService} from '../../../core/user/user-service';
 import {ExampleProposalApproverComponentDto} from './example-proposal-approver.component.dto';
 import {List} from 'immutable';
 import {map} from 'rxjs/operators';

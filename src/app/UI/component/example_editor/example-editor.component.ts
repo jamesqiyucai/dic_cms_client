@@ -1,9 +1,6 @@
-import {Component, ComponentFactoryResolver, EventEmitter, Inject, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ComponentFactoryResolver, EventEmitter, Inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {List} from 'immutable';
-import {SourceComponent} from '../example_source/abstract_source/source.component';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {USER_SERVICE} from '../../../core/user/injection-token';
-import {UserService} from '../../../core/user/user-service.interface';
 import {ExampleSourceJournalComponent} from '../example_source/example_source_journal/example-source-journal.component';
 import {ExampleSourceBookComponent} from '../example_source/example_source_book/example-source-book.component';
 import {SourceDirective} from '../../../toolkit/source_directive/source.directive';
@@ -11,35 +8,39 @@ import {ExampleSourceBookComponentDto} from '../example_source/example_source_bo
 import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
 import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
 import {italicizeText} from './italicize-text';
+import {USER_SERVICE, UserService} from '../../../core';
+import {SourceComponentFactory} from '../example_source/source-component-factory';
+import {ExampleHandle} from '../../../service/example';
+import {SourceComponent} from '../example_source/abstract_source/source-component';
 
 @Component({
   selector: 'app-example-editor',
   templateUrl: './example-editor.component.html',
   styleUrls: ['./example-editor.component.css'],
 })
-export class ExampleEditorComponent {
+export class ExampleEditorComponent implements OnInit, AfterViewInit {
+  @Input() private handle: ExampleHandle;
+  private _ID: number;
   private _unlocked: boolean;
-  private _exampleId: number;
-  private _exampleVersion: number;
   private _italicizedExampleText: string;
-  private _translations: Array<string>;
+  private _translations: Array<{id: number, text: string}>;
   private _italicizedTextRanges: Array<[number, number]>;
   private _appliedWords: Array<string>;
   private _note: string;
   private _comment: string;
   private sourceComponent: SourceComponent;
-
+  private sourceComponentFactory: SourceComponentFactory;
   @ViewChild(SourceDirective) private sourceHost: SourceDirective;
 
-  @Output() public readonly idChange: EventEmitter<number>;
-  @Output() public readonly versionChange: EventEmitter<number>;
-  @Output() public readonly textChange: EventEmitter<string>;
-  @Output() public readonly italicizedTextRangesChange: EventEmitter<List<[number, number]>>;
-  @Output() public readonly translationsChange: EventEmitter<List<string>>;
-  @Output() public readonly keywordsChange: EventEmitter<List<string>>;
-  @Output() public readonly noteChange: EventEmitter<string>;
-  @Output() public readonly commentChange: EventEmitter<string>;
-  @Output() public readonly sourceChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
+  // @Output() public readonly idChange: EventEmitter<number>;
+  // @Output() public readonly versionChange: EventEmitter<number>;
+  // @Output() public readonly textChange: EventEmitter<string>;
+  // @Output() public readonly italicizedTextRangesChange: EventEmitter<List<[number, number]>>;
+  // @Output() public readonly translationsChange: EventEmitter<List<{id: number, text: string}>>;
+  // @Output() public readonly keywordsChange: EventEmitter<List<string>>;
+  // @Output() public readonly noteChange: EventEmitter<string>;
+  // @Output() public readonly commentChange: EventEmitter<string>;
+  // @Output() public readonly sourceChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -54,41 +55,41 @@ export class ExampleEditorComponent {
     this._note = null;
     this._comment = null;
     this.sourceComponent = null;
+    // this.idChange = new EventEmitter();
+    // this.versionChange = new EventEmitter();
+    // this.textChange = new EventEmitter();
+    // this.italicizedTextRangesChange = new EventEmitter();
+    // this.translationsChange = new EventEmitter();
+    // this.keywordsChange = new EventEmitter();
+    // this.noteChange = new EventEmitter();
+    // this.commentChange = new EventEmitter();
+    // this.sourceChange = new EventEmitter();
+  }
+  ngOnInit(): void {
+    this.handle.$ID.subscribe(ID => this.ID = ID);
+    this.handle.$text.subscribe(text => italicizeText(text, this.italicizedTextRanges.toArray()));
+    this.handle.$keywords.subscribe(keywords => this.appliedWords = keywords);
+    this.handle.$translations.subscribe(translations => this.translations = translations);
+    this.handle.$italics.subscribe(italics => this.italicizedTextRanges = italics);
+    this.handle.$comment.subscribe(comment => this.comment = comment);
+    this.handle.$note.subscribe(note => this.note = note);
+  }
 
-    this.idChange = new EventEmitter();
-    this.versionChange = new EventEmitter();
-    this.textChange = new EventEmitter();
-    this.italicizedTextRangesChange = new EventEmitter();
-    this.translationsChange = new EventEmitter();
-    this.keywordsChange = new EventEmitter();
-    this.noteChange = new EventEmitter();
-    this.commentChange = new EventEmitter();
-    this.sourceChange = new EventEmitter();
+  ngAfterViewInit(): void {
+    this.sourceComponentFactory = new SourceComponentFactory(this.sourceHost.viewContainerRef, this.componentFactoryResolver);
   }
 
   private get unlocked() {
     return this._unlocked;
   }
 
-  private get exampleId() {
-    return this._exampleId;
+  private get ID() {
+    return this._ID;
   }
 
-  private set exampleId(newId: number) {
-    if (this.exampleId !== newId) {
-      this._exampleId = newId;
-      this.idChange.emit(this.exampleId);
-    }
-  }
-
-  private get exampleVersion() {
-    return this._exampleVersion;
-  }
-
-  private set exampleVersion(newVersion: number) {
-    if (this.exampleVersion !== newVersion) {
-      this._exampleVersion = newVersion;
-      this.versionChange.emit(this.exampleVersion);
+  private set ID(newID: number) {
+    if (this.ID !== newID) {
+      this.ID = newID;
     }
   }
 
@@ -103,7 +104,7 @@ export class ExampleEditorComponent {
   private set italicizedExampleText(newText: string) {
     if (this.italicizedExampleText !== newText) {
       this._italicizedExampleText = newText;
-      this.textChange.emit(this.exampleText);
+      this.handle.text = this.exampleText;
     }
   }
 
@@ -114,7 +115,7 @@ export class ExampleEditorComponent {
   private set italicizedTextRanges(newRanges: List<[number, number]>) {
     if (!this.italicizedTextRanges.equals(newRanges)) {
       this._italicizedTextRanges = newRanges.toArray();
-      this.italicizedTextRangesChange.emit(this.italicizedTextRanges);
+      this.handle.italics = newRanges;
     }
   }
 
@@ -122,10 +123,10 @@ export class ExampleEditorComponent {
     return List(this._translations);
   }
 
-  private set translations(newTranslations: List<string>) {
+  private set translations(newTranslations: List<{id: number, text: string}>) {
     if (!this.translations.equals(newTranslations)) {
       this._translations = newTranslations.toArray();
-      this.translationsChange.emit(this.translations);
+      this.handle.translations = newTranslations;
     }
   }
 
@@ -136,7 +137,7 @@ export class ExampleEditorComponent {
   private set appliedWords(newWords: List<string>) {
     if (!this.appliedWords.equals(newWords)) {
       this._appliedWords = newWords.toArray();
-      this.keywordsChange.emit(this.appliedWords);
+      this.handle.keywords = newWords;
     }
   }
 
@@ -147,7 +148,7 @@ export class ExampleEditorComponent {
   private set note(newNote: string) {
     if (this.note !== newNote) {
       this._note = newNote;
-      this.noteChange.emit(this.note);
+      this.handle.note = newNote;
     }
   }
 
@@ -158,44 +159,47 @@ export class ExampleEditorComponent {
   private set comment(newComment: string) {
     if (this.comment !== newComment) {
       this._comment = newComment;
-      this.commentChange.emit(this.comment);
+      this.handle.comment = newComment;
     }
   }
 
   private get sourceNull() {
     return !this.sourceComponent;
   }
-
-  private loadNewExampleBookSourceComponent() {
-    const viewContainerRef = this.sourceHost.viewContainerRef;
-    viewContainerRef.clear();
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
-    this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-    this.sourceComponent.dataChange.subscribe((dto: ExampleSourceBookComponentDto) => this.sourceChange.emit(dto));
+  private loadSourceComponent() {
+    this.sourceComponentFactory.createSourceComponent(this.handle.source.getType());
   }
 
-  private loadNewExampleJournalSourceComponent() {
-    const viewContainerRef = this.sourceHost.viewContainerRef;
-    viewContainerRef.clear();
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
-    this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
-    this.sourceComponent.dataChange.subscribe((dto: ExampleSourceJournalComponentDto) => this.sourceChange.emit(dto));
-  }
-
-  private loadSourceComponentBasedOnData(source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto) {
-    switch (source.type) {
-      case ExampleSourceComponentTypes.book: {
-        this.loadNewExampleBookSourceComponent();
-        this.sourceComponent.update(source);
-        break;
-      }
-      case ExampleSourceComponentTypes.journal: {
-        this.loadNewExampleJournalSourceComponent();
-        this.sourceComponent.update(source);
-        break;
-      }
-    }
-  }
+  // private loadNewExampleBookSourceComponent() {
+  //   const viewContainerRef = this.sourceHost.viewContainerRef;
+  //   viewContainerRef.clear();
+  //   const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceBookComponent);
+  //   this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+  //   this.sourceComponent.dataChange.subscribe((dto: ExampleSourceBookComponentDto) => this.sourceChange.emit(dto));
+  // }
+  //
+  // private loadNewExampleJournalSourceComponent() {
+  //   const viewContainerRef = this.sourceHost.viewContainerRef;
+  //   viewContainerRef.clear();
+  //   const componentFactory = this.componentFactoryResolver.resolveComponentFactory(ExampleSourceJournalComponent);
+  //   this.sourceComponent = viewContainerRef.createComponent(componentFactory).instance;
+  //   this.sourceComponent.dataChange.subscribe((dto: ExampleSourceJournalComponentDto) => this.sourceChange.emit(dto));
+  // }
+  //
+  // private loadSourceComponentBasedOnData(source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto) {
+  //   switch (source.type) {
+  //     case ExampleSourceComponentTypes.book: {
+  //       this.loadNewExampleBookSourceComponent();
+  //       this.sourceComponent.update(source);
+  //       break;
+  //     }
+  //     case ExampleSourceComponentTypes.journal: {
+  //       this.loadNewExampleJournalSourceComponent();
+  //       this.sourceComponent.update(source);
+  //       break;
+  //     }
+  //   }
+  // }
 
   private killSourceComponent() {
     this.sourceHost.viewContainerRef.clear();
@@ -224,12 +228,17 @@ export class ExampleEditorComponent {
   }
 
   private onTranslationModify(atIndex: number, to: string) {
-    this.translations = this.translations.update(atIndex, () => to);
+    this.translations = this.translations.update(atIndex, (translation) => {
+      return {
+        id: translation.id,
+        text: to
+      };
+    });
   }
 
   private onTranslationDrop(event: CdkDragDrop<any>) {
     if (event.previousContainer !== event.container) {
-      this.translations = this.translations.insert(event.currentIndex, '新翻译');
+      this.translations = this.translations.insert(event.currentIndex, {id: undefined, text: '新翻译'});
     } else {
       const array = this.translations.toArray();
       moveItemInArray(array, event.previousIndex, event.currentIndex);
@@ -263,80 +272,86 @@ export class ExampleEditorComponent {
   }
 
   private onSourceChoose(type: string) {
-    let previousData: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
-    if (this.sourceComponent) {
-      previousData = this.sourceComponent.getDto();
+    if (type) {
+      this.sourceComponent = this.sourceComponentFactory.createSourceComponent(type);
+      this.sourceComponent.sourceHandle = this.handle.source;
+    } else {
+      this.killSourceComponent();
     }
-    switch (type) {
-      case ExampleSourceComponentTypes.book: {
-        this.loadNewExampleBookSourceComponent();
-        this.sourceComponent.update({
-          type: ExampleSourceComponentTypes.book,
-          author: previousData ? previousData.author : null,
-          title: previousData ? previousData.title : null,
-          page: previousData ? previousData.page : null,
-          initialPublishingYear: null,
-          publishedPlace: null,
-          publishedYear: null,
-        });
-        break;
-      }
-      case ExampleSourceComponentTypes.journal: {
-        this.loadNewExampleJournalSourceComponent();
-        this.sourceComponent.update({
-          type: ExampleSourceComponentTypes.book,
-          author: previousData ? previousData.author : null,
-          title: previousData ? previousData.title : null,
-          page: previousData ? previousData.page : null,
-          passageTitle: null,
-          publishingDate: null,
-        });
-        break;
-      }
-      case '': {
-        this.killSourceComponent();
-        break;
-      }
-    }
+    // let previousData: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;
+    // if (this.sourceComponent) {
+    //   previousData = this.sourceComponent.getDto();
+    // }
+    // switch (type) {
+    //   case ExampleSourceComponentTypes.book: {
+    //     this.loadNewExampleBookSourceComponent();
+    //     this.sourceComponent.update({
+    //       type: ExampleSourceComponentTypes.book,
+    //       author: previousData ? previousData.author : null,
+    //       title: previousData ? previousData.title : null,
+    //       page: previousData ? previousData.page : null,
+    //       initialPublishingYear: null,
+    //       publishedPlace: null,
+    //       publishedYear: null,
+    //     });
+    //     break;
+    //   }
+    //   case ExampleSourceComponentTypes.journal: {
+    //     this.loadNewExampleJournalSourceComponent();
+    //     this.sourceComponent.update({
+    //       type: ExampleSourceComponentTypes.book,
+    //       author: previousData ? previousData.author : null,
+    //       title: previousData ? previousData.title : null,
+    //       page: previousData ? previousData.page : null,
+    //       passageTitle: null,
+    //       publishingDate: null,
+    //     });
+    //     break;
+    //   }
+    //   case '': {
+    //     this.killSourceComponent();
+    //     break;
+    //   }
+    // }
   }
 
 
-  public update(
-    exampleId: number,
-    version: number,
-    normalizedText: string,
-    italics: List<[number, number]>,
-    keywords: List<string>,
-    translations: List<string>,
-    note: string,
-    comment: string,
-    source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto,
-  ) {
-    this.exampleId = exampleId;
-    this.exampleVersion = version;
-    this.italicizedExampleText = italicizeText(normalizedText, italics.toArray());
-    this.italicizedTextRanges = italics;
-    this.translations = translations;
-    this.appliedWords = keywords;
-    this.comment = comment;
-    this.note = note;
-
-    if (this.sourceComponent || source) {
-      if (this.sourceComponent && source) {
-        if (this.sourceComponent.getDto().type === source.type) {
-          this.sourceComponent.update(source);
-        } else {
-          this.loadSourceComponentBasedOnData(source);
-        }
-
-      } else if (!this.sourceComponent) {
-        this.loadSourceComponentBasedOnData(source);
-      } else {
-        this.killSourceComponent();
-      }
-    }
-  }
-
+  // public update(
+  //   exampleId: number,
+  //   version: number,
+  //   normalizedText: string,
+  //   italics: List<[number, number]>,
+  //   keywords: List<string>,
+  //   translations: List<{id: number, text: string}>,
+  //   note: string,
+  //   comment: string,
+  //   source: ExampleSourceJournalComponentDto | ExampleSourceBookComponentDto,
+  // ) {
+  //   this.exampleId = exampleId;
+  //   this.exampleVersion = version;
+  //   this.italicizedExampleText = italicizeText(normalizedText, italics.toArray());
+  //   this.italicizedTextRanges = italics;
+  //   this.translations = translations;
+  //   this.appliedWords = keywords;
+  //   this.comment = comment;
+  //   this.note = note;
+  //
+  //   if (this.sourceComponent || source) {
+  //     if (this.sourceComponent && source) {
+  //       if (this.sourceComponent.getDto().type === source.type) {
+  //         this.sourceComponent.update(source);
+  //       } else {
+  //         this.loadSourceComponentBasedOnData(source);
+  //       }
+  //
+  //     } else if (!this.sourceComponent) {
+  //       this.loadSourceComponentBasedOnData(source);
+  //     } else {
+  //       this.killSourceComponent();
+  //     }
+  //   }
+  // }
+  //
   // public getData(): ExampleEditorComponentDto {
   //   return {
   //     id: this.exampleId,
