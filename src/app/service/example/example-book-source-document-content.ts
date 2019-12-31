@@ -1,15 +1,55 @@
 import {ExampleSourceDocumentContent} from './example-source-document-content';
+import {Subject} from "rxjs";
 
 export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocumentContent {
+  public readonly $page = new Subject<number>();
+  public readonly $initialPublishingYear = new Subject<number>();
+  public readonly $publishedYear = new Subject<number>();
+  public readonly $publishedPlace = new Subject<string>();
   constructor(
-    type: string,
     author: string,
     title: string,
-    public page: number,
-    public initialPublishingYear: number,
-    public publishedYear: number,
-    public publishedPlace: string
+    protected _page: number,
+    protected _initialPublishingYear: number,
+    protected _publishedYear: number,
+    protected _publishedPlace: string
   ) {
-    super(type, author, title);
+    super('book', author, title);
+  }
+  public get page() {
+    return this._page;
+  }
+  public set page(newPage: number) {
+    if (this._page !== newPage) {
+      this._page = newPage;
+      this.$page.next(newPage);
+    }
+  }
+  public get initialPublishingYear() {
+    return this._initialPublishingYear;
+  }
+  public set initialPublishingYear(newInitialPublishingYear: number) {
+    if (this._initialPublishingYear !== newInitialPublishingYear) {
+      this._initialPublishingYear = newInitialPublishingYear;
+      this.$initialPublishingYear.next(newInitialPublishingYear);
+    }
+  }
+  public get publishedYear() {
+    return this._publishedYear;
+  }
+  public set publishedYear(newPublishedYear: number) {
+    if (this._publishedYear !== newPublishedYear) {
+      this._publishedYear = newPublishedYear;
+      this.$publishedYear.next(newPublishedYear);
+    }
+  }
+  public get publishedPlace() {
+    return this._publishedPlace;
+  }
+  public set publishedPlace(newPublishedPlace: string) {
+    if (this._publishedPlace !== newPublishedPlace) {
+      this._publishedPlace = newPublishedPlace;
+      this.$publishedPlace.next(newPublishedPlace);
+    }
   }
 }

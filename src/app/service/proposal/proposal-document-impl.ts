@@ -11,8 +11,14 @@ import {ProposalBookSourceDocument} from './proposal-book-source-document';
 import {ProposalJournalSourceDocument} from './proposal-journal-source-document';
 import {ProposalJournalSourceResourceRequest} from './proposal-journal-source-resource-request';
 import {ProposalResourceResponse} from './proposal-resource-response';
+import {ProposalSourceHandle} from "./proposal-source-handle";
+import {ProposalSourceFactory} from "./proposal-source-factory";
 
 export class ProposalDocumentImpl extends ExampleDocumentContent implements ProposalDocument {
+  private sourceFactory = new ProposalSourceFactory();
+  private _$exampleID = new Subject<number>();
+  private _$source = new Subject<ProposalSourceHandle>();
+  private _$status = new Subject<string>();
   protected _source: ProposalSourceDocument;
   constructor(
     private _exampleID: number,
@@ -80,8 +86,12 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
   public get source() {
     return this._source;
   }
+  public get $source() {
+    return this._$source;
+  }
   public set source(newSource: ProposalSourceDocument) {
     this._source = newSource;
+    this._$source.next(newSource);
   }
   public setID(newID: number): any {
     this._ID = newID;
@@ -89,6 +99,9 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
   }
   public get exampleID() {
     return this._exampleID;
+  }
+  public get $exampleID() {
+    return this._$exampleID;
   }
   public set exampleID(newID: number) {
     this._exampleID = newID;
@@ -108,9 +121,21 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
   public get status() {
     return this._status;
   }
+  public get $status() {
+    return this._$status;
+  }
   public set status(newStatus: string) {
     this._status = newStatus;
   }
+  public changeSource(toType: string): any {
+    if (this.source.getType() !== toType) {
+      const newSource = this.sourceFactory.createSource(toType);
+      newSource.author = this.source.author;
+      newSource.title = this.source.title;
+      this.source = newSource;
+    }
+  }
+
   public save(): Observable<any> {
     const saveStatus = new Subject<any>();
     const body = this.getProposalRequest();

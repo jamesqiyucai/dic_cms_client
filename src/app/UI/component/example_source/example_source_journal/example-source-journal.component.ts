@@ -66,31 +66,4 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
     this._sourceHandle.$publishingDate.subscribe(publishingDate => this.publishingDate = publishingDate);
     this._sourceHandle.$page.subscribe(page => this.page = page);
   }
-
-  // public updateDocument(): any {
-  //   this._sourceHandle.author = this.author;
-  //   this._sourceHandle.title = this.title;
-  //   this._sourceHandle.page = this.page;
-  //   this._sourceHandle.passageTitle = this.passageTitle;
-  //   this._sourceHandle.publishingDate = this.publishingDate;
-  // }
-  //
-  // public update(data: ExampleSourceJournalComponentDto) {
-  //   this.author = data.author;
-  //   this.title = data.title;
-  //   this.page =  data.page;
-  //   this.passageTitle = data.passageTitle;
-  //   this.publishingDate = data.publishingDate;
-  // }
-  //
-  // public getDto(): ExampleSourceJournalComponentDto {
-  //   return {
-  //     type: ExampleSourceComponentTypes.journal,
-  //     author: this.author,
-  //     title: this.title,
-  //     page: this.page,
-  //     passageTitle: this.passageTitle,
-  //     publishingDate: this.publishingDate,
-  //   };
-  // }
 }

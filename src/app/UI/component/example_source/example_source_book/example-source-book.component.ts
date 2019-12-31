@@ -83,35 +83,4 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     this._sourceHandle.$publishedYear.subscribe(publishedYear => this.publishedYear = publishedYear);
     this._sourceHandle.$publishedPlace.subscribe(publishedPlace => this.publishedPlace = publishedPlace);
   }
-
-  // public updateDocument(): any {
-  //   this._sourceHandle.author = this.author;
-  //   this._sourceHandle.title = this.title;
-  //   this._sourceHandle.page = this.page;
-  //   this._sourceHandle.publishedPlace = this.publishedPlace;
-  //   this._sourceHandle.publishedYear = this.publishedYear;
-  //   this._sourceHandle.initialPublishingYear = this.initialPublishingYear;
-  // }
-  //
-  // public update(data: ExampleSourceBookComponentDto) {
-  //   this.author = data.author;
-  //   this.title = data.title;
-  //   this.page =  data.page;
-  //   this.initialPublishingYear = data.initialPublishingYear;
-  //   this.publishedYear = data.publishedYear;
-  //   this.publishedPlace = data.publishedPlace;
-  // }
-  //
-  // public getDto(): ExampleSourceBookComponentDto {
-  //   return {
-  //     type: ExampleSourceComponentTypes.book,
-  //     author: this.author,
-  //     title: this.title,
-  //     page: this.page,
-  //     initialPublishingYear: this.initialPublishingYear,
-  //     publishedYear: this.publishedYear,
-  //     publishedPlace: this.publishedPlace,
-  //   };
-  // }
-  //
 }
