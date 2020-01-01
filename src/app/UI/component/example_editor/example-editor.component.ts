@@ -1,4 +1,12 @@
-import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Input, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  Inject,
+  Input,
+  OnChanges,
+  ViewChild
+} from '@angular/core';
 import {List} from 'immutable';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {SourceDirective} from '../../../toolkit/source_directive/source.directive';
@@ -13,7 +21,7 @@ import {SourceComponent} from '../example_source/abstract_source/source-componen
   templateUrl: './example-editor.component.html',
   styleUrls: ['./example-editor.component.css'],
 })
-export class ExampleEditorComponent implements OnInit, AfterViewInit {
+export class ExampleEditorComponent implements OnChanges, AfterViewInit {
   @Input() private handle: ExampleHandle;
   private _unlocked: boolean;
   private _italicizedExampleText: string;
@@ -38,7 +46,7 @@ export class ExampleEditorComponent implements OnInit, AfterViewInit {
     this._comment = null;
     this.sourceComponent = null;
   }
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.handle.$text.subscribe(text => italicizeText(text, this.italicizedTextRanges.toArray()));
     this.handle.$keywords.subscribe(keywords => this.appliedWords = keywords);
     this.handle.$translations.subscribe(translations => this.translations = translations);

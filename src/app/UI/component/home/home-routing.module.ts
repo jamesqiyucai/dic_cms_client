@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ExampleProposalConstructorComponent} from '../example_proposal_constructor/example-proposal-constructor.component';
-import {ExampleProposalApproverComponent} from '../example_proposal_approver/example-proposal-approver.component';
+import {ExampleProposalConstructorComponent} from '../proposal_constructor/example-proposal-constructor.component';
+import {ExampleProposalApproverComponent} from '../proposal_approver/example-proposal-approver.component';
 import {HomeComponent} from './home.component';
 
 const homeRoutes: Routes = [
