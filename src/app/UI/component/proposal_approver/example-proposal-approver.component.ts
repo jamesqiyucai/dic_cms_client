@@ -1,5 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ExampleEditorComponent} from '../example_editor/example-editor.component';
+import {ExampleProposalEditorComponent} from '../example_proposal_editor_component/example-proposal-editor-component';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
 import {ExampleProposalService} from '../../../service/entity/example_proposal/example-proposal.service';
 import {USER_SERVICE} from '../../../core/user/injection-token';
@@ -7,16 +7,16 @@ import {UserService} from '../../../core/user/user-service';
 import {ExampleProposalApproverComponentDto} from './example-proposal-approver.component.dto';
 import {List} from 'immutable';
 import {map} from 'rxjs/operators';
-import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
-import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
-import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
+import {ExampleSourceBookComponentDto} from '../source_component/example_source_book/example-source-book.component.dto';
+import {ExampleSourceJournalComponentDto} from '../source_component/example_source_journal/example-source-journal.component.dto';
+import {ExampleSourceComponentTypes} from '../source_component/example-source.component.types';
 
 @Component({
   selector: 'app-example-proposal-approver',
   templateUrl: './example-proposal-approver.component.html'
 })
 export class ExampleProposalApproverComponent implements OnInit, OnDestroy {
-  @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
+  @ViewChild(ExampleProposalEditorComponent) private exampleEditor: ExampleProposalEditorComponent;
   private _pendingItems: Array<ExampleProposalApproverComponentDto>;
   private _focusedItemIndex: number = null;
   private subscription;

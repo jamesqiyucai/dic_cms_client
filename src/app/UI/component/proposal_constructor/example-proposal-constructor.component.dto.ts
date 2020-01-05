@@ -1,4 +1,4 @@
-import {ExampleEditorComponentDto} from '../example_editor/example-editor.component.dto';
+import {ExampleEditorComponentDto} from '../example_proposal_editor_component/example-editor.component.dto';
 
 export interface ExampleProposalConstructorComponentDto extends ExampleEditorComponentDto {
   identifier: number;

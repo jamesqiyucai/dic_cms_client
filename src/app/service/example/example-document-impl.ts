@@ -2,8 +2,8 @@ import {ExampleDocumentContent} from './example-document-content';
 import {ExampleDocument} from './example-document';
 import {ExampleTranslationDocument} from './example-translation-document';
 import {ExampleSourceDocument} from './example-source-document';
-import {Subject} from "rxjs";
-import {ExampleSourceHandle} from "./example-source-handle";
+import {Subject} from 'rxjs';
+import {ExampleSourceHandle} from './example-source-handle';
 
 export class ExampleDocumentImpl extends ExampleDocumentContent implements ExampleDocument {
   private _source: ExampleSourceDocument;

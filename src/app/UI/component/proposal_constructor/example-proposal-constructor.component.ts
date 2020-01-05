@@ -1,11 +1,5 @@
 import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ExampleEditorComponent} from '../example_editor/example-editor.component';
-import {List} from 'immutable';
-import * as _ from 'lodash';
-import {ExampleSourceBookComponentDto} from '../example_source/example_source_book/example-source-book.component.dto';
-import {ExampleSourceJournalComponentDto} from '../example_source/example_source_journal/example-source-journal.component.dto';
-import {ExampleProposalConstructorComponentDto} from './example-proposal-constructor.component.dto';
-import {ExampleSourceComponentTypes} from '../example_source/example-source.component.types';
+import {ExampleProposalEditorComponent} from '../example_proposal_editor_component/example-proposal-editor-component';
 import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
 
 @Component({
@@ -19,16 +13,13 @@ import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../
   `
 })
 export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
-  @ViewChild(ExampleEditorComponent) private exampleEditor: ExampleEditorComponent;
+  @ViewChild(ExampleProposalEditorComponent) private exampleEditor: ExampleProposalEditorComponent;
   private proposalHandle: ProposalHandle;
   private _canSubmit = true;
 
   constructor(@Inject(PROPOSAL_REPOSITORY) private proposalRepository: ProposalRepository) {
     this.proposalHandle = proposalRepository.createProposal();
   }
-
-  private init(): void {}
-
   private get canSubmit() {
     return this._canSubmit;
   }
@@ -43,14 +34,8 @@ export class ExampleProposalConstructorComponent implements OnInit, OnDestroy {
 
   /*****************************************************************************/
   public ngOnInit(): void {
-    this.init();
     this.unlock();
   }
-
-  public ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   public lock() {
     this.exampleEditor.lock();
     this._canSubmit = false;

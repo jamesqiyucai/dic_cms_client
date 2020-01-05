@@ -1,9 +1,7 @@
 import {ExampleTranslationDocument} from './example-translation-document';
-import {ExampleSourceDocument} from './example-source-document';
 import {List} from 'immutable';
-import {Subject} from "rxjs";
-import {ExampleTranslationHandle} from "./example-translation-handle";
-import {ExampleSourceHandle} from "./example-source-handle";
+import {Subject} from 'rxjs';
+import {ExampleTranslationHandle} from './example-translation-handle';
 
 export abstract class ExampleDocumentContent {
   private _$ID = new Subject<number>();

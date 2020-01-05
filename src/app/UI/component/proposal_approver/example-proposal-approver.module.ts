@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {ExampleProposalApproverComponent} from './example-proposal-approver.component';
-import {ExampleEditorModule} from '../example_editor/example-editor.module';
+import {ExampleEditorModule} from '../example_proposal_editor_component/example-editor.module';
 import {CommonModule} from '@angular/common';
 import {
   ExampleProposalApproverPendingItemComponent
