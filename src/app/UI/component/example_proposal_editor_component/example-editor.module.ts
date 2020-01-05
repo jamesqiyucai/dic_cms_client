@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ExampleProposalEditorComponent} from './example-proposal-editor-component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import {ToolkitModule} from '../../../toolkit/toolkit.module';
+import {ToolkitModule} from '../../toolkit/toolkit.module';
 import {ExampleSourceModule} from '../source_component/example-source.module';
 import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
 import {ExampleProposalServiceImplementation} from '../../../service/entity/example_proposal/example-proposal.service.implementation';

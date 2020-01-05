@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {List} from 'immutable';
-import {SourceDirective} from '../../../toolkit/source_directive/source.directive';
+import {SourceDirective} from '../../toolkit/source_directive/source.directive';
 import {SourceComponentFactory} from '../source_component/source-component-factory';
 import {SourceComponent} from '../source_component/abstract_source/source-component';
 import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
