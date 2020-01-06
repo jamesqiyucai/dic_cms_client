@@ -1,6 +1,5 @@
 import {Component, Inject} from '@angular/core';
-import {USER_SERVICE} from '../../../core/user/injection-token';
-import {UserService} from '../../../core/user/user-service';
+import {USER_SERVICE, UserService} from '../../../core';
 
 @Component({
   selector: 'app-home',

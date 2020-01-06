@@ -1,5 +1,4 @@
 import {ProposalHandle} from './proposal-handle';
-import {Observable} from 'rxjs';
 
 export interface ProposalDocument extends ProposalHandle {
   initiator: number;

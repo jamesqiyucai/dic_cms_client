@@ -1,5 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {ExceptionNotifier, REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './service/remote_resource';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,14 @@ import {Router} from '@angular/router';
 export class AppComponent implements OnInit {
   constructor(
     private router: Router,
-    @Inject(REMOTE_RESOURCES_FACTORY) rrf: RemoteResourcesFactory
+    @Inject(REMOTE_RESOURCE_FACTORY) rrf: RemoteResourceFactory
     ) {
     // register a listener into RRF
     const handler = () => {
       this.router.navigate(['internal_server_error']);
     };
-    rrf.register(new ServerErrorListenerImplementation(handler));
+    const notifier: ExceptionNotifier = {notifyCriticalMistake: handler};
+    rrf.register(notifier);
   }
 
   ngOnInit(): void {

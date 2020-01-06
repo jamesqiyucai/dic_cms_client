@@ -1,6 +1,6 @@
-import {ProposalSourceDocument} from "./proposal-source-document";
-import {ProposalBookSourceDocumentImpl} from "./proposal-book-source-document-impl";
-import {ProposalJournalSourceDocumentImpl} from "./proposal-journal-source-document-impl";
+import {ProposalSourceDocument} from './proposal-source-document';
+import {ProposalBookSourceDocumentImpl} from './proposal-book-source-document-impl';
+import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
 
 export class ProposalSourceFactory {
   createSource(type: string): ProposalSourceDocument {

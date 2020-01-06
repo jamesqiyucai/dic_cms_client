@@ -1,5 +1,5 @@
 import {ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
-import {SourceComponent} from './abstract_source/source-component';
+import {SourceComponent} from './source-component';
 import {ExampleSourceBookComponent} from './example_source_book/example-source-book.component';
 import {ExampleSourceJournalComponent} from './example_source_journal/example-source-journal.component';
 

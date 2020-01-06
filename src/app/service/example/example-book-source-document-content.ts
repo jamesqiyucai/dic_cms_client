@@ -1,5 +1,5 @@
 import {ExampleSourceDocumentContent} from './example-source-document-content';
-import {Subject} from "rxjs";
+import {Subject} from 'rxjs';
 
 export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocumentContent {
   public readonly $page = new Subject<number>();

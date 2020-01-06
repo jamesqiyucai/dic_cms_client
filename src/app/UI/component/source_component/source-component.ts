@@ -1,4 +1,4 @@
-import {ProposalSourceHandle} from '../../../../service/proposal';
+import {ProposalSourceHandle} from '../../../service/proposal';
 
 export interface SourceComponent {
   sourceHandle: ProposalSourceHandle;

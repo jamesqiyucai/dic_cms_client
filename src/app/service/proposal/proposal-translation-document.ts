@@ -1,4 +1,4 @@
-import {ProposalHandle} from '../model/proposal-handle';
+import {ProposalHandle} from './proposal-handle';
 
 export interface ProposalTranslationDocument extends ProposalHandle {
   $mark: string;

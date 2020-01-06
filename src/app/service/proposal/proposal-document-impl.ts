@@ -11,8 +11,10 @@ import {ProposalBookSourceDocument} from './proposal-book-source-document';
 import {ProposalJournalSourceDocument} from './proposal-journal-source-document';
 import {ProposalJournalSourceResourceRequest} from './proposal-journal-source-resource-request';
 import {ProposalResourceResponse} from './proposal-resource-response';
-import {ProposalSourceHandle} from "./proposal-source-handle";
-import {ProposalSourceFactory} from "./proposal-source-factory";
+import {ProposalSourceHandle} from './proposal-source-handle';
+import {ProposalSourceFactory} from './proposal-source-factory';
+import {ProposalTranslationHandle} from './proposal-translation-handle';
+import {ProposalTranslationDocumentImpl} from './proposal-translation-document-impl';
 
 export class ProposalDocumentImpl extends ExampleDocumentContent implements ProposalDocument {
   private sourceFactory = new ProposalSourceFactory();
@@ -134,6 +136,9 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
       newSource.title = this.source.title;
       this.source = newSource;
     }
+  }
+  public createTranslation(): ProposalTranslationHandle {
+    return new ProposalTranslationDocumentImpl(undefined, '', null);
   }
 
   public save(): Observable<any> {

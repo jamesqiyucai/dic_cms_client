@@ -9,7 +9,7 @@ export class ProposalTranslationDocumentImpl extends ExampleTranslationDocumentC
     super(ID, text);
   }
   public setID(newID: number) {
-    this._ID = newID;
+    this._id = newID;
   }
   public set text(newText: string) {
     this._text = newText;

@@ -1,5 +1,5 @@
-import {ExampleSourceComponentTypes} from '../example-source.component.types';
-import {ProposalSourceHandle} from '../../../../service/proposal';
+import {ExampleSourceComponentTypes} from './example-source.component.types';
+import {ProposalSourceHandle} from '../../../service/proposal';
 
 export abstract class AbstractSourceComponent {
   protected _sourceHandle: ProposalSourceHandle;

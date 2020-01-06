@@ -11,6 +11,7 @@ import {ProposalBookSourceDocumentImpl} from './proposal-book-source-document-im
 import {ProposalJournalSourceResourceContent} from './proposal-journal-source-resource-content';
 import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
 import {ProposalDocumentImpl} from './proposal-document-impl';
+import {ProposalTranslationDocumentImpl} from './proposal-translation-document-impl';
 
 export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
   private _ID: number = undefined;
@@ -21,7 +22,6 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
     if (sourceContent.type === 'book') {
       const content = <ProposalBookSourceResourceContent>sourceContent;
       return new ProposalBookSourceDocumentImpl(
-        content.type,
         content.author,
         content.title,
         content.page,
@@ -32,7 +32,6 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
     } else if (sourceContent.type === 'journal') {
       const content = <ProposalJournalSourceResourceContent>sourceContent;
       return new ProposalJournalSourceDocumentImpl(
-        content.type,
         content.author,
         content.title,
         content.page,
@@ -62,7 +61,7 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
             content.version,
             content.text,
             content.keywords,
-            content.translations,
+            content.translations.map(translation => new ProposalTranslationDocumentImpl(translation.id, translation.text, null)),
             content.format.italic,
             this.getSourceDocument(content.source),
             content.comment,

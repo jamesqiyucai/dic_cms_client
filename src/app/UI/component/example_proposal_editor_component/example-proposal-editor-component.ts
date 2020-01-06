@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ComponentFactoryResolver, Inject, Input, OnInit, ViewChild} from '@angular/core';
 import {List} from 'immutable';
-import {SourceDirective} from '../../toolkit/source_directive/source.directive';
-import {SourceComponentFactory} from '../source_component/source-component-factory';
-import {SourceComponent} from '../source_component/abstract_source/source-component';
+import {SourceDirective} from '../source_component/source.directive';
+import {SourceComponentFactory} from '../source_component';
+import {SourceComponent} from '../source_component';
 import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
 import {AbstractPresenterContent} from '../example_presenter_component/abstract-presenter-content';
 import {ListManipulatorComponent} from '../list_manipulator_component/list-manipulator-component';
@@ -10,15 +10,15 @@ import {ProposalTranslationsAdapter} from '../list_manipulator_component/proposa
 import {ProposalKeywordsAdapter} from '../list_manipulator_component/proposal-keywords-adapter';
 
 @Component({
-  selector: 'app-example-editor',
+  selector: 'app-example-proposal-editor',
   templateUrl: './example-proposal-editor-component.html',
   styleUrls: ['./example-proposal-editor-component.css'],
 })
 export class ExampleProposalEditorComponent extends AbstractPresenterContent implements OnInit, AfterViewInit {
-  private _handle: ProposalHandle;
+  protected _handle: ProposalHandle;
   private sourceComponent: SourceComponent;
   private sourceComponentFactory: SourceComponentFactory;
-  private componentFactoryResolver: ComponentFactoryResolver
+  private componentFactoryResolver: ComponentFactoryResolver;
   @Input() private unlocked: boolean;
   @ViewChild(SourceDirective) private sourceHost: SourceDirective;
   @ViewChild('translations') private translationsComponent: ListManipulatorComponent;
@@ -29,15 +29,16 @@ export class ExampleProposalEditorComponent extends AbstractPresenterContent imp
   ) {
     super();
     this.componentFactoryResolver = componentFactoryResolver;
+    this.unlocked = true;
   }
-  private ngOnInit() {
+  ngOnInit() {
     this._handle = this.proposalRepository.createProposal();
     this._handle.$text.subscribe(text => this.text = text);
     this._handle.$comment.subscribe(comment => this.comment = comment);
     this._handle.$note.subscribe(note => this.note = note);
     this._handle.$italics.subscribe(italics => this.italics = italics);
   }
-  private ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.sourceComponentFactory = new SourceComponentFactory(this.sourceHost.viewContainerRef, this.componentFactoryResolver);
     this._handle.$translations.subscribe(() => this.translationsComponent.handle = new ProposalTranslationsAdapter(this._handle));
     this._handle.$keywords.subscribe(() => this.keywordsComponent.handle = new ProposalKeywordsAdapter(this._handle));

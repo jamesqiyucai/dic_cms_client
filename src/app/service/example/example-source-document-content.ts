@@ -1,4 +1,4 @@
-import {Subject} from "rxjs";
+import {Subject} from 'rxjs';
 
 export abstract class ExampleSourceDocumentContent {
   public readonly $author = new Subject<string>();

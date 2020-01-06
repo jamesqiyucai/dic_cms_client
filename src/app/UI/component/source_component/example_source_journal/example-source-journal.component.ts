@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AbstractSourceComponent} from '../abstract_source/abstract-source-component';
-import {SourceComponent} from '../abstract_source/source-component';
+import {AbstractSourceComponent} from '../abstract-source-component';
+import {SourceComponent} from '../source-component';
 import {ProposalJournalSourceHandle} from '../../../../service/proposal';
 
 @Component({

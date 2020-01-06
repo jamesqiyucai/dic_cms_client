@@ -6,7 +6,7 @@ import { InputboxComponent } from './inputbox';
 import { OptionsComponent } from './options';
 import { OptionDirective } from './options/option.directive';
 import {EditableDivDirective} from './editable-div/editable-div.directive';
-import {SourceDirective} from './source_directive/source.directive';
+import {TextInputComponent} from './text_input_component/text-input-component';
 
 
 @NgModule({
@@ -15,21 +15,21 @@ import {SourceDirective} from './source_directive/source.directive';
   ],
   declarations: [
     EditableDivDirective,
+    TextInputComponent,
     BurgerIconComponent,
     SidebarComponent,
     InputboxComponent,
     OptionsComponent,
-    OptionDirective,
-    SourceDirective
+    OptionDirective
   ],
   exports: [
     EditableDivDirective,
+    TextInputComponent,
     BurgerIconComponent,
     SidebarComponent,
     InputboxComponent,
     OptionsComponent,
     OptionDirective,
-    SourceDirective
   ]
 })
 export class ToolkitModule {}

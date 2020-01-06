@@ -1,19 +1,20 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ExampleProposalEditorComponent} from './example-proposal-editor-component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
 import {ToolkitModule} from '../../toolkit/toolkit.module';
-import {ExampleSourceModule} from '../source_component/example-source.module';
-import {EXAMPLE_PROPOSAL_SERVICE} from '../../../service/entity/example_proposal/injection-token';
-import {ExampleProposalServiceImplementation} from '../../../service/entity/example_proposal/example-proposal.service.implementation';
+import {SourceModule} from '../source_component/source-module';
 import {ExampleSourceJournalComponent} from '../source_component/example_source_journal/example-source-journal.component';
 import {ExampleSourceBookComponent} from '../source_component/example_source_book/example-source-book.component';
+import {PROPOSAL_REPOSITORY} from '../../../service/proposal';
+import {ProposalRepositoryImpl} from '../../../service/proposal/proposal-repository.impl';
+import {ListManipulatorModule} from '../list_manipulator_component/list-manipulator-module';
+import {TranslationModule} from '../translation_component/translation-module';
 
 @NgModule({
-  imports: [CommonModule, DragDropModule, ToolkitModule, ExampleSourceModule],
+  imports: [CommonModule, ToolkitModule, SourceModule, ListManipulatorModule, TranslationModule],
   declarations: [ExampleProposalEditorComponent],
-  providers: [{provide: EXAMPLE_PROPOSAL_SERVICE, useClass: ExampleProposalServiceImplementation}],
+  providers: [{provide: PROPOSAL_REPOSITORY, useClass: ProposalRepositoryImpl}],
   entryComponents: [ExampleSourceJournalComponent, ExampleSourceBookComponent],
   exports: [ExampleProposalEditorComponent]
 })
-export class ExampleEditorModule {}
+export class ExampleProposalEditorModule {}
