@@ -1,6 +1,6 @@
-import {ProposalHandle} from './proposal-handle';
+import {ProposalTranslationHandle} from './proposal-translation-handle';
 
-export interface ProposalTranslationDocument extends ProposalHandle {
+export interface ProposalTranslationDocument extends ProposalTranslationHandle {
   $mark: string;
   setID(newID: number): any;
 }

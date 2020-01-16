@@ -1,6 +1,6 @@
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
 
-export interface ProposalResourceContent {
+export class ProposalResourceContent {
   id: number;
   initiator: number;
   reviewer: number;

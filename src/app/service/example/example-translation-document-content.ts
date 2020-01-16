@@ -1,9 +1,11 @@
 import {ExampleTranslationDocument} from './example-translation-document';
-import {Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 export abstract class ExampleTranslationDocumentContent implements ExampleTranslationDocument {
-  public readonly $text = new Subject<string>();
-  protected constructor(protected _id: number, protected _text: string) {}
+  public readonly $text = new BehaviorSubject<string>(undefined);
+  protected _id: number = undefined;
+  protected _text: string = undefined;
+  protected constructor() {}
   get id() {
     return this._id;
   }
@@ -14,7 +16,8 @@ export abstract class ExampleTranslationDocumentContent implements ExampleTransl
     return this._text;
   }
   set text(newText: string) {
-    if (this._text !== newText) {
+    if (
+      this._text !== newText) {
       this._text = newText;
       this.$text.next(newText);
     }

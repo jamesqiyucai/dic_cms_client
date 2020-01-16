@@ -9,9 +9,10 @@ import {PROPOSAL_REPOSITORY} from '../../../service/proposal';
 import {ProposalRepositoryImpl} from '../../../service/proposal/proposal-repository.impl';
 import {ListManipulatorModule} from '../list_manipulator_component/list-manipulator-module';
 import {TranslationModule} from '../translation_component/translation-module';
+import {KeywordModule} from '../keyword_component/keyword-module';
 
 @NgModule({
-  imports: [CommonModule, ToolkitModule, SourceModule, ListManipulatorModule, TranslationModule],
+  imports: [CommonModule, ToolkitModule, SourceModule, ListManipulatorModule, TranslationModule, KeywordModule],
   declarations: [ExampleProposalEditorComponent],
   providers: [{provide: PROPOSAL_REPOSITORY, useClass: ProposalRepositoryImpl}],
   entryComponents: [ExampleSourceJournalComponent, ExampleSourceBookComponent],

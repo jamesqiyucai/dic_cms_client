@@ -1,14 +1,25 @@
-import {AfterContentChecked, Component, ContentChild, ContentChildren, Input, OnInit, QueryList, TemplateRef} from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ContentChildren,
+  Input,
+  OnInit,
+  QueryList,
+  TemplateRef
+} from '@angular/core';
 import {ListElementComponent} from './list-element-component';
 import {List} from 'immutable';
 import {ListOrigin} from './list-origin';
 
 @Component({
   selector: 'app-list-manipulator',
-  templateUrl: './list-manipulator-component.html'
+  templateUrl: './list-manipulator-component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListManipulatorComponent implements OnInit, AfterContentChecked {
-  private _array: any[];
+  private _array: any[] = [];
   private _handle: ListOrigin;
   @Input()
   set handle(newHandle: ListOrigin) {
@@ -32,18 +43,18 @@ export class ListManipulatorComponent implements OnInit, AfterContentChecked {
     this.list = this.list.remove(index);
   }
   onMove(from: number, to: number) {
-    this.list = this.list.remove(from).insert(to, this.list.get(from));
+    this._handle.move(from, to);
   }
   onAdd() {
-    this._handle.list = this._handle.list.push(this._handle.createTranslationHandle());
+    this._handle.add();
   }
   ngAfterContentChecked(): void {
     this.components.forEach(
       (component, index) => {
         if (!component.hasHandle()) {
-          component.handle = this.list.get(index);
-          component.index = index;
+          component.handle = this._array[index];
         }
+        component.index = index;
       }
     );
   }

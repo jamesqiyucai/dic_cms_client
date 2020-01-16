@@ -8,14 +8,15 @@
       (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
-  <app-list-manipulator>
+  <app-list-manipulator #translations [handle]="translationsAdapter">
     <ng-template>
       <app-translation #child></app-translation>
     </ng-template>
   </app-list-manipulator>
-  <app-list-manipulator>
+  <app-list-manipulator #keywords [handle]="keywordsAdapter">
     <ng-template>
-      <app-text-input #child></app-text-input>
+      <app-keyword #child></app-keyword>
+<!--      <app-text-input #child></app-text-input>-->
     </ng-template>
   </app-list-manipulator>
 <!--  <div-->

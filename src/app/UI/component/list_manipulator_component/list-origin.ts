@@ -1,9 +1,10 @@
 import {Observable} from 'rxjs';
 import {List} from 'immutable';
-import {ProposalTranslationHandle} from '../../../service/proposal';
 
 export interface ListOrigin {
   $list: Observable<List<any>>;
   list: List<any>;
-  createTranslationHandle(): ProposalTranslationHandle;
+  add(): any;
+  move(from: number, to: number): any;
+  remove(index: number): any;
 }

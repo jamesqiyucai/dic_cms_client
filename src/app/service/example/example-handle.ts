@@ -2,14 +2,15 @@ import {ExampleTranslationHandle} from './example-translation-handle';
 import {List} from 'immutable';
 import {ExampleSourceHandle} from './example-source-handle';
 import {Observable} from 'rxjs';
+import {ExampleKeywordHandle} from './example-keyword-handle';
 
 export interface ExampleHandle {
   ID: number;
   $ID: Observable<number>;
   text: string;
   $text: Observable<string>;
-  keywords: List<string>;
-  $keywords: Observable<List<string>>;
+  keywords: List<ExampleKeywordHandle>;
+  $keywords: Observable<List<ExampleKeywordHandle>>;
   italics: List<[number, number]>;
   $italics: Observable<List<[number, number]>>;
   translations: List<ExampleTranslationHandle>;

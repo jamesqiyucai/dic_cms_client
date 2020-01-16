@@ -42,7 +42,7 @@ export abstract class AbstractPresenterContent {
     return List(this._italics);
   }
   set italics(newItalics: List<[number, number]>) {
-    if (!this.italics.equals(newItalics)) {
+    if (!newItalics.equals(List(this._italics))) {
       this._italics = newItalics.toArray();
       this._handle.italics = newItalics;
     }

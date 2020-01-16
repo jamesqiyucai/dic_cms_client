@@ -33,22 +33,11 @@ export class ProposalRepositoryImpl implements ProposalRepository {
     return List(pendingProposals);
   }
   public createProposal(): ProposalHandle {
-    const newProposal = new ProposalDocumentImpl(
-      null,
-      this._userService.getCurrentUser(),
-      1,
-      'pending',
-      this._remoteResourceFactory.bind('proposals', new ProposalExceptionTranslator()),
-      null,
-      null,
-      '',
-      [],
-      [],
-      [],
-      null,
-      '',
-      ''
-      );
+    const newProposal = new ProposalDocumentImpl(this._remoteResourceFactory.bind('proposals', new ProposalExceptionTranslator()));
+    console.log(newProposal);
+    newProposal.initiator = this._userService.getCurrentUser();
+    newProposal.reviewer = 1;
+    newProposal.status = 'pending';
     const newProposalHolder = new ProposalDocumentHolderImpl(this._remoteResourceFactory);
     newProposalHolder.proposalDocument = newProposal;
     this._proposals.push(newProposalHolder);

@@ -1,18 +1,12 @@
 import {ExampleTranslationDocumentContent} from '../example';
 
 export class ProposalTranslationDocumentImpl extends ExampleTranslationDocumentContent {
-  constructor(
-    ID: number,
-    text: string,
-    private _$mark: string
-  ) {
-    super(ID, text);
+  private _$mark: string = undefined;
+  constructor() {
+    super();
   }
-  public setID(newID: number) {
+  public set ID(newID: number) {
     this._id = newID;
-  }
-  public set text(newText: string) {
-    this._text = newText;
   }
   public get $mark() {
     return this._$mark;

@@ -1,149 +1,123 @@
 import {ExampleDocumentContent} from '../example';
 import {ProposalDocument} from './proposal-document';
 import {ProposalSourceDocument} from './proposal-source-document';
-import {ExampleTranslationDocument} from '../example/example-translation-document';
 import {Resource} from '../remote_resource';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {ProposalResourceRequest} from './proposal-resource-request';
-import {ProposalSourceResourceRequest} from './proposal-source-resource-request';
-import {ProposalBookSourceResourceRequest} from './proposal-book-source-resource-request';
-import {ProposalBookSourceDocument} from './proposal-book-source-document';
-import {ProposalJournalSourceDocument} from './proposal-journal-source-document';
-import {ProposalJournalSourceResourceRequest} from './proposal-journal-source-resource-request';
 import {ProposalResourceResponse} from './proposal-resource-response';
 import {ProposalSourceHandle} from './proposal-source-handle';
 import {ProposalSourceFactory} from './proposal-source-factory';
 import {ProposalTranslationHandle} from './proposal-translation-handle';
 import {ProposalTranslationDocumentImpl} from './proposal-translation-document-impl';
+import {ProposalKeywordDocument} from './proposal-keyword-document';
+import {List} from 'immutable';
+import {ProposalTranslationDocument} from './proposal-translation-document';
+import {ProposalKeywordHandle} from './proposal-keyword-handle';
+import {ProposalKeywordDocumentImpl} from './proposal-keyword-document-impl';
 
 export class ProposalDocumentImpl extends ExampleDocumentContent implements ProposalDocument {
+  protected _exampleID: number = undefined;
+  protected _initiator: number = undefined;
+  protected _reviewer: number = undefined;
+  protected _status: string = undefined;
+  protected _keywords: ProposalKeywordDocument[] = [];
+  protected _translations: ProposalTranslationDocument[] = [];
+  protected _source: ProposalSourceDocument = undefined;
+  protected _proposalResource: Resource;
   private sourceFactory = new ProposalSourceFactory();
-  private _$exampleID = new Subject<number>();
-  private _$source = new Subject<ProposalSourceHandle>();
-  private _$status = new Subject<string>();
-  protected _source: ProposalSourceDocument;
-  constructor(
-    private _exampleID: number,
-    private _initiator: number,
-    private _reviewer: number,
-    private _status: string,
-    private _proposalResource: Resource,
-    ID: number,
-    version: number,
-    text: string,
-    keywords: string[],
-    translations: ExampleTranslationDocument[],
-    italics: [number, number][],
-    source: ProposalSourceDocument,
-    comment: string,
-    note: string
-  ) {
-    super(ID, version, text, keywords, translations, italics, comment, note);
+  public readonly $exampleID = new BehaviorSubject<number>(undefined);
+  public readonly $reviewer = new BehaviorSubject<number>(undefined);
+  public readonly $initiator = new BehaviorSubject<number>(undefined);
+  public readonly $source = new BehaviorSubject<ProposalSourceHandle>(undefined);
+  public readonly $status = new BehaviorSubject<string>(undefined);
+  public readonly $keywords = new BehaviorSubject<List<ProposalKeywordDocument>>(List());
+  public readonly $translations = new BehaviorSubject<List<ProposalTranslationDocument>>(List());
+  constructor(resource: Resource) {
+    super();
+    this._proposalResource = resource;
   }
-  private getProposalRequest(): ProposalResourceRequest {
-    let sourceRequest: ProposalSourceResourceRequest;
-    if (this.source.getType() === 'book') {
-      const source = <ProposalBookSourceDocument>this.source;
-      const bookSourceRequest: ProposalBookSourceResourceRequest = {
-        type: source.getType(),
-        author: source.author,
-        title: source.title,
-        page: source.page,
-        initialPublishingYear: source.initialPublishingYear,
-        publishedYear: source.publishedYear,
-        publishedPlace: source.publishedPlace
-      };
-      sourceRequest = bookSourceRequest;
-    } else if (this.source.getType() === 'journal') {
-      const source = <ProposalJournalSourceDocument>this.source;
-      const journalSourceRequest: ProposalJournalSourceResourceRequest = {
-        type: source.getType(),
-        author: source.author,
-        title: source.title,
-        page: source.page,
-        passageTitle: source.passageTitle,
-        publishingDate: source.publishingDate
-      };
-      sourceRequest = journalSourceRequest;
-    }
+  private mapToProposalRequest(): ProposalResourceRequest {
     const proposalRequest: ProposalResourceRequest = {
-      id: this.ID,
-      initiator: this.initiator,
-      reviewer: this.reviewer,
-      status: this.status,
-      exampleId: this.exampleID,
-      version: this.version,
-      text: this.text,
+      id: this._ID,
+      initiator: this._initiator,
+      reviewer: this._reviewer,
+      status: this._status,
+      exampleId: this._exampleID,
+      version: this._version,
+      text: this._text,
       format: {
-        italic: this.italics.toArray()
+        italic: this._italics
       },
-      translations: this.translations.toArray(),
-      keywords: this.keywords.toArray(),
-      note: this.note,
-      comment: this.comment,
-      source: sourceRequest,
+      translations: this._translations,
+      keywords: this._keywords.map(keyword => keyword.keyword),
+      note: this._note,
+      comment: this._comment,
+      source: this._source.mapToRequest(),
     };
     return proposalRequest;
   }
-  public get source() {
-    return this._source;
-  }
-  public get $source() {
-    return this._$source;
-  }
   public set source(newSource: ProposalSourceDocument) {
     this._source = newSource;
-    this._$source.next(newSource);
+    this.$source.next(newSource);
   }
   public setID(newID: number): any {
     this._ID = newID;
     this._proposalResource.setID(newID);
   }
-  public get exampleID() {
-    return this._exampleID;
-  }
-  public get $exampleID() {
-    return this._$exampleID;
-  }
   public set exampleID(newID: number) {
     this._exampleID = newID;
-  }
-  public get initiator() {
-    return this._initiator;
   }
   public set initiator(newInitiator: number) {
     this._initiator = newInitiator;
   }
-  public get reviewer() {
-    return this._reviewer;
-  }
   public set reviewer(newReviewer: number) {
     this._reviewer = newReviewer;
-  }
-  public get status() {
-    return this._status;
-  }
-  public get $status() {
-    return this._$status;
   }
   public set status(newStatus: string) {
     this._status = newStatus;
   }
+  public get keywords() {
+    return List(this._keywords);
+  }
+  public set keywords(newKeywords: List<ProposalKeywordDocument>) {
+    if (!newKeywords.equals(List(this._keywords))) {
+      this._keywords = newKeywords.toArray();
+      this.$keywords.next(newKeywords);
+    }
+  }
+  public get translations() {
+    return List(this._translations);
+  }
+  public set translations(newTranslations: List<ProposalTranslationDocument>) {
+    if (!newTranslations.equals(List(this._translations))) {
+      this._translations = newTranslations.toArray();
+      this.$translations.next(newTranslations);
+    }
+  }
   public changeSource(toType: string): any {
-    if (this.source.getType() !== toType) {
+    if (this.source.getType() !== toType && toType !== null) {
       const newSource = this.sourceFactory.createSource(toType);
       newSource.author = this.source.author;
       newSource.title = this.source.title;
       this.source = newSource;
+    } else {
+      this.source = null;
     }
   }
   public createTranslation(): ProposalTranslationHandle {
-    return new ProposalTranslationDocumentImpl(undefined, '', null);
+    const handle = new ProposalTranslationDocumentImpl();
+    handle.text = '';
+    return handle;
+  }
+  public createKeyword(): ProposalKeywordHandle {
+    const handle = new ProposalKeywordDocumentImpl();
+    handle.keyword = '';
+    return handle;
   }
 
   public save(): Observable<any> {
     const saveStatus = new Subject<any>();
-    const body = this.getProposalRequest();
+    const body = this.mapToProposalRequest();
     this._proposalResource.post<ProposalResourceResponse>(body)
       .subscribe(
         response => this.setID(response.id),

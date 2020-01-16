@@ -1,11 +1,13 @@
 import {NgModule} from '@angular/core';
-import {TranslationComponent} from './translation-component';
+import {KeywordComponent} from './keyword-component';
 import {ToolkitModule} from '../../toolkit/toolkit.module';
 import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [ToolkitModule, CommonModule],
-  declarations: [TranslationComponent],
-  exports: [TranslationComponent]
+  declarations: [KeywordComponent],
+  exports: [
+    KeywordComponent
+  ]
 })
-export class TranslationModule {}
+export class KeywordModule {}

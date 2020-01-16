@@ -12,6 +12,8 @@ import {ProposalJournalSourceResourceContent} from './proposal-journal-source-re
 import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
 import {ProposalDocumentImpl} from './proposal-document-impl';
 import {ProposalTranslationDocumentImpl} from './proposal-translation-document-impl';
+import {ProposalKeywordDocumentImpl} from './proposal-keyword-document-impl';
+import {List} from 'immutable';
 
 export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
   private _ID: number = undefined;
@@ -51,22 +53,27 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
     this.proposalResource.get<ProposalResourceContent>()
       .subscribe(
         content => {
-          this.proposalDocument = new ProposalDocumentImpl(
-            content.exampleId,
-            content.initiator,
-            content.reviewer,
-            content.status,
-            this.remoteResourceFactory.bind(`proposal/${this.ID}`, new ProposalExceptionTranslator()),
-            content.id,
-            content.version,
-            content.text,
-            content.keywords,
-            content.translations.map(translation => new ProposalTranslationDocumentImpl(translation.id, translation.text, null)),
-            content.format.italic,
-            this.getSourceDocument(content.source),
-            content.comment,
-            content.note
-          );
+          const document =
+            new ProposalDocumentImpl(this.remoteResourceFactory.bind(`proposal/${this.ID}`, new ProposalExceptionTranslator()));
+          document.ID = content.id;
+          document.exampleID = content.exampleId;
+          document.initiator = content.initiator;
+          document.reviewer = content.reviewer;
+          document.status = content.status;
+          document.source = this.getSourceDocument(content.source);
+          document.version = content.version;
+          document.text = content.text;
+          document.keywords = List(content.keywords.map(keyword => {
+            const keywordDocument = new ProposalKeywordDocumentImpl();
+            keywordDocument.keyword = keyword;
+            return keywordDocument;
+          }));
+          document.translations = List(content.translations.map(translation => {
+            return new ProposalTranslationDocumentImpl(translation.id, translation.text, null);
+          }));
+          document.italics = List(content.format.italic);
+          document.comment = content.comment;
+          document.note = content.note;
         },
         err => {},
         () => loadStatus.next(this)

@@ -10,5 +10,6 @@ export class TextInputComponent {
   @Output() textChange = new EventEmitter<string>();
   onInput(newText: string) {
     this.text = newText;
+    this.textChange.emit(this.text);
   }
 }

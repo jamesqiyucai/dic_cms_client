@@ -9,6 +9,8 @@ import {AppRoutingModule} from './routing/app-routing.module';
 import {HomeModule} from './UI/component/home/home.module';
 import {InternalServerErrorLoggerModule} from './UI/component/internal_server_error_logger/internal-server-error-logger.module';
 import {CommonModule} from '@angular/common';
+import {ExampleProposalServiceModule} from './service/proposal/example-proposal-service-module';
+import {RemoteResourceModule} from './service/remote_resource/remote-resource-module';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import {CommonModule} from '@angular/common';
     BrowserAnimationsModule,
     CoreModule,
     ToolkitModule,
+    RemoteResourceModule,
+    ExampleProposalServiceModule,
     UserDesignatorModule,
     HomeModule,
     AppRoutingModule,

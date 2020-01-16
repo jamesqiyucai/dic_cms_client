@@ -6,8 +6,8 @@ import {SourceComponent} from '../source_component';
 import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
 import {AbstractPresenterContent} from '../example_presenter_component/abstract-presenter-content';
 import {ListManipulatorComponent} from '../list_manipulator_component/list-manipulator-component';
-import {ProposalTranslationsAdapter} from '../list_manipulator_component/proposal-translations-adapter';
-import {ProposalKeywordsAdapter} from '../list_manipulator_component/proposal-keywords-adapter';
+import {ProposalTranslationsAdapter} from './proposal-translations-adapter';
+import {ProposalKeywordsAdapter} from './proposal-keywords-adapter';
 
 @Component({
   selector: 'app-example-proposal-editor',
@@ -15,7 +15,13 @@ import {ProposalKeywordsAdapter} from '../list_manipulator_component/proposal-ke
   styleUrls: ['./example-proposal-editor-component.css'],
 })
 export class ExampleProposalEditorComponent extends AbstractPresenterContent implements OnInit, AfterViewInit {
+  // protected _text: string;
+  // protected _comment: string;
+  // protected _note: string;
+  // protected _italics: [number, number][];
   protected _handle: ProposalHandle;
+  private keywordsAdapter: ProposalKeywordsAdapter;
+  private translationsAdapter: ProposalTranslationsAdapter;
   private sourceComponent: SourceComponent;
   private sourceComponentFactory: SourceComponentFactory;
   private componentFactoryResolver: ComponentFactoryResolver;
@@ -33,10 +39,19 @@ export class ExampleProposalEditorComponent extends AbstractPresenterContent imp
   }
   ngOnInit() {
     this._handle = this.proposalRepository.createProposal();
+    this._handle.text = '';
+    this._handle.keywords = List();
+    this._handle.translations = List();
+    this._handle.italics = List([]);
+    this._handle.note = '';
+    this._handle.comment = '';
+    this._handle.source = null;
     this._handle.$text.subscribe(text => this.text = text);
     this._handle.$comment.subscribe(comment => this.comment = comment);
     this._handle.$note.subscribe(note => this.note = note);
-    this._handle.$italics.subscribe(italics => this.italics = italics);
+    this._handle.$italics.subscribe(italics => this._italics = italics.toArray());
+    this.keywordsAdapter = new ProposalKeywordsAdapter(this._handle);
+    this.translationsAdapter = new ProposalTranslationsAdapter(this._handle);
   }
   ngAfterViewInit(): void {
     this.sourceComponentFactory = new SourceComponentFactory(this.sourceHost.viewContainerRef, this.componentFactoryResolver);
@@ -44,8 +59,13 @@ export class ExampleProposalEditorComponent extends AbstractPresenterContent imp
     this._handle.$keywords.subscribe(() => this.keywordsComponent.handle = new ProposalKeywordsAdapter(this._handle));
     this._handle.$source.subscribe(
       (sourceHandle) => {
-        this.sourceComponent = this.sourceComponentFactory.createSourceComponent(sourceHandle.getType());
-        this.sourceComponent.sourceHandle = sourceHandle;
+        if (sourceHandle) {
+          this.sourceComponent = this.sourceComponentFactory.createSourceComponent(sourceHandle.getType());
+          this.sourceComponent.sourceHandle = sourceHandle;
+        } else {
+          this.sourceComponent = null;
+          this.sourceComponentFactory.createSourceComponent(null);
+        }
       }
     );
   }

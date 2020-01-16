@@ -1,3 +1,3 @@
-export interface ProposalSourceResourceContent {
+export abstract class ProposalSourceResourceContent {
   type: string;
 }
