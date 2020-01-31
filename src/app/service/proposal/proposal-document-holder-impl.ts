@@ -69,7 +69,7 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
             return keywordDocument;
           }));
           document.translations = List(content.translations.map(translation => {
-            return new ProposalTranslationDocumentImpl(translation.id, translation.text, null);
+            return new ProposalTranslationDocumentImpl();
           }));
           document.italics = List(content.format.italic);
           document.comment = content.comment;

@@ -1,8 +1,8 @@
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 export abstract class ExampleSourceDocumentContent {
-  public readonly $author = new Subject<string>();
-  public readonly $title =  new Subject<string>();
+  public readonly $author = new BehaviorSubject<string>('');
+  public readonly $title =  new BehaviorSubject<string>('');
   protected constructor(private _type: string, private _author: string, private _title: string) {}
   public getType() {
     return this._type;

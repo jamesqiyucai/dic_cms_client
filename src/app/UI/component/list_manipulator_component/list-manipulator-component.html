@@ -2,6 +2,7 @@
   cdkDropList
   id="list"
   cdkDropListConnectedTo="['trash']"
+cdkDropListDisabled="!draggable"
   (cdkDropListDropped)="onMove($event.previousIndex, $event.currentIndex)"
 >
   <div *ngFor="let item of list" cdkDrag>

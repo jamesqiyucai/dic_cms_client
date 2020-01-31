@@ -1,42 +1,42 @@
 <div>
   <input
     #authorInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     autocomplete="off"
     placeholder="Author"
-    [value]="author"
+    [value]="$author | async"
     (input)="onAuthorChange(authorInput.value)"
   >
   <input
     #newspaperTitleInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     autocomplete="off"
     placeholder="NewspaperTitle"
-    [value]="title"
+    [value]="$title | async"
     (input)="onTitleChange(newspaperTitleInput.value)"
   >
   <input
     #passageTitleInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     placeholder="PassageTitle"
-    [value]="passageTitle"
+    [value]="$passageTitle | async"
     (input)="onPassageTitleChange(passageTitleInput.value)"
   >
   <input
     #pageNumberInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     type="number"
     placeholder="PageNumber"
-    [value]="page"
+    [value]="$page | async"
     (input)="onPageChange(pageNumberInput.value)"
   >
   <label>PublishingDate:
   <input
     #dateInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     type="date"
     placeholder="PublishingDate"
-    [value]="publishingDate"
+    [value]="$publishingDate | async"
     (input)="onPublishingDateChange(dateInput.value)"
   ></label>
 </div>

@@ -56,6 +56,9 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
     };
     return proposalRequest;
   }
+  public get source() {
+    return this._source;
+  }
   public set source(newSource: ProposalSourceDocument) {
     this._source = newSource;
     this.$source.next(newSource);
@@ -95,13 +98,10 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
     }
   }
   public changeSource(toType: string): any {
-    if (this.source.getType() !== toType && toType !== null) {
-      const newSource = this.sourceFactory.createSource(toType);
-      newSource.author = this.source.author;
-      newSource.title = this.source.title;
-      this.source = newSource;
-    } else {
+    if (toType === '') {
       this.source = null;
+    } else {
+      this.source = this.sourceFactory.createSource(toType);
     }
   }
   public createTranslation(): ProposalTranslationHandle {

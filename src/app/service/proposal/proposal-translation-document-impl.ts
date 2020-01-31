@@ -1,6 +1,7 @@
 import {ExampleTranslationDocumentContent} from '../example';
+import {ProposalTranslationDocument} from './proposal-translation-document';
 
-export class ProposalTranslationDocumentImpl extends ExampleTranslationDocumentContent {
+export class ProposalTranslationDocumentImpl extends ExampleTranslationDocumentContent implements ProposalTranslationDocument{
   private _$mark: string = undefined;
   constructor() {
     super();

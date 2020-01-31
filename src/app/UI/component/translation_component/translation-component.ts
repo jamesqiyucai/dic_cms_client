@@ -17,11 +17,14 @@ export class TranslationComponent implements ListElementComponent {
   set handle(newHandle: TranslationOrigin) {
     this._handle = newHandle;
   }
-  @Input() locked: boolean;
+  @Input() editable: boolean = undefined;
   // ngOnChanges(): void {
   //   this.handle.$text.subscribe(text => this._text = text);
   //   this.handle.$ID.subscribe(ID => this.ID = ID);
   // }
+  public get $text() {
+    return this._handle.$text;
+  }
   public get text() {
     return this._text;
   }

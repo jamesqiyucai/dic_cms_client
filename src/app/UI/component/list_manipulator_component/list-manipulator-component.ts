@@ -21,6 +21,7 @@ import {ListOrigin} from './list-origin';
 export class ListManipulatorComponent implements OnInit, AfterContentChecked {
   private _array: any[] = [];
   private _handle: ListOrigin;
+  @Input() public draggable: boolean;
   @Input()
   set handle(newHandle: ListOrigin) {
     this._handle = newHandle;

@@ -1,47 +1,47 @@
 <div>
   <input
     #authorInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     placeholder="Author"
-    [value]="author"
+    [value]="$author | async"
     (input)="onAuthorChange(authorInput.value)"
   >
   <input
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     #bookTitleInput
     placeholder="BookTitle"
-    [value]="title"
+    [value]="$title | async"
     (input)="onTitleChange(bookTitleInput.value)"
   >
   <input
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     #pageInput
     placeholder="PageNumber"
     type="number"
-    [value]="page"
+    [value]="$page | async"
     (input)="onPageChange(pageInput.value)"
   >
   <input
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     #publishedPlaceInput
     placeholder="PublishedPlace"
-    [value]="publishedPlace"
+    [value]="$publishedPlace | async"
     (input)="onPublishedPlaceChange(publishedPlaceInput.value)"
   >
   <input
     #publishedYearInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     type="number"
     placeholder="PublishedYear"
-    [value]="publishedYear"
+    [value]="$publishedYear | async"
     (input)="onPublishedYearChange(publishedYearInput.value)"
   >
   <input
     #initialPublishingYearInput
-    [disabled]="!unlocked"
+    [disabled]="!editable"
     type="number"
     placeholder="InitialPublishingYear"
-    [value]="initialPublishingYear"
+    [value]="$initialPublishingYear | async"
     (input)="onInitialPublishingYearChange(initialPublishingYearInput.value)"
   >
 </div>

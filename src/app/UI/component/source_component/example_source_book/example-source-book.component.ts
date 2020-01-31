@@ -1,23 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges} from '@angular/core';
 import {AbstractSourceComponent} from '../abstract-source-component';
 import {SourceComponent} from '../source-component';
 import {ProposalBookSourceHandle} from '../../../../service/proposal';
 
 @Component({
   selector: 'app-example-source-book',
-  templateUrl: './example-source-book.component.html'
+  templateUrl: './example-source-book.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExampleSourceBookComponent extends AbstractSourceComponent implements SourceComponent, OnInit {
-  protected _page: number;
-  protected _initialPublishingYear: number;
-  protected _publishedYear: number;
-  protected _publishedPlace = null;
-  protected _sourceHandle: ProposalBookSourceHandle;
-  constructor() {
-    super();
+export class ExampleSourceBookComponent extends AbstractSourceComponent implements SourceComponent, OnChanges {
+  protected _page: number = undefined;
+  protected _initialPublishingYear: number = undefined;
+  protected _publishedYear: number = undefined;
+  protected _publishedPlace = '';
+  protected _sourceHandle: ProposalBookSourceHandle = undefined;
+  constructor(cdRef: ChangeDetectorRef) {
+    super(cdRef);
   }
   @Input() public set sourceHandle(handle: ProposalBookSourceHandle) {
     this._sourceHandle = handle;
+  }
+  public get $page() {
+    return this._sourceHandle.$page;
   }
   public get page() {
     return this._page;
@@ -27,6 +31,9 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
       this._page = newPage;
       this._sourceHandle.page = newPage;
     }
+  }
+  private get $initialPublishingYear() {
+    return this._sourceHandle.$initialPublishingYear;
   }
   private get initialPublishingYear() {
     return this._initialPublishingYear;
@@ -38,7 +45,9 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
       this._sourceHandle.initialPublishingYear = newYear;
     }
   }
-
+  private get $publishedYear() {
+    return this._sourceHandle.$publishedYear;
+  }
   private get publishedYear() {
     return this._publishedYear;
   }
@@ -49,7 +58,9 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
       this._sourceHandle.publishedYear = newYear;
     }
   }
-
+  private get $publishedPlace() {
+    return this._sourceHandle.$publishedPlace;
+  }
   private get publishedPlace() {
     return this._publishedPlace;
   }
@@ -75,7 +86,7 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     this.publishedPlace = newPlace;
   }
 
-  public ngOnInit(): void {
+  public ngOnChanges(): void {
     this._sourceHandle.$author.subscribe(author => this.author = author);
     this._sourceHandle.$title.subscribe(title => this.title = title);
     this._sourceHandle.$page.subscribe(page => this.page = page);

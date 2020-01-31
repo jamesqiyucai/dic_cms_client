@@ -1,1 +1,1 @@
-<input [disabled]="locked" [value]="text" (input)="onInput($event.target.value)">
+<input [disabled]="!editable" [value]="text" (input)="onInput($event.target.value)">

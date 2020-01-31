@@ -1,1 +1,1 @@
-<app-text-input [text]="_handle.$text | async" (text)="text" [locked]="locked"></app-text-input>
+<app-text-input [text]="$text | async" (textChange)="text" [editable]="editable"></app-text-input>

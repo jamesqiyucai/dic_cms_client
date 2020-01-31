@@ -2,20 +2,20 @@
   <label>Example Text:
     <div
       appEditable
-      [enabled]="unlocked"
-      [text]="italicizedText"
+      [enabled]="editable"
+      [text]="$italicizedText | async"
       (valueChange)="onTextChange($event)"
       (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
-  <app-list-manipulator #translations [handle]="translationsAdapter">
+  <app-list-manipulator #translations [handle]="translationsAdapter" [draggable]="editable">
     <ng-template>
-      <app-translation #child></app-translation>
+      <app-translation #child [editable]="editable"></app-translation>
     </ng-template>
   </app-list-manipulator>
-  <app-list-manipulator #keywords [handle]="keywordsAdapter">
+  <app-list-manipulator #keywords [handle]="keywordsAdapter" [draggable]="editable">
     <ng-template>
-      <app-keyword #child></app-keyword>
+      <app-keyword #child [editable]="editable"></app-keyword>
 <!--      <app-text-input #child></app-text-input>-->
     </ng-template>
   </app-list-manipulator>
@@ -59,16 +59,16 @@
 <!--  </div>-->
   <div>
     <label>Comment:
-      <input #commentInput placeholder="Note Goes Here." [disabled]="!unlocked" [value]="comment" (input)="onCommentChange(commentInput.value)">
+      <input #commentInput placeholder="Note Goes Here." [disabled]="!editable" [value]="$comment | async" (input)="onCommentChange(commentInput.value)">
     </label>
   </div>
   <div>
     <label>Note:
-      <input #noteText placeholder="Note Goes Here." [disabled]="!unlocked" [value]="note" (input)="onNoteChange(noteText.value)">
+      <input #noteText placeholder="Note Goes Here." [disabled]="!editable" [value]="$note | async" (input)="onNoteChange(noteText.value)">
     </label>
   </div>
-  <select #sourceSelect [disabled]="!unlocked" (change)="onSourceChoose(sourceSelect.value)">
-    <option value=null selected>-</option>
+  <select #sourceSelect [disabled]="!editable" (change)="onSourceChoose(sourceSelect.value)">
+    <option value='' selected>-</option>
     <option value="journal">Journal</option>
     <option value="book">Book</option>
   </select>
@@ -76,6 +76,6 @@
 <!--  <div id="new" cdkDropList [cdkDropListDisabled]="!unlocked" [cdkDropListConnectedTo]="['translation', 'appliedWord']">-->
 <!--    <div cdkDrag [cdkDragDisabled]="!unlocked">+</div>-->
 <!--  </div>-->
-  <button (click)="onSubmit()">Submit</button>
+  <button (click)="save()">Submit</button>
   <button (click)="onNew()">New</button>
 </div>

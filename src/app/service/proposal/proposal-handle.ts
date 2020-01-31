@@ -1,8 +1,9 @@
-import {ExampleHandle} from '../example';
+import {ExampleHandle, ExampleSourceHandle} from '../example';
 import {Observable} from 'rxjs';
 import {ProposalTranslationHandle} from './proposal-translation-handle';
 import {List} from 'immutable';
 import {ProposalKeywordHandle} from './proposal-keyword-handle';
+import {ProposalSourceHandle} from './proposal-source-handle';
 
 export interface ProposalHandle extends ExampleHandle {
   exampleID: number;
@@ -13,6 +14,8 @@ export interface ProposalHandle extends ExampleHandle {
   $keywords: Observable<List<ProposalKeywordHandle>>;
   translations: List<ProposalTranslationHandle>;
   $translations: Observable<List<ProposalTranslationHandle>>;
+  source: ProposalSourceHandle;
+  $source: Observable<ProposalSourceHandle>;
   createTranslation(): ProposalTranslationHandle;
   createKeyword(): ProposalKeywordHandle;
   changeSource(toType: string): any;

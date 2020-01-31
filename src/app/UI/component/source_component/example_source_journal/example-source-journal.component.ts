@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges} from '@angular/core';
 import {AbstractSourceComponent} from '../abstract-source-component';
 import {SourceComponent} from '../source-component';
 import {ProposalJournalSourceHandle} from '../../../../service/proposal';
@@ -6,17 +6,21 @@ import {ProposalJournalSourceHandle} from '../../../../service/proposal';
 @Component({
   selector: 'app-example-source-newspaper',
   templateUrl: './example-source-journal.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExampleSourceJournalComponent extends AbstractSourceComponent implements SourceComponent, OnInit {
-  protected _page: number;
-  protected _passageTitle;
-  protected _publishingDate;
-  protected _sourceHandle: ProposalJournalSourceHandle;
+export class ExampleSourceJournalComponent extends AbstractSourceComponent implements SourceComponent, OnChanges {
+  protected _page: number = undefined;
+  protected _passageTitle = '';
+  protected _publishingDate = '';
+  protected _sourceHandle: ProposalJournalSourceHandle = undefined;
   @Input() public set sourceHandle(handle: ProposalJournalSourceHandle) {
     this._sourceHandle = handle;
   }
-  constructor() {
-    super();
+  constructor(cdRef: ChangeDetectorRef) {
+    super(cdRef);
+  }
+  public get $page() {
+    return this._sourceHandle.$page;
   }
   public get page() {
     return this._page;
@@ -27,17 +31,21 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
       this._sourceHandle.page = newPage;
     }
   }
+  private get $passageTitle() {
+    return this._sourceHandle.$passageTitle;
+  }
   private get passageTitle() {
     return this._passageTitle;
   }
-
   private set passageTitle(newPassageTitle: string) {
     if (this.passageTitle !== newPassageTitle) {
       this._passageTitle = newPassageTitle;
       this._sourceHandle.passageTitle = newPassageTitle;
     }
   }
-
+  private get $publishingDate() {
+    return this._sourceHandle.$publishingDate;
+  }
   private get publishingDate() {
     return this._publishingDate;
   }
@@ -59,7 +67,7 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
     this.publishingDate = newDate;
   }
 
-  public ngOnInit(): void {
+  public ngOnChanges(): void {
     this._sourceHandle.$author.subscribe(author => this.author = author);
     this._sourceHandle.$title.subscribe(title => this.title = title);
     this._sourceHandle.$passageTitle.subscribe(passageTitle => this.passageTitle);

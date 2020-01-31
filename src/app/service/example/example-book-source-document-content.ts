@@ -1,11 +1,11 @@
 import {ExampleSourceDocumentContent} from './example-source-document-content';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocumentContent {
-  public readonly $page = new Subject<number>();
-  public readonly $initialPublishingYear = new Subject<number>();
-  public readonly $publishedYear = new Subject<number>();
-  public readonly $publishedPlace = new Subject<string>();
+  public readonly $page = new BehaviorSubject<number>(undefined);
+  public readonly $initialPublishingYear = new BehaviorSubject<number>(undefined);
+  public readonly $publishedYear = new BehaviorSubject<number>(undefined);
+  public readonly $publishedPlace = new BehaviorSubject<string>('');
   constructor(
     author: string,
     title: string,

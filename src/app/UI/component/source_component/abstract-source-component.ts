@@ -1,26 +1,30 @@
 import {ExampleSourceComponentTypes} from './example-source.component.types';
 import {ProposalSourceHandle} from '../../../service/proposal';
+import {ChangeDetectorRef, Input} from '@angular/core';
 
 export abstract class AbstractSourceComponent {
-  protected _sourceHandle: ProposalSourceHandle;
-  protected _type: ExampleSourceComponentTypes;
-  protected _author: string = null;
-  protected _title: string = null;
-  protected _unlocked: boolean;
+  protected _sourceHandle: ProposalSourceHandle = undefined;
+  protected _type: ExampleSourceComponentTypes = undefined;
+  protected _author = '';
+  protected _title = '';
+  protected _editable: boolean = undefined;
   // public readonly dataChange: EventEmitter<ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto>;
-  protected constructor() {
-    this._unlocked = true;
+  protected constructor(private cdRef: ChangeDetectorRef) {}
+  public get editable() {
+    return this._editable;
   }
-
-  protected get unlocked() {
-    return this._unlocked;
+  @Input() public set editable(newVal: boolean) {
+    if (newVal !== this._editable) {
+      this._editable = newVal;
+      this.cdRef.markForCheck();
+    }
   }
-
-
   protected get type() {
     return this._type;
   }
-
+  protected get $author() {
+    return this._sourceHandle.$author;
+  }
   protected get author() {
     return this._author;
   }
@@ -31,7 +35,9 @@ export abstract class AbstractSourceComponent {
       this._sourceHandle.author = newAuthor;
     }
   }
-
+  protected get $title() {
+    return this._sourceHandle.$title;
+  }
   protected get title() {
     return this._title;
   }
@@ -54,12 +60,4 @@ export abstract class AbstractSourceComponent {
   //
   // public abstract update(data: ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto): void;
   //
-  public unlock() {
-    this._unlocked = true;
-  }
-
-  public lock() {
-    this._unlocked = false;
-  }
-
 }
