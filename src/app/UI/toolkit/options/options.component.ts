@@ -40,8 +40,8 @@ import { trigger, state, style, transition, animate, sequence, stagger, query } 
 })
 
 export class OptionsComponent implements OnInit {
-    @ViewChild('parentBox') parentBox: ElementRef;
-    @ViewChild('select') select: ElementRef;
+    @ViewChild('parentBox', { static: true }) parentBox: ElementRef;
+    @ViewChild('select', { static: true }) select: ElementRef;
 
     cur_target: ElementRef;
     pos: string;

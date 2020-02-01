@@ -32,7 +32,7 @@ export class ListManipulatorComponent implements OnInit, AfterContentChecked {
       this._handle.list = this.list;
     }
   }
-  @ContentChild(TemplateRef) template: TemplateRef<any>;
+  @ContentChild(TemplateRef, /* TODO: add static flag */ {}) template: TemplateRef<any>;
   @ContentChildren('child', {descendants: true}) components: QueryList<ListElementComponent>;
   private get list() {
     return List(this._array);

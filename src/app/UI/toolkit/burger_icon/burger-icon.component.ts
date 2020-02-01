@@ -11,7 +11,7 @@ import {Component, Output, EventEmitter, ViewChild, ElementRef, Renderer2} from 
   styleUrls: ['./burger-icon.component.css']
 })
 export class BurgerIconComponent {
-  @ViewChild('container')
+  @ViewChild('container', { static: true })
   container: ElementRef;
   private expand = false;
   @Output() switch: EventEmitter<boolean> = new EventEmitter<boolean>();

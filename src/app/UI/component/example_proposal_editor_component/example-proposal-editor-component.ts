@@ -23,9 +23,9 @@ export class ExampleProposalEditorComponent extends AbstractPresenterContent imp
   private sourceComponent: SourceComponent;
   private componentFactoryResolver: ComponentFactoryResolver;
   private _editable: boolean = undefined;
-  @ViewChild(SourceDirective) private sourceHost: SourceDirective;
-  @ViewChild('translations') private translationsComponent: ListManipulatorComponent;
-  @ViewChild('keywords') private keywordsComponent: ListManipulatorComponent;
+  @ViewChild(SourceDirective, { static: true }) private sourceHost: SourceDirective;
+  @ViewChild('translations', { static: true }) private translationsComponent: ListManipulatorComponent;
+  @ViewChild('keywords', { static: true }) private keywordsComponent: ListManipulatorComponent;
   private _onItalicsChange(newRanges: List<[number, number]>) {
     this.italics = newRanges;
   }

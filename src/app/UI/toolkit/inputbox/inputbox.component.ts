@@ -47,9 +47,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 })
 
 export class InputboxComponent implements OnInit {
-    @ViewChild('inputBox')
+    @ViewChild('inputBox', { static: true })
     input: ElementRef;
-    @ViewChild('doneBox')
+    @ViewChild('doneBox', { static: true })
     done: ElementRef;
 
     private isDisplay = true;
