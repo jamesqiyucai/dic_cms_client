@@ -2,18 +2,30 @@ import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs';
 
 export abstract class ExampleDocumentContent {
-  protected _ID: number = undefined;
-  protected _version: number = undefined;
-  protected _text: string = undefined;
-  protected _italics: [number, number][] = [];
-  protected _comment: string = undefined;
-  protected _note: string = undefined;
-  public readonly $ID = new BehaviorSubject<number>(undefined);
-  public readonly $text = new BehaviorSubject<string>(undefined);
-  public readonly $italics = new BehaviorSubject<List<[number, number]>>(List());
-  public readonly $note = new BehaviorSubject<string>(undefined);
-  public readonly $comment = new BehaviorSubject<string>(undefined);
-  protected constructor() {}
+  protected _ID: number;
+  protected _version: number;
+  protected _text: string;
+  protected _italics: [number, number][];
+  protected _comment: string;
+  protected _note: string;
+  public readonly $ID: BehaviorSubject<number>;
+  public readonly $text: BehaviorSubject<string>;
+  public readonly $italics: BehaviorSubject<List<[number, number]>>;
+  public readonly $note: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  public readonly $comment: BehaviorSubject<string> = new BehaviorSubject<string>(undefined);
+  protected constructor() {
+    this.$ID = new BehaviorSubject<number>(undefined);
+    this.$text = new BehaviorSubject<string>('');
+    this.$italics = new BehaviorSubject<List<[number, number]>>(List());
+    this.$note = new BehaviorSubject<string>('');
+    this.$comment = new BehaviorSubject<string>('');
+    this._ID = undefined;
+    this._version = undefined;
+    this._text = '';
+    this._italics = [];
+    this._comment = '';
+    this._note = '';
+  }
   public set ID(newID: number) {
     if (this._ID !== newID) {
       this._ID = newID;

@@ -16,28 +16,41 @@ import {ProposalKeywordHandle} from './proposal-keyword-handle';
 import {ProposalKeywordDocumentImpl} from './proposal-keyword-document-impl';
 
 export class ProposalDocumentImpl extends ExampleDocumentContent implements ProposalDocument {
-  protected _exampleID: number = undefined;
-  protected _initiator: number = undefined;
-  protected _reviewer: number = undefined;
-  protected _status: string = undefined;
-  protected _keywords: ProposalKeywordDocument[] = [];
-  protected _translations: ProposalTranslationDocument[] = [];
-  protected _source: ProposalSourceDocument = undefined;
+  protected _exampleID: number;
+  protected _initiator: number;
+  protected _reviewer: number;
+  protected _status: string;
+  protected _keywords: ProposalKeywordDocument[];
+  protected _translations: ProposalTranslationDocument[];
+  protected _source: ProposalSourceDocument;
   protected _proposalResource: Resource;
-  private sourceFactory = new ProposalSourceFactory();
-  public readonly $exampleID = new BehaviorSubject<number>(undefined);
-  public readonly $reviewer = new BehaviorSubject<number>(undefined);
-  public readonly $initiator = new BehaviorSubject<number>(undefined);
-  public readonly $source = new BehaviorSubject<ProposalSourceHandle>(undefined);
-  public readonly $status = new BehaviorSubject<string>(undefined);
-  public readonly $keywords = new BehaviorSubject<List<ProposalKeywordDocument>>(List());
-  public readonly $translations = new BehaviorSubject<List<ProposalTranslationDocument>>(List());
+  private _sourceFactory: ProposalSourceFactory;
+  public readonly $exampleID: BehaviorSubject<number>;
+  // public readonly $reviewer = new BehaviorSubject<number>(undefined);
+  // public readonly $initiator = new BehaviorSubject<number>(undefined);
+  public readonly $source: BehaviorSubject<ProposalSourceHandle>;
+  public readonly $status: BehaviorSubject<string>;
+  public readonly $keywords: BehaviorSubject<List<ProposalKeywordDocument>>;
+  public readonly $translations: BehaviorSubject<List<ProposalTranslationDocument>>;
   constructor(resource: Resource) {
     super();
     this._proposalResource = resource;
+    this._exampleID = undefined;
+    this._initiator = undefined;
+    this._reviewer = undefined;
+    this._status = '';
+    this._keywords = [];
+    this._translations = [];
+    this._source = null;
+    this._sourceFactory = new ProposalSourceFactory();
+    this.$exampleID = new BehaviorSubject<number>(undefined);
+    this.$source = new BehaviorSubject<ProposalSourceHandle>(null);
+    this.$status = new BehaviorSubject<string>('');
+    this.$keywords = new BehaviorSubject<List<ProposalKeywordDocument>>(List());
+    this.$translations = new BehaviorSubject<List<ProposalTranslationDocument>>(List());
   }
   private mapToProposalRequest(): ProposalResourceRequest {
-    const proposalRequest: ProposalResourceRequest = {
+    return {
       id: this._ID,
       initiator: this._initiator,
       reviewer: this._reviewer,
@@ -54,7 +67,6 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
       comment: this._comment,
       source: this._source.mapToRequest(),
     };
-    return proposalRequest;
   }
   public get source() {
     return this._source;
@@ -101,7 +113,7 @@ export class ProposalDocumentImpl extends ExampleDocumentContent implements Prop
     if (toType === '') {
       this.source = null;
     } else {
-      this.source = this.sourceFactory.createSource(toType);
+      this.source = this._sourceFactory.createSource(toType);
     }
   }
   public createTranslation(): ProposalTranslationHandle {

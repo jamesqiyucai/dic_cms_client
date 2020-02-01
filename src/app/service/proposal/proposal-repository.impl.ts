@@ -34,7 +34,6 @@ export class ProposalRepositoryImpl implements ProposalRepository {
   }
   public createProposal(): ProposalHandle {
     const newProposal = new ProposalDocumentImpl(this._remoteResourceFactory.bind('proposals', new ProposalExceptionTranslator()));
-    console.log(newProposal);
     newProposal.initiator = this._userService.getCurrentUser();
     newProposal.reviewer = 1;
     newProposal.status = 'pending';

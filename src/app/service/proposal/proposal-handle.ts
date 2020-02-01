@@ -1,4 +1,4 @@
-import {ExampleHandle, ExampleSourceHandle} from '../example';
+import {ExampleHandle} from '../example';
 import {Observable} from 'rxjs';
 import {ProposalTranslationHandle} from './proposal-translation-handle';
 import {List} from 'immutable';
