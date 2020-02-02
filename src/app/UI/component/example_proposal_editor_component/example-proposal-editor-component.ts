@@ -16,7 +16,7 @@ import {ExampleSourceJournalComponent} from '../source_component/example_source_
   styleUrls: ['./example-proposal-editor-component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExampleProposalEditorComponent extends AbstractPresenterContent implements OnInit, AfterViewInit {
+export class ExampleProposalEditorComponent extends AbstractPresenterContent implements OnInit {
   protected _handle: ProposalHandle;
   private sourceComponent: SourceComponent;
   private componentFactoryResolver: ComponentFactoryResolver;
@@ -83,8 +83,6 @@ export class ExampleProposalEditorComponent extends AbstractPresenterContent imp
     this._handle.$italics.subscribe(italics => this._italics = italics.toArray());
     this.keywordsAdapter = new ProposalKeywordsAdapter(this._handle);
     this.translationsAdapter = new ProposalTranslationsAdapter(this._handle);
-  }
-  ngAfterViewInit(): void {
     this._handle.$translations.subscribe(() => this.translationsComponent.handle = new ProposalTranslationsAdapter(this._handle));
     this._handle.$keywords.subscribe(() => this.keywordsComponent.handle = new ProposalKeywordsAdapter(this._handle));
     this._handle.$source.subscribe(
