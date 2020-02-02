@@ -21,10 +21,16 @@ import {ListOrigin} from './list-origin';
 export class ListManipulatorComponent implements OnInit, AfterContentChecked {
   private _array: any[] = [];
   private _handle: ListOrigin;
+  private _draggable: boolean;
+  @ContentChild(TemplateRef, {static: false}) private template: TemplateRef<any>;
+  @ContentChildren('child', {descendants: true}) private components: QueryList<ListElementComponent>;
   @Input()
-  public draggable: boolean;
+  public set draggable(newVal) {
+    console.log(newVal);
+    this._draggable = newVal;
+  }
   @Input()
-  set handle(newHandle: ListOrigin) {
+  public set handle(newHandle: ListOrigin) {
     this._handle = newHandle;
   }
   public set list(newList: List<any>) {
@@ -33,10 +39,11 @@ export class ListManipulatorComponent implements OnInit, AfterContentChecked {
       this._handle.list = this.list;
     }
   }
-  @ContentChild(TemplateRef, {static: false}) template: TemplateRef<any>;
-  @ContentChildren('child', {descendants: true}) components: QueryList<ListElementComponent>;
   public get list() {
     return List(this._array);
+  }
+  public get draggingDisabled() {
+    return !this._draggable;
   }
   ngOnInit(): void {
     this._handle.$list.subscribe(list => this.list = list);
