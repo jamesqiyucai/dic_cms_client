@@ -52,7 +52,7 @@ export class InputboxComponent implements OnInit {
     @ViewChild('doneBox', { static: true })
     done: ElementRef;
 
-    private isDisplay = true;
+    public isDisplay = true;
     private cur_target: any;
     value = 'Abandon';
     fontStyle = 'monospace';

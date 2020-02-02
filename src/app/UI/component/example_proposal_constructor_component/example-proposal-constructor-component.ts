@@ -2,7 +2,7 @@ import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core'
 import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from "../../../service/proposal";
 
 @Component({
-  selector: 'app-proposal-presenter',
+  selector: 'app-proposal-constructor',
   templateUrl: './example-proposal-constructor-component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

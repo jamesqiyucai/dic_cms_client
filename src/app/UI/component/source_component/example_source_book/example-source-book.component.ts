@@ -32,57 +32,57 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
       this._sourceHandle.page = newPage;
     }
   }
-  private get $initialPublishingYear() {
+  public get $initialPublishingYear() {
     return this._sourceHandle.$initialPublishingYear;
   }
-  private get initialPublishingYear() {
+  public get initialPublishingYear() {
     return this._initialPublishingYear;
   }
 
-  private set initialPublishingYear(newYear: number) {
+  public set initialPublishingYear(newYear: number) {
     if (this.initialPublishingYear !== newYear) {
       this._initialPublishingYear = newYear;
       this._sourceHandle.initialPublishingYear = newYear;
     }
   }
-  private get $publishedYear() {
+  public get $publishedYear() {
     return this._sourceHandle.$publishedYear;
   }
-  private get publishedYear() {
+  public get publishedYear() {
     return this._publishedYear;
   }
 
-  private set publishedYear(newYear: number) {
+  public set publishedYear(newYear: number) {
     if (this.publishedYear !== newYear) {
       this._publishedYear = newYear;
       this._sourceHandle.publishedYear = newYear;
     }
   }
-  private get $publishedPlace() {
+  public get $publishedPlace() {
     return this._sourceHandle.$publishedPlace;
   }
-  private get publishedPlace() {
+  public get publishedPlace() {
     return this._publishedPlace;
   }
 
-  private set publishedPlace(newPlace: string) {
+  public set publishedPlace(newPlace: string) {
     if (this.publishedPlace !== newPlace) {
       this._publishedPlace = newPlace;
       this._sourceHandle.publishedPlace = newPlace;
     }
   }
-  private onPageChange(newPage: string) {
+  public onPageChange(newPage: string) {
     this.page = Number(newPage);
   }
-  private onInitialPublishingYearChange(newYear: number) {
+  public onInitialPublishingYearChange(newYear: number) {
     this.initialPublishingYear = newYear;
   }
 
-  private onPublishedYearChange(newYear: number) {
+  public onPublishedYearChange(newYear: number) {
     this.publishedYear = newYear;
   }
 
-  private onPublishedPlaceChange(newPlace: string) {
+  public onPublishedPlaceChange(newPlace: string) {
     this.publishedPlace = newPlace;
   }
 

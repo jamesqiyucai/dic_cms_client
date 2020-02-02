@@ -18,27 +18,27 @@ import {ExampleSourceJournalComponent} from '../source_component/example_source_
 })
 export class ExampleProposalEditorComponent extends AbstractPresenterContent implements OnInit, AfterViewInit {
   protected _handle: ProposalHandle;
-  private keywordsAdapter: ProposalKeywordsAdapter;
-  private translationsAdapter: ProposalTranslationsAdapter;
   private sourceComponent: SourceComponent;
   private componentFactoryResolver: ComponentFactoryResolver;
   private _editable: boolean = undefined;
   @ViewChild(SourceDirective, { static: true }) private sourceHost: SourceDirective;
   @ViewChild('translations', { static: true }) private translationsComponent: ListManipulatorComponent;
   @ViewChild('keywords', { static: true }) private keywordsComponent: ListManipulatorComponent;
-  private _onItalicsChange(newRanges: List<[number, number]>) {
+  public keywordsAdapter: ProposalKeywordsAdapter;
+  public translationsAdapter: ProposalTranslationsAdapter;
+  public _onItalicsChange(newRanges: List<[number, number]>) {
     this.italics = newRanges;
   }
-  private _onTextChange(newText: string) {
+  public _onTextChange(newText: string) {
     this.text = newText;
   }
-  private _onNoteChange(newNote: string) {
+  public _onNoteChange(newNote: string) {
     this.note = newNote;
   }
-  private _onCommentChange(newComment: string) {
+  public _onCommentChange(newComment: string) {
     this.comment = newComment;
   }
-  private _onSourceChoose(type: string) {
+  public _onSourceChoose(type: string) {
     this._handle.changeSource(type);
     this._generateSourceComponent(type, this._editable);
   }

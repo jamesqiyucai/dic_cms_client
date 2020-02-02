@@ -8,11 +8,10 @@ import {USER_SERVICE, UserService} from '../../../core';
 export class HomeComponent {
   constructor(@Inject(USER_SERVICE) private userService: UserService) {}
 
-  private showReview() {
+  public showReview() {
     return this.userService.getCurrentUser() === 1;
   }
 
-  private onLogOut() {
-
+  public onLogOut() {
   }
 }

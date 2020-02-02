@@ -21,20 +21,21 @@ import {ListOrigin} from './list-origin';
 export class ListManipulatorComponent implements OnInit, AfterContentChecked {
   private _array: any[] = [];
   private _handle: ListOrigin;
-  @Input() public draggable: boolean;
+  @Input()
+  public draggable: boolean;
   @Input()
   set handle(newHandle: ListOrigin) {
     this._handle = newHandle;
   }
-  private set list(newList: List<any>) {
+  public set list(newList: List<any>) {
     if (!this.list.equals(newList)) {
       this._array = newList.toArray();
       this._handle.list = this.list;
     }
   }
-  @ContentChild(TemplateRef, /* TODO: add static flag */ {}) template: TemplateRef<any>;
+  @ContentChild(TemplateRef, {static: false}) template: TemplateRef<any>;
   @ContentChildren('child', {descendants: true}) components: QueryList<ListElementComponent>;
-  private get list() {
+  public get list() {
     return List(this._array);
   }
   ngOnInit(): void {

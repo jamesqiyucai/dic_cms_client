@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ExampleProposalConstructorModule} from "../example_proposal_constructor_component/example-proposal-constructor-module";
 import {HomeComponent} from "./home.component";
+import {ExampleProposalConstructorModule} from "../example_proposal_constructor_component/example-proposal-constructor-module";
 
 const homeRoutes: Routes = [
 
@@ -19,7 +19,6 @@ const homeRoutes: Routes = [
 
 @NgModule({
   imports: [
-    ExampleProposalConstructorModule,
     RouterModule.forChild(homeRoutes)
   ],
   exports: [

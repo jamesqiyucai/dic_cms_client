@@ -31,39 +31,39 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
       this._sourceHandle.page = newPage;
     }
   }
-  private get $passageTitle() {
+  public get $passageTitle() {
     return this._sourceHandle.$passageTitle;
   }
-  private get passageTitle() {
+  public get passageTitle() {
     return this._passageTitle;
   }
-  private set passageTitle(newPassageTitle: string) {
+  public set passageTitle(newPassageTitle: string) {
     if (this.passageTitle !== newPassageTitle) {
       this._passageTitle = newPassageTitle;
       this._sourceHandle.passageTitle = newPassageTitle;
     }
   }
-  private get $publishingDate() {
+  public get $publishingDate() {
     return this._sourceHandle.$publishingDate;
   }
-  private get publishingDate() {
+  public get publishingDate() {
     return this._publishingDate;
   }
 
-  private set publishingDate(newPublishingDate: string) {
+  public set publishingDate(newPublishingDate: string) {
     if (this.publishingDate !== newPublishingDate) {
       this._publishingDate = newPublishingDate;
       this._sourceHandle.publishingDate = newPublishingDate;
     }
   }
-  private onPageChange(newPage: string) {
+  public onPageChange(newPage: string) {
     this.page = Number(newPage);
   }
-  private onPassageTitleChange(newTitle: string) {
+  public onPassageTitleChange(newTitle: string) {
     this.passageTitle = newTitle;
   }
 
-  private onPublishingDateChange(newDate: string) {
+  public onPublishingDateChange(newDate: string) {
     this.publishingDate = newDate;
   }
 

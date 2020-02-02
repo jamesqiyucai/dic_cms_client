@@ -8,7 +8,7 @@ import {USER_SERVICE, UserService} from '../../../core';
 export class UserDesignatorComponent implements OnInit {
   constructor(@Inject(USER_SERVICE) private userService: UserService) {}
 
-  private onUserChosen(user: string) {
+  public onUserChosen(user: string) {
     this.userService.setUser(parseInt(user, 10));
   }
 

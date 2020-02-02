@@ -1,7 +1,8 @@
 import {ExampleSourceComponentTypes} from './example-source.component.types';
 import {ProposalSourceHandle} from '../../../service/proposal';
-import {ChangeDetectorRef, Input} from '@angular/core';
+import { ChangeDetectorRef, Input, Directive } from '@angular/core';
 
+@Directive()
 export abstract class AbstractSourceComponent {
   protected _sourceHandle: ProposalSourceHandle = undefined;
   protected _type: ExampleSourceComponentTypes = undefined;
@@ -19,41 +20,41 @@ export abstract class AbstractSourceComponent {
       this.cdRef.markForCheck();
     }
   }
-  protected get type() {
+  public get type() {
     return this._type;
   }
-  protected get $author() {
+  public get $author() {
     return this._sourceHandle.$author;
   }
-  protected get author() {
+  public get author() {
     return this._author;
   }
 
-  protected set author(newAuthor: string) {
+  public set author(newAuthor: string) {
     if (this.author !== newAuthor) {
       this._author = newAuthor;
       this._sourceHandle.author = newAuthor;
     }
   }
-  protected get $title() {
+  public get $title() {
     return this._sourceHandle.$title;
   }
-  protected get title() {
+  public get title() {
     return this._title;
   }
 
-  protected set title(newTitle: string) {
+  public set title(newTitle: string) {
     if (this.title !== newTitle) {
       this._title = newTitle;
       this._sourceHandle.title = newTitle;
     }
   }
 
-  protected onAuthorChange(newAuthor: string) {
+  public onAuthorChange(newAuthor: string) {
     this.author = newAuthor;
   }
 
-  protected onTitleChange(newTitle: string) {
+  public onTitleChange(newTitle: string) {
     this.title = newTitle;
   }
   // public abstract getDto(): ExampleSourceBookComponentDto | ExampleSourceJournalComponentDto;

@@ -24,10 +24,7 @@ import {RemoteResourceModule} from './service/remote_resource/remote-resource-mo
     ToolkitModule,
     RemoteResourceModule,
     ExampleProposalServiceModule,
-    UserDesignatorModule,
-    HomeModule,
     AppRoutingModule,
-    InternalServerErrorLoggerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
