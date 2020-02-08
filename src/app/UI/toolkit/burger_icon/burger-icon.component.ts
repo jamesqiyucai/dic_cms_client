@@ -21,12 +21,10 @@ export class BurgerIconComponent {
   }
   private transform() {
     if (!this.expand) {
-      console.log(this.renderer);
       this.renderer.removeClass(this.container.nativeElement, 'expand');
       // document.getElementById('container').classList.remove('expand');
       this.switch.emit(false);
     } else {
-      console.log(this.renderer);
       this.renderer.addClass(this.container.nativeElement, 'expand');
       // document.getElementById('container').classList.add('expand');
       this.switch.emit(true);
@@ -36,6 +34,5 @@ export class BurgerIconComponent {
   onClick() {
     this.toggle();
     this.transform();
-    console.log(`the burger menu is ${(this.expand) ? 'expanded' : 'collapsed'}`);
   }
 }

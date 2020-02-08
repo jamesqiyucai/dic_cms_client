@@ -26,7 +26,6 @@ export class ListManipulatorComponent implements OnInit, AfterContentChecked {
   @ContentChildren('child', {descendants: true}) private components: QueryList<ListElementComponent>;
   @Input()
   public set draggable(newVal) {
-    console.log(newVal);
     this._draggable = newVal;
   }
   @Input()

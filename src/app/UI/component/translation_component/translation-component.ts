@@ -32,7 +32,6 @@ export class TranslationComponent implements ListElementComponent {
     if (this._text !== newText) {
       this._text = newText;
       this._handle.text = newText;
-      console.log(this._handle);
     }
   }
   public get ID() {
