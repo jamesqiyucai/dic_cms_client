@@ -130,5 +130,8 @@
       }
     }
   },
-  "defaultProject": "dic-cms-client"
+  "defaultProject": "dic-cms-client",
+  "cli": {
+    "analytics": "1bc16d60-c854-4f61-bcc8-29714992df63"
+  }
 }
