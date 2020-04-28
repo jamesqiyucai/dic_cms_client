@@ -2,9 +2,9 @@ import {ExampleSourceDocumentContent} from './example-source-document-content';
 import {BehaviorSubject, Subject} from 'rxjs';
 
 export abstract class ExampleJournalSourceDocumentContent extends ExampleSourceDocumentContent {
-  public readonly $page = new BehaviorSubject<number>(undefined);
-  public readonly $passageTitle = new BehaviorSubject<string>('');
-  public readonly $publishingDate = new BehaviorSubject<string>('');
+  public readonly pageObservable = new BehaviorSubject<number>(undefined);
+  public readonly passageTitleObservable = new BehaviorSubject<string>('');
+  public readonly publishingDateObservable = new BehaviorSubject<string>('');
   constructor(
     author: string,
     title: string,
@@ -20,7 +20,7 @@ export abstract class ExampleJournalSourceDocumentContent extends ExampleSourceD
   public set page(newPage: number) {
     if (this._page !== newPage) {
       this._page = newPage;
-      this.$page.next(newPage);
+      this.pageObservable.next(newPage);
     }
   }
   public get passageTitle() {
@@ -29,7 +29,7 @@ export abstract class ExampleJournalSourceDocumentContent extends ExampleSourceD
   public set passageTitle(newPassageTitle: string) {
     if (this._passageTitle !== newPassageTitle) {
       this._passageTitle = newPassageTitle;
-      this.$passageTitle.next(newPassageTitle);
+      this.passageTitleObservable.next(newPassageTitle);
     }
   }
   public get publishingDate() {
@@ -38,7 +38,7 @@ export abstract class ExampleJournalSourceDocumentContent extends ExampleSourceD
   public set publishingDate(newPublishingDate: string) {
     if (this._publishingDate !== newPublishingDate) {
       this._publishingDate = newPublishingDate;
-      this.$publishingDate.next(newPublishingDate);
+      this.publishingDateObservable.next(newPublishingDate);
     }
   }
 }

@@ -10,7 +10,7 @@ export interface ExampleHandle {
   text: string;
   $text: Observable<string>;
   keywords: List<ExampleKeywordHandle>;
-  $keywords: Observable<List<ExampleKeywordHandle>>;
+  keywordsObservable: Observable<List<ExampleKeywordHandle>>;
   italics: List<[number, number]>;
   $italics: Observable<List<[number, number]>>;
   translations: List<ExampleTranslationHandle>;

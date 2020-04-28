@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {ListElementComponent} from './list-element-component';
 import {List} from 'immutable';
-import {ListOrigin} from './list-origin';
+import {ListManipulatorHandle} from './list-manipulator-handle';
 
 @Component({
   selector: 'app-list-manipulator',
@@ -20,7 +20,7 @@ import {ListOrigin} from './list-origin';
 })
 export class ListManipulatorComponent implements OnInit, AfterContentChecked {
   private _array: any[] = [];
-  private _handle: ListOrigin;
+  private _handle: ListManipulatorHandle;
   private _draggable: boolean;
   @ContentChild(TemplateRef, {static: false}) private template: TemplateRef<any>;
   @ContentChildren('child', {descendants: true}) private components: QueryList<ListElementComponent>;
@@ -29,7 +29,7 @@ export class ListManipulatorComponent implements OnInit, AfterContentChecked {
     this._draggable = newVal;
   }
   @Input()
-  public set handle(newHandle: ListOrigin) {
+  public set handle(newHandle: ListManipulatorHandle) {
     this._handle = newHandle;
   }
   public set list(newList: List<any>) {

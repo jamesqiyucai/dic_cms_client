@@ -1,1 +1,1 @@
-<app-text-input [text]="$text | async" (textChange)="text" [editable]="editable"></app-text-input>
+<app-text-input [text]="text$ | async" (textChange)="onTextChange($event)" [editable]="editable"></app-text-input>

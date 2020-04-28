@@ -1,9 +1,9 @@
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
 
-export class ProposalJournalSourceResourceContent extends ProposalSourceResourceContent {
+export interface ProposalJournalSourceResourceContent extends ProposalSourceResourceContent {
   author: string;
   title: string;
-  page: number;
+  page: string;
   passageTitle: string;
   publishingDate: string;
 }

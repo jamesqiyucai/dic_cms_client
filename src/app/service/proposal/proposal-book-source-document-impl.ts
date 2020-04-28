@@ -1,18 +1,78 @@
-import {ExampleBookSourceDocumentContent} from '../example';
 import {ProposalBookSourceDocument} from './proposal-book-source-document';
-import {ProposalSourceResourceRequest} from './proposal-source-resource-request';
-import {ProposalBookSourceResourceRequest} from './proposal-book-source-resource-request';
+import {ProposalBookSourceResourceContent} from './proposal-book-source-resource-content';
+import {ProposalSourceDocumentImpl} from './proposal-source-document-impl';
+import {BehaviorSubject} from 'rxjs';
+import {ProposalBookSourceDocumentBuilder} from './proposal-book-source-document-builder';
 
-export class ProposalBookSourceDocumentImpl extends ExampleBookSourceDocumentContent implements ProposalBookSourceDocument {
-  mapToRequest(): ProposalSourceResourceRequest {
-    const request = new ProposalBookSourceResourceRequest();
-    request.type = this.getType();
-    request.author = this.author;
-    request.title = this.author;
-    request.page = this.page;
-    request.publishedPlace = this.publishedPlace;
-    request.publishedYear = this.publishedYear;
-    request.initialPublishingYear = this.initialPublishingYear;
-    return request;
+export class ProposalBookSourceDocumentImpl extends ProposalSourceDocumentImpl implements ProposalBookSourceDocument {
+  private _initialPublishingYear: string;
+  private _initialPublishingYearObservable: BehaviorSubject<string>;
+  private _page: string;
+  private _pageObservable: BehaviorSubject<string>;
+  private _publishedPlace: string;
+  private _publishedPlaceObservable: BehaviorSubject<string>;
+  private _publishedYear: string;
+  private _publishedYearObservable: BehaviorSubject<string>;
+  constructor(builder: ProposalBookSourceDocumentBuilder) {
+    if (builder.type && builder.author && builder.page && builder.title && builder.initialPublishingYear && builder.publishedPlace && builder.publishedYear) {
+      super(builder.type, builder.author, builder.title);
+      this._page = builder.page;
+      this._initialPublishingYear = builder.initialPublishingYear;
+      this._publishedPlace = builder.publishedPlace;
+      this._publishedYear = builder.publishedYear;
+      this._initialPublishingYearObservable = new BehaviorSubject<string>(builder.initialPublishingYear);
+      this._pageObservable = new BehaviorSubject<string>(builder.page);
+      this._publishedPlaceObservable = new BehaviorSubject<string>(builder.publishedPlace);
+      this._publishedYearObservable = new BehaviorSubject<string>(builder.publishedYear);
+    } else {
+      throw new Error('Proposal source book properties must not be null or undefined');
+    }
+  }
+  public get pageObservable() {
+    return this._pageObservable.asObservable();
+  }
+  public set page(newPage: string) {
+    if (this._page !== newPage) {
+      this._page = newPage;
+      this._pageObservable.next(newPage);
+    }
+  }
+  public get initialPublishingYearObservable() {
+    return this._initialPublishingYearObservable.asObservable();
+  }
+  public set initialPublishingYear(newYear: string) {
+    if (this._initialPublishingYear !== newYear) {
+      this._initialPublishingYear = newYear;
+      this._initialPublishingYearObservable.next(newYear);
+    }
+  }
+  public get publishedPlaceObservable() {
+    return this._publishedPlaceObservable.asObservable();
+  }
+  public set publishedPlace(newPlace: string) {
+    if (this._publishedPlace !== newPlace) {
+      this._publishedPlace = newPlace;
+      this._publishedPlaceObservable.next(newPlace);
+    }
+  }
+  public get publishedYearObservable() {
+    return this._publishedYearObservable.asObservable();
+  }
+  public set publishedYear(newYear: string) {
+    if (this._publishedYear !== newYear) {
+      this._publishedYear = newYear;
+      this._publishedYearObservable.next(newYear);
+    }
+  }
+  public mapToRequest(): ProposalBookSourceResourceContent {
+    return {
+      type: this._type,
+      author: this._author,
+      title: this._title,
+      page: this._page,
+      publishedPlace: this._publishedPlace,
+      publishedYear: this._publishedYear,
+      initialPublishingYear: this._initialPublishingYear
+    };
   }
 }

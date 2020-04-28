@@ -1,13 +1,6 @@
-import {ProposalSourceDocument} from './proposal-source-document';
-import {ProposalBookSourceDocumentImpl} from './proposal-book-source-document-impl';
-import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
+import {ProposalSourceType} from './proposal-source-type';
+import {ProposalSourceHandle} from './proposal-source-handle';
 
-export class ProposalSourceFactory {
-  createSource(type: string): ProposalSourceDocument {
-    if (type = 'book') {
-      return new ProposalBookSourceDocumentImpl('', '', null, null, null, '');
-    } else if (type = 'journal') {
-      return new ProposalJournalSourceDocumentImpl('', '', null, '', '');
-    }
-  }
+export interface ProposalSourceFactory {
+  getProposalSource(type: ProposalSourceType): ProposalSourceHandle;
 }

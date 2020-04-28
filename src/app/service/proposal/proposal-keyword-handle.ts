@@ -1,3 +1,6 @@
-import {ExampleKeywordHandle} from '../example/example-keyword-handle';
+import {Observable} from 'rxjs';
 
-export interface ProposalKeywordHandle extends ExampleKeywordHandle {}
+export interface ProposalKeywordHandle {
+  keyword: string;
+  keywordObservable: Observable<string>;
+}

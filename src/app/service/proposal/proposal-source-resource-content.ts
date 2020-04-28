@@ -1,3 +1,5 @@
-export abstract class ProposalSourceResourceContent {
-  type: string;
+import {ProposalSourceType} from './proposal-source-type';
+
+export interface ProposalSourceResourceContent {
+  type: ProposalSourceType;
 }

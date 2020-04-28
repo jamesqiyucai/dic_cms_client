@@ -1,6 +1,6 @@
 import {ProposalSourceHandle} from './proposal-source-handle';
-import {ProposalSourceResourceRequest} from './proposal-source-resource-request';
+import {ProposalSourceResourceContent} from './proposal-source-resource-content';
 
 export interface ProposalSourceDocument extends ProposalSourceHandle {
-  mapToRequest(): ProposalSourceResourceRequest;
+  mapToRequest(): ProposalSourceResourceContent;
 }

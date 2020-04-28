@@ -20,7 +20,7 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
     super(cdRef);
   }
   public get $page() {
-    return this._sourceHandle.$page;
+    return this._sourceHandle.pageObservable;
   }
   public get page() {
     return this._page;
@@ -32,7 +32,7 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
     }
   }
   public get $passageTitle() {
-    return this._sourceHandle.$passageTitle;
+    return this._sourceHandle.passageTitleObservable;
   }
   public get passageTitle() {
     return this._passageTitle;
@@ -44,7 +44,7 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
     }
   }
   public get $publishingDate() {
-    return this._sourceHandle.$publishingDate;
+    return this._sourceHandle.publishingDateObservable;
   }
   public get publishingDate() {
     return this._publishingDate;
@@ -70,8 +70,8 @@ export class ExampleSourceJournalComponent extends AbstractSourceComponent imple
   public ngOnChanges(): void {
     this._sourceHandle.$author.subscribe(author => this.author = author);
     this._sourceHandle.$title.subscribe(title => this.title = title);
-    this._sourceHandle.$passageTitle.subscribe(passageTitle => this.passageTitle);
-    this._sourceHandle.$publishingDate.subscribe(publishingDate => this.publishingDate = publishingDate);
-    this._sourceHandle.$page.subscribe(page => this.page = page);
+    this._sourceHandle.passageTitleObservable.subscribe(passageTitle => this.passageTitle);
+    this._sourceHandle.publishingDateObservable.subscribe(publishingDate => this.publishingDate = publishingDate);
+    this._sourceHandle.pageObservable.subscribe(page => this.page = page);
   }
 }

@@ -1,10 +1,10 @@
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
 
-export class ProposalBookSourceResourceContent extends ProposalSourceResourceContent {
+export interface ProposalBookSourceResourceContent extends ProposalSourceResourceContent {
   author: string;
   title: string;
-  page: number;
-  initialPublishingYear: number;
-  publishedYear: number;
+  page: string;
+  initialPublishingYear: string;
+  publishedYear: string;
   publishedPlace: string;
 }

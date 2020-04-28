@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
-import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from "../../../service/proposal";
+import {PROPOSAL_REPOSITORY, ProposalHandle, ProposalRepository} from '../../../service/proposal';
 
 @Component({
   selector: 'app-proposal-constructor',
@@ -10,7 +10,7 @@ export class ExampleProposalConstructorComponent implements OnInit {
   private _handle: ProposalHandle;
   private _editable: boolean;
   private _getNewHandle() {
-    this._handle = this.proposalRepository.createProposal();
+    this._handle = this.proposalRepository.createBlankProposal();
     this._handle.text = 'Please edit the text of your proposed example sentence here.';
   }
   constructor(@Inject(PROPOSAL_REPOSITORY) private proposalRepository: ProposalRepository) {}

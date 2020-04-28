@@ -1,8 +1,8 @@
 import {BehaviorSubject, Subject} from 'rxjs';
 
 export abstract class ExampleSourceDocumentContent {
-  public readonly $author = new BehaviorSubject<string>('');
-  public readonly $title =  new BehaviorSubject<string>('');
+  public readonly authorObservable = new BehaviorSubject<string>('');
+  public readonly titleObservable =  new BehaviorSubject<string>('');
   protected constructor(private _type: string, private _author: string, private _title: string) {}
   public getType() {
     return this._type;
@@ -13,7 +13,7 @@ export abstract class ExampleSourceDocumentContent {
   public set author(newAuthor) {
     if (this._author !== newAuthor) {
       this._author = newAuthor;
-      this.$author.next(newAuthor);
+      this.authorObservable.next(newAuthor);
     }
   }
   public get title() {
@@ -22,7 +22,7 @@ export abstract class ExampleSourceDocumentContent {
   public set title(newTitle: string) {
     if (this._title !== newTitle) {
       this._title = newTitle;
-      this.$title.next(newTitle);
+      this.titleObservable.next(newTitle);
     }
   }
 }

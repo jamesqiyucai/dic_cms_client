@@ -7,20 +7,19 @@ import {catchError} from 'rxjs/operators';
 
 export class ResourceImpl implements Resource {
   constructor(
-    private _httpClient: HttpClient,
-    private _url: string,
-    private _et: ExceptionTranslator,
-    private _notifiers: ExceptionNotifier[]
+    protected _httpClient: HttpClient,
+    protected _url: string,
+    protected _et: ExceptionTranslator,
+    protected _notifiers: ExceptionNotifier[],
   ) {}
-  private handleError(error: HttpErrorResponse) {
+  protected handleError(error: HttpErrorResponse): Observable<never> {
     const statusCode = error.status.toString();
     if (statusCode.startsWith('5')) {
       this._notifiers.forEach(notifier => {
         notifier.notifyCriticalMistake();
       });
       return throwError('Error Occurred');
-    }
-    if (statusCode.startsWith('4')) {
+    } else {
       return throwError(this._et.getAppError(error.status, error.error));
     }
   }
@@ -28,17 +27,15 @@ export class ResourceImpl implements Resource {
     this._url = this._url + ID.toString();
   }
 
-  public get<Content>(options?: object): Observable<Content> {
-    return this._httpClient.get<Content>(this._url, options ? options : {})
+  public get<Content>(urlSupplement: string, options: object): Observable<Content> {
+    const finalUrl = urlSupplement ? this._url + urlSupplement : this._url;
+    return this._httpClient.get<Content>(finalUrl, options)
       .pipe(
         catchError(this.handleError)
       );
   }
-  public post<Request, Response>(body: Request, urlModification?: string): Observable<Response> {
-    let finalUrl: string;
-    if (urlModification) {
-      finalUrl = `${this._url}/${urlModification}`;
-    }
+  public post<Request, Response>(body: Request, urlSupplement?: string): Observable<Response> {
+    const finalUrl = urlSupplement ? this._url + urlSupplement : this._url;
     return this._httpClient.post<Response>(finalUrl, body)
       .pipe(
         catchError(this.handleError)

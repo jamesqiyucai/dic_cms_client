@@ -1,81 +1,61 @@
 import {ProposalDocumentHolder} from './proposal-document-holder';
 import {ProposalDocument} from './proposal-document';
 import {Observable, Subject} from 'rxjs';
-import {RemoteResourceFactory, Resource} from '../remote_resource';
+import {RemoteResourceFactory, SessionOption} from '../remote_resource';
 import {ProposalExceptionTranslator} from './proposal-exception-translator';
 import {ProposalResourceContent} from './proposal-resource-content';
-import {ProposalSourceResourceContent} from './proposal-source-resource-content';
-import {ProposalSourceDocument} from './proposal-source-document';
-import {ProposalBookSourceResourceContent} from './proposal-book-source-resource-content';
-import {ProposalBookSourceDocumentImpl} from './proposal-book-source-document-impl';
-import {ProposalJournalSourceResourceContent} from './proposal-journal-source-resource-content';
-import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
-import {ProposalDocumentImpl} from './proposal-document-impl';
-import {ProposalTranslationDocumentImpl} from './proposal-translation-document-impl';
-import {ProposalKeywordDocumentImpl} from './proposal-keyword-document-impl';
-import {List} from 'immutable';
+import {ProposalSourceSerializerService} from './proposal-source-serializer-service';
+import {ProposalDocumentBuilder} from './proposal-document-builder';
+import {ProposalKeywordDocumentBuilder} from './proposal-keyword-document-builder';
+import {ProposalTranslationDocumentBuilder} from './proposal-translation-document-builder';
 
 export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
-  private _ID: number = undefined;
-  private proposalResource: Resource;
-  public proposalDocument: ProposalDocument = undefined;
-  constructor(private remoteResourceFactory: RemoteResourceFactory) {}
-  private getSourceDocument(sourceContent: ProposalSourceResourceContent): ProposalSourceDocument {
-    if (sourceContent.type === 'book') {
-      const content = <ProposalBookSourceResourceContent>sourceContent;
-      return new ProposalBookSourceDocumentImpl(
-        content.author,
-        content.title,
-        content.page,
-        content.initialPublishingYear,
-        content.publishedYear,
-        content.publishedPlace
-      );
-    } else if (sourceContent.type === 'journal') {
-      const content = <ProposalJournalSourceResourceContent>sourceContent;
-      return new ProposalJournalSourceDocumentImpl(
-        content.author,
-        content.title,
-        content.page,
-        content.passageTitle,
-        content.publishingDate,
-      );
-    }
-  }
+  private _ID?: number;
+  public proposalDocument: ProposalDocument | undefined;
+  constructor(private remoteResourceFactory: RemoteResourceFactory, private sourceDocumentSerializerService: ProposalSourceSerializerService) {}
   public get ID() {
-    return this._ID;
+    return this.proposalDocument?.ID ? this.proposalDocument.ID : this._ID;
   }
-  public set ID(newID: number) {
-    this.proposalResource = this.remoteResourceFactory.bind(`proposals/${newID}`, new ProposalExceptionTranslator());
+  public set ID(newID: number | undefined) {
+    this._ID = newID;
   }
   public load(): Observable<ProposalDocumentHolder> {
+    if (!this.ID) {
+      throw new Error('Proposal document holder must have an ID for it to load');
+    }
     const loadStatus = new Subject<ProposalDocumentHolder>();
-    this.proposalResource.get<ProposalResourceContent>()
+    const resource = this.remoteResourceFactory.bind(`proposal/${this.ID}`, new ProposalExceptionTranslator(), SessionOption.necessary);
+    resource.get<ProposalResourceContent>('', {})
       .subscribe(
-        content => {
-          const document =
-            new ProposalDocumentImpl(this.remoteResourceFactory.bind(`proposal/${this.ID}`, new ProposalExceptionTranslator()));
-          document.ID = content.id;
-          document.exampleID = content.exampleId;
-          document.initiator = content.initiator;
-          document.reviewer = content.reviewer;
-          document.status = content.status;
-          document.source = this.getSourceDocument(content.source);
-          document.version = content.version;
-          document.text = content.text;
-          document.keywords = List(content.keywords.map(keyword => {
-            const keywordDocument = new ProposalKeywordDocumentImpl();
-            keywordDocument.keyword = keyword;
-            return keywordDocument;
-          }));
-          document.translations = List(content.translations.map(translation => {
-            return new ProposalTranslationDocumentImpl();
-          }));
-          document.italics = List(content.format.italic);
-          document.comment = content.comment;
-          document.note = content.note;
+        response => {
+          const documentBuilder = new ProposalDocumentBuilder();
+          documentBuilder.ID = response.id;
+          documentBuilder.exampleID = response.exampleId;
+          documentBuilder.initiator = response.initiator;
+          documentBuilder.reviewer = response.reviewer;
+          documentBuilder.status = response.status;
+          documentBuilder.source = response.source ? this.sourceDocumentSerializerService.getProposalSourceDocument(response.source) : null;
+          documentBuilder.version = response.version;
+          documentBuilder.text = response.text;
+          documentBuilder.keywords = response.keywords.map(keyword => {
+            const builder = new ProposalKeywordDocumentBuilder();
+            builder.keyword = keyword;
+            return builder.buildKeywordDocumentWithCurrentState();
+          });
+          documentBuilder.translations = response.translations.map(translation => {
+            const builder = new ProposalTranslationDocumentBuilder();
+            builder.text = translation.text;
+            builder.$mark = translation.$mark;
+            return builder.buildTranslationDocumentWithCurrentState();
+          });
+          documentBuilder.italics = response.format.italic;
+          documentBuilder.comment = response.comment;
+          documentBuilder.note = response.note;
+          documentBuilder.resource = resource;
+          this.proposalDocument = documentBuilder.buildProposalDocumentWithCurrentState();
         },
-        err => {},
+        // todo add error handling logic
+        () => {},
         () => loadStatus.next(this)
       );
     return loadStatus;

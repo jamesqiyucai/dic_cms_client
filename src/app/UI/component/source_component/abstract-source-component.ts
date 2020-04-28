@@ -24,7 +24,7 @@ export abstract class AbstractSourceComponent {
     return this._type;
   }
   public get $author() {
-    return this._sourceHandle.$author;
+    return this._sourceHandle.authorObservable;
   }
   public get author() {
     return this._author;
@@ -37,7 +37,7 @@ export abstract class AbstractSourceComponent {
     }
   }
   public get $title() {
-    return this._sourceHandle.$title;
+    return this._sourceHandle.titleObservable;
   }
   public get title() {
     return this._title;

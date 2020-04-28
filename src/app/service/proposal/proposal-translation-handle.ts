@@ -1,3 +1,6 @@
-import {ExampleTranslationHandle} from '../example';
+import {Observable} from 'rxjs';
 
-export interface ProposalTranslationHandle extends ExampleTranslationHandle {}
+export interface ProposalTranslationHandle {
+  text: string;
+  textObservable: Observable<string>;
+}

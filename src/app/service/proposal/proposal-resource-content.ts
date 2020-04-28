@@ -1,21 +1,22 @@
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
+import {ProposalStatus} from './proposal-status';
 
-export class ProposalResourceContent {
-  id: number;
+export interface ProposalResourceContent {
+  id?: number;
   initiator: number;
   reviewer: number;
-  status: string;
-  exampleId: number;
-  version: number;
+  status?: ProposalStatus;
+  exampleId?: number;
+  version?: number;
   text: string;
   format: {
     italic: [number, number][]
   };
-  translations: {id: number, text: string}[];
+  translations: {$mark: string, text: string}[];
   keywords: string[];
   note: string;
   comment: string;
-  source: ProposalSourceResourceContent;
+  source: ProposalSourceResourceContent | null | undefined;
 }
 
 

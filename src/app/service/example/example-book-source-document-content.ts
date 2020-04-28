@@ -2,10 +2,10 @@ import {ExampleSourceDocumentContent} from './example-source-document-content';
 import {BehaviorSubject, Subject} from 'rxjs';
 
 export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocumentContent {
-  public readonly $page = new BehaviorSubject<number>(undefined);
-  public readonly $initialPublishingYear = new BehaviorSubject<number>(undefined);
-  public readonly $publishedYear = new BehaviorSubject<number>(undefined);
-  public readonly $publishedPlace = new BehaviorSubject<string>('');
+  public readonly pageObservable = new BehaviorSubject<number>(undefined);
+  public readonly initialPublishingYearObservable = new BehaviorSubject<number>(undefined);
+  public readonly publishedYearObservable = new BehaviorSubject<number>(undefined);
+  public readonly publishedPlaceObservable = new BehaviorSubject<string>('');
   constructor(
     author: string,
     title: string,
@@ -22,7 +22,7 @@ export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocu
   public set page(newPage: number) {
     if (this._page !== newPage) {
       this._page = newPage;
-      this.$page.next(newPage);
+      this.pageObservable.next(newPage);
     }
   }
   public get initialPublishingYear() {
@@ -31,7 +31,7 @@ export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocu
   public set initialPublishingYear(newInitialPublishingYear: number) {
     if (this._initialPublishingYear !== newInitialPublishingYear) {
       this._initialPublishingYear = newInitialPublishingYear;
-      this.$initialPublishingYear.next(newInitialPublishingYear);
+      this.initialPublishingYearObservable.next(newInitialPublishingYear);
     }
   }
   public get publishedYear() {
@@ -40,7 +40,7 @@ export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocu
   public set publishedYear(newPublishedYear: number) {
     if (this._publishedYear !== newPublishedYear) {
       this._publishedYear = newPublishedYear;
-      this.$publishedYear.next(newPublishedYear);
+      this.publishedYearObservable.next(newPublishedYear);
     }
   }
   public get publishedPlace() {
@@ -49,7 +49,7 @@ export abstract class ExampleBookSourceDocumentContent extends ExampleSourceDocu
   public set publishedPlace(newPublishedPlace: string) {
     if (this._publishedPlace !== newPublishedPlace) {
       this._publishedPlace = newPublishedPlace;
-      this.$publishedPlace.next(newPublishedPlace);
+      this.publishedPlaceObservable.next(newPublishedPlace);
     }
   }
 }

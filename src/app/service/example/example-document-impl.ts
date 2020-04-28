@@ -14,7 +14,7 @@ export class ExampleDocumentImpl extends ExampleDocumentContent implements Examp
   private _keywords: ExampleKeywordDocument[];
   private _translations: ExampleTranslationDocument[];
   public readonly $source = new BehaviorSubject<ExampleSourceHandle>(undefined);
-  public readonly $keywords = new BehaviorSubject<List<ExampleKeywordDocument>>(List());
+  public readonly keywordsObservable = new BehaviorSubject<List<ExampleKeywordDocument>>(List());
   public readonly $translations = new BehaviorSubject<List<ExampleTranslationDocument>>(List());
   constructor() {
     super();
@@ -22,7 +22,7 @@ export class ExampleDocumentImpl extends ExampleDocumentContent implements Examp
   public set keywords(newKeywords: List<ExampleKeywordHandle>) {
     if (!newKeywords.equals(List(this._keywords))) {
       this._keywords = newKeywords.toArray();
-      this.$keywords.next(newKeywords);
+      this.keywordsObservable.next(newKeywords);
     }
   }
   public set translations(newTranslations: List<ExampleTranslationHandle>) {

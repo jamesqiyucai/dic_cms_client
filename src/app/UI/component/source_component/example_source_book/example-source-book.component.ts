@@ -21,7 +21,7 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     this._sourceHandle = handle;
   }
   public get $page() {
-    return this._sourceHandle.$page;
+    return this._sourceHandle.pageObservable;
   }
   public get page() {
     return this._page;
@@ -33,7 +33,7 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     }
   }
   public get $initialPublishingYear() {
-    return this._sourceHandle.$initialPublishingYear;
+    return this._sourceHandle.initialPublishingYearObservable;
   }
   public get initialPublishingYear() {
     return this._initialPublishingYear;
@@ -46,7 +46,7 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     }
   }
   public get $publishedYear() {
-    return this._sourceHandle.$publishedYear;
+    return this._sourceHandle.publishedYearObservable;
   }
   public get publishedYear() {
     return this._publishedYear;
@@ -59,7 +59,7 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
     }
   }
   public get $publishedPlace() {
-    return this._sourceHandle.$publishedPlace;
+    return this._sourceHandle.publishedPlaceObservable;
   }
   public get publishedPlace() {
     return this._publishedPlace;
@@ -89,9 +89,9 @@ export class ExampleSourceBookComponent extends AbstractSourceComponent implemen
   public ngOnChanges(): void {
     this._sourceHandle.$author.subscribe(author => this.author = author);
     this._sourceHandle.$title.subscribe(title => this.title = title);
-    this._sourceHandle.$page.subscribe(page => this.page = page);
-    this._sourceHandle.$initialPublishingYear.subscribe(initialPublishingYear => this.initialPublishingYear = initialPublishingYear);
-    this._sourceHandle.$publishedYear.subscribe(publishedYear => this.publishedYear = publishedYear);
-    this._sourceHandle.$publishedPlace.subscribe(publishedPlace => this.publishedPlace = publishedPlace);
+    this._sourceHandle.pageObservable.subscribe(page => this.page = page);
+    this._sourceHandle.initialPublishingYearObservable.subscribe(initialPublishingYear => this.initialPublishingYear = initialPublishingYear);
+    this._sourceHandle.publishedYearObservable.subscribe(publishedYear => this.publishedYear = publishedYear);
+    this._sourceHandle.publishedPlaceObservable.subscribe(publishedPlace => this.publishedPlace = publishedPlace);
   }
 }

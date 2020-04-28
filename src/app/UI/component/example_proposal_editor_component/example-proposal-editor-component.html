@@ -3,17 +3,17 @@
     <div
       appEditable
       [enabled]="editable"
-      [text]="$italicizedText | async"
-      (valueChange)="_onTextChange($event)"
-      (italicizedRanges)="_onItalicsChange($event)"
+      [text]="italicizedText$ | async"
+      (valueChange)="onTextChange($event)"
+      (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
-  <app-list-manipulator #translations [handle]="translationsAdapter" [draggable]="editable">
+  <app-list-manipulator #translations [handle]="translationsComponentModel" [draggable]="editable">
     <ng-template>
       <app-translation #child [editable]="editable"></app-translation>
     </ng-template>
   </app-list-manipulator>
-  <app-list-manipulator #keywords [handle]="keywordsAdapter" [draggable]="editable">
+  <app-list-manipulator #keywords [handle]="keywordsComponentModel" [draggable]="editable">
     <ng-template>
       <app-keyword #child [editable]="editable"></app-keyword>
 <!--      <app-text-input #child></app-text-input>-->
@@ -59,15 +59,15 @@
 <!--  </div>-->
   <div>
     <label>Comment:
-      <input #commentInput placeholder="Note Goes Here." [disabled]="!editable" [value]="$comment | async" (input)="_onCommentChange(commentInput.value)">
+      <input #commentInput placeholder="Note Goes Here." [disabled]="!editable" [value]="comment$ | async" (input)="onCommentChange(commentInput.value)">
     </label>
   </div>
   <div>
     <label>Note:
-      <input #noteText placeholder="Note Goes Here." [disabled]="!editable" [value]="$note | async" (input)="_onNoteChange(noteText.value)">
+      <input #noteText placeholder="Note Goes Here." [disabled]="!editable" [value]="note$ | async" (input)="_onNoteChange(noteText.value)">
     </label>
   </div>
-  <select #sourceSelect [disabled]="!editable" (change)="_onSourceChoose(sourceSelect.value)">
+  <select #sourceSelect [disabled]="!editable" (change)="onSourceChoose(sourceSelect.value)">
     <option value='' selected>-</option>
     <option value="journal">Journal</option>
     <option value="book">Book</option>
