@@ -36,7 +36,6 @@ export class ExampleProposalEditorComponentModel {
     this._note$ = new BehaviorSubject<string>(this._note);
     this._italics = [];
     this._italics$ = new BehaviorSubject<List<[number, number]>>(List(this._italics));
-    // todo add the initialization logic for the three sub models
     this.keywordsComponentModel = new ListManipulatorComponentModel<ProposalKeywordHandle>(new ProposalKeywordListHandle(handle), () => {
       return new KeywordComponentModel(handle.addKeyword());
     });

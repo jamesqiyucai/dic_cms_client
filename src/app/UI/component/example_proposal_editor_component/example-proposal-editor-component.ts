@@ -1,6 +1,5 @@
 import {ChangeDetectionStrategy, Component, ComponentFactoryResolver, Input, OnInit, ViewChild} from '@angular/core';
 import {List} from 'immutable';
-import {SourceComponent} from '../source_component';
 import {ListManipulatorComponent} from '../list_manipulator_component/list-manipulator-component';
 import {combineLatest} from 'rxjs';
 import {italicizeText} from './italicize-text';
@@ -17,14 +16,12 @@ import {ExampleProposalEditorComponentModel} from './example-proposal-editor-com
 export class ExampleProposalEditorComponent {
   private _model?: ExampleProposalEditorComponentModel;
   private _editable: boolean;
-  private sourceComponent: SourceComponent | null;
   private componentFactoryResolver: ComponentFactoryResolver;
   @ViewChild('translations', { static: true }) private translationsComponent?: ListManipulatorComponent;
   @ViewChild('keywords', { static: true }) private keywordsComponent?: ListManipulatorComponent;
 
   constructor(componentFactoryResolver: ComponentFactoryResolver) {
     this._editable = false;
-    this.sourceComponent = null;
     this.componentFactoryResolver = componentFactoryResolver;
   }
   @Input() public set model(model: ExampleProposalEditorComponentModel) {

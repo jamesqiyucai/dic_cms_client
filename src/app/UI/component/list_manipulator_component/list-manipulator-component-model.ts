@@ -17,6 +17,13 @@ export class ListManipulatorComponentModel<ElementHandle> {
     this._getNewElementModel = getNewElementModel;
     this._handle = handle;
   }
+  public get editable() {
+    return this._editable;
+  }
+  public set editable(val) {
+    this._array.forEach(model => model.editable = val);
+    this._editable = val;
+  }
   public get array$() {
     return this._array$.asObservable();
   }

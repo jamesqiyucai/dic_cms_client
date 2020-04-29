@@ -6,7 +6,7 @@ export class KeywordComponentModel implements ListElementComponentModel<Proposal
   private _editable: boolean;
   private _text: string;
   private _text$: BehaviorSubject<string>;
-  private _handle: ProposalKeywordHandle;
+  private readonly _handle: ProposalKeywordHandle;
   constructor(handle: ProposalKeywordHandle) {
     this._editable = true;
     this._text = '';
