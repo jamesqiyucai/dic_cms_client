@@ -1,42 +1,42 @@
 <div>
   <input
     #authorInput
-    [disabled]="!editable"
+    [disabled]="!model.editable"
     autocomplete="off"
     placeholder="Author"
-    [value]="$author | async"
+    [value]="model.author$ | async"
     (input)="onAuthorChange(authorInput.value)"
   >
   <input
     #newspaperTitleInput
-    [disabled]="!editable"
+    [disabled]="!model.editable"
     autocomplete="off"
     placeholder="NewspaperTitle"
-    [value]="$title | async"
+    [value]="model.title$ | async"
     (input)="onTitleChange(newspaperTitleInput.value)"
   >
   <input
     #passageTitleInput
-    [disabled]="!editable"
+    [disabled]="!model.editable"
     placeholder="PassageTitle"
-    [value]="$passageTitle | async"
+    [value]="model.passageTitle$ | async"
     (input)="onPassageTitleChange(passageTitleInput.value)"
   >
   <input
     #pageNumberInput
-    [disabled]="!editable"
+    [disabled]="!model.editable"
     type="number"
     placeholder="PageNumber"
-    [value]="$page | async"
+    [value]="model.page$ | async"
     (input)="onPageChange(pageNumberInput.value)"
   >
   <label>PublishingDate:
   <input
     #dateInput
-    [disabled]="!editable"
+    [disabled]="!model.editable"
     type="date"
     placeholder="PublishingDate"
-    [value]="$publishingDate | async"
+    [value]="model.publishDate$ | async"
     (input)="onPublishingDateChange(dateInput.value)"
   ></label>
 </div>

@@ -1,8 +1,8 @@
-import {ListManipulatorHandle} from './list-manipulator-handle';
+import {ListManipulatorHandle} from '../list_manipulator_component/list-manipulator-handle';
 import {ProposalHandle, ProposalTranslationHandle} from '../../../service/proposal';
 import {List} from 'immutable';
 
-export class ProposalTranslationsListHandle implements ListManipulatorHandle<ProposalTranslationHandle> {
+export class ExampleProposalTranslationsListHandle implements ListManipulatorHandle<ProposalTranslationHandle> {
   private _proposalHandle: ProposalHandle;
   constructor(handle: ProposalHandle) {
     this._proposalHandle = handle;

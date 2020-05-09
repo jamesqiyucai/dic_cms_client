@@ -1,13 +1,13 @@
 import {NgModule} from '@angular/core';
-import {KeywordComponent} from './keyword-component';
+import {ExampleProposalKeywordComponent} from './example-proposal-keyword-component';
 import {ToolkitModule} from '../../toolkit/toolkit.module';
 import {CommonModule} from '@angular/common';
 
 @NgModule({
   imports: [ToolkitModule, CommonModule],
-  declarations: [KeywordComponent],
+  declarations: [ExampleProposalKeywordComponent],
   exports: [
-    KeywordComponent
+    ExampleProposalKeywordComponent
   ]
 })
-export class KeywordModule {}
+export class ExampleProposalKeywordModule {}

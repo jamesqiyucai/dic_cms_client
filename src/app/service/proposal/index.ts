@@ -5,3 +5,4 @@ export { ProposalJournalSourceHandle } from './proposal-journal-source-handle';
 export { ProposalHandle } from './proposal-handle';
 export { ProposalRepository, PROPOSAL_REPOSITORY } from './proposal-repository';
 export {ExampleProposalServiceModule} from './example-proposal-service-module';
+export {ProposalSourceType} from './proposal-source-type';

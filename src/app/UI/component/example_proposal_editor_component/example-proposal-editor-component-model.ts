@@ -1,16 +1,18 @@
-import {BehaviorSubject} from 'rxjs';
-import {ListManipulatorComponentModel} from '../list_manipulator_component/list-manipulator-component-model';
-import {KeywordComponentModel} from '../keyword_component/keyword-component-model';
-import {TranslationComponentModel} from '../translation_component/translation-component-model';
+import {BehaviorSubject, combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ListManipulatorComponentModel} from '../list_manipulator_component';
+import {ExampleProposalKeywordComponentModel} from '../keyword_component';
+import {ExampleProposalTranslationComponentModel} from '../translation_component';
 import {List} from 'immutable';
-import {AbstractProposalSourceComponentModel} from '../source_component/abstract-proposal-source-component-model';
+import {AbstractExampleProposalSourceComponentModel} from '../example_proposal_source_component/abstract-example-proposal-source-component-model';
 import {ProposalBookSourceHandle, ProposalHandle, ProposalJournalSourceHandle, ProposalTranslationHandle} from '../../../service/proposal';
 import {ProposalKeywordHandle} from '../../../service/proposal/proposal-keyword-handle';
-import {ProposalTranslationsListHandle} from '../list_manipulator_component/proposal-translations-list-handle';
-import {ProposalKeywordListHandle} from '../list_manipulator_component/proposal-keyword-list-handle';
-import {ProposalSourceType} from '../../../service/proposal/proposal-source-type';
-import {ProposalJournalSourceComponentModel} from '../source_component/example_source_journal/proposal-journal-source-component-model';
-import {ProposalBookSourceComponentModel} from '../source_component/example_source_book/proposal-book-source-component-model';
+import {ExampleProposalTranslationsListHandle} from '../translation_component';
+import {ExampleProposalKeywordListHandle} from '../keyword_component';
+import {ProposalSourceType} from '../../../service/proposal';
+import {ExampleProposalJournalSourceComponentModel} from '../example_proposal_source_component/journal-source/example-proposal-journal-source-component-model';
+import {ExampleProposalBookSourceComponentModel} from '../example_proposal_source_component/book_source/example-proposal-book-source-component-model';
+import {italicizeText} from './italicize-text';
 
 export class ExampleProposalEditorComponentModel {
   private _handle: ProposalHandle;
@@ -25,7 +27,7 @@ export class ExampleProposalEditorComponentModel {
   private readonly _italics$: BehaviorSubject<List<[number, number]>>;
   public keywordsComponentModel: ListManipulatorComponentModel<ProposalKeywordHandle>;
   public translationsComponentModel: ListManipulatorComponentModel<ProposalTranslationHandle>;
-  public sourceComponentModel: AbstractProposalSourceComponentModel | null;
+  public sourceComponentModel: AbstractExampleProposalSourceComponentModel | null;
   constructor(handle: ProposalHandle) {
     this._editable = true;
     this._text = '';
@@ -36,11 +38,11 @@ export class ExampleProposalEditorComponentModel {
     this._note$ = new BehaviorSubject<string>(this._note);
     this._italics = [];
     this._italics$ = new BehaviorSubject<List<[number, number]>>(List(this._italics));
-    this.keywordsComponentModel = new ListManipulatorComponentModel<ProposalKeywordHandle>(new ProposalKeywordListHandle(handle), () => {
-      return new KeywordComponentModel(handle.addKeyword());
+    this.keywordsComponentModel = new ListManipulatorComponentModel<ProposalKeywordHandle>(new ExampleProposalKeywordListHandle(handle), () => {
+      return new ExampleProposalKeywordComponentModel(handle.addKeyword());
     });
-    this.translationsComponentModel = new ListManipulatorComponentModel<ProposalTranslationHandle>(new ProposalTranslationsListHandle(handle), () => {
-      return new TranslationComponentModel(handle.addTranslation());
+    this.translationsComponentModel = new ListManipulatorComponentModel<ProposalTranslationHandle>(new ExampleProposalTranslationsListHandle(handle), () => {
+      return new ExampleProposalTranslationComponentModel(handle.addTranslation());
     });
     this.sourceComponentModel = null;
     this._handle = handle;
@@ -66,6 +68,12 @@ export class ExampleProposalEditorComponentModel {
   }
   public get text$() {
     return this._text$.asObservable();
+  }
+  public get italicizedText$() {
+    return combineLatest([this.italics$, this.text$])
+      .pipe(
+        map(([italic, text]) => italicizeText(text, italic.toArray()))
+      );
   }
   public set comment(newComment: string) {
     if (this._comment !== newComment) {
@@ -103,11 +111,11 @@ export class ExampleProposalEditorComponentModel {
       } else if (type === ProposalSourceType.Book) {
         this._handle.switchSource(type);
         // tslint:disable-next-line:no-non-null-assertion
-        this.sourceComponentModel = new ProposalBookSourceComponentModel(<ProposalBookSourceHandle>this._handle.source!);
+        this.sourceComponentModel = new ExampleProposalBookSourceComponentModel(<ProposalBookSourceHandle>this._handle.source!);
       } else if (type === ProposalSourceType.Journal) {
         this._handle.switchSource(type);
         // tslint:disable-next-line:no-non-null-assertion
-        this.sourceComponentModel = new ProposalJournalSourceComponentModel(<ProposalJournalSourceHandle>this._handle.source!);
+        this.sourceComponentModel = new ExampleProposalJournalSourceComponentModel(<ProposalJournalSourceHandle>this._handle.source!);
       }
     }
   }

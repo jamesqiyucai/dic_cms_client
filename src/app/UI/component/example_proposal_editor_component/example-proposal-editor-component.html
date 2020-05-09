@@ -2,80 +2,39 @@
   <label>Example Text:
     <div
       appEditable
-      [enabled]="editable"
-      [text]="italicizedText$ | async"
+      [enabled]="model.editable"
+      [text]="model.italicizedText$ | async"
       (valueChange)="onTextChange($event)"
       (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
-  <app-list-manipulator #translations [handle]="translationsComponentModel" [draggable]="editable">
+  <app-list-manipulator [model]="model.translationsComponentModel" [draggable]="model.editable">
     <ng-template>
-      <app-translation #child [editable]="editable"></app-translation>
+      <app-translation #child></app-translation>
     </ng-template>
   </app-list-manipulator>
-  <app-list-manipulator #keywords [handle]="keywordsComponentModel" [draggable]="editable">
+  <app-list-manipulator [model]="model.keywordsComponentModel" [draggable]="model.editable">
     <ng-template>
-      <app-keyword #child [editable]="editable"></app-keyword>
-<!--      <app-text-input #child></app-text-input>-->
+      <app-keyword #child></app-keyword>
     </ng-template>
   </app-list-manipulator>
-<!--  <div-->
-<!--    [cdkDropListDisabled]="!unlocked"-->
-<!--    id="translation"-->
-<!--    cdkDropList-->
-<!--    [cdkDropListConnectedTo]="['trash']"-->
-<!--    (cdkDropListDropped)="onTranslationDrop($event)"-->
-<!--    [cdkDropListData]="'translation'"-->
-<!--  >Translations:-->
-<!--    <div [cdkDragDisabled]="!unlocked" cdkDrag *ngFor="let translation of translations; index as i trackBy:trackByFn">-->
-<!--      <div class="example-handle" cdkDragHandle>-->
-<!--        <svg width="12px" fill="currentColor" viewBox="0 0 24 24">-->
-<!--          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>-->
-<!--          <path d="M0 0h24v24H0z" fill="none"></path>-->
-<!--        </svg>-->
-<!--      </div>-->
-<!--      <div class="editable">-->
-<!--        <label>Translation {{i+1}}:<input #translationInput [disabled]="!unlocked" [value]="translation.text" (input)="onTranslationModify(i, translationInput.value)"></label>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div-->
-<!--    [cdkDropListDisabled]="!unlocked"-->
-<!--    id="appliedWord"-->
-<!--    cdkDropList-->
-<!--    [cdkDropListConnectedTo]="['trash']"-->
-<!--    [cdkDropListData]="'appliedWord'"-->
-<!--    (cdkDropListDropped)="onAppliedWordDrop($event)"-->
-<!--  >Keywords:-->
-<!--    <div [cdkDragDisabled]="!unlocked" cdkDrag *ngFor="let word of appliedWords; index as i; trackBy:trackByFn">-->
-<!--      <div class="example-handle" cdkDragHandle>-->
-<!--        <svg width="12px" fill="currentColor" viewBox="0 0 24 24">-->
-<!--          <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>-->
-<!--          <path d="M0 0h24v24H0z" fill="none"></path>-->
-<!--        </svg>-->
-<!--      </div>-->
-<!--      <label>ApplyTo:<input #appliedWordInput [disabled]="!unlocked" placeholder="AppliedWord" [value]="word" (input)="onAppliedWordModify(i, appliedWordInput.value)"></label>-->
-<!--    </div>-->
-<!--  </div>-->
   <div>
     <label>Comment:
-      <input #commentInput placeholder="Note Goes Here." [disabled]="!editable" [value]="comment$ | async" (input)="onCommentChange(commentInput.value)">
+      <input #commentInput placeholder="Note Goes Here." [disabled]="!model.editable" [value]="model.comment$ | async" (input)="onCommentChange(commentInput.value)">
     </label>
   </div>
   <div>
     <label>Note:
-      <input #noteText placeholder="Note Goes Here." [disabled]="!editable" [value]="note$ | async" (input)="_onNoteChange(noteText.value)">
+      <input #noteText placeholder="Note Goes Here." [disabled]="!model.editable" [value]="model.note$ | async" (input)="onNoteChange(noteText.value)">
     </label>
   </div>
-  <select #sourceSelect [disabled]="!editable" (change)="onSourceChoose(sourceSelect.value)">
-    <option value='' selected>-</option>
-    <option value="journal">Journal</option>
-    <option value="book">Book</option>
-  </select>
-  <ng-template source-host></ng-template>
-<!--  <div id="new" cdkDropList [cdkDropListDisabled]="!unlocked" [cdkDropListConnectedTo]="['translation', 'appliedWord']">-->
-<!--    <div cdkDrag [cdkDragDisabled]="!unlocked">+</div>-->
-<!--  </div>-->
-<!--  <button (click)="save()">Submit</button>-->
-<!--  <button (click)="onNew()">New</button>-->
+  <label>
+    <select #sourceSelect [disabled]="!model.editable" (change)="onSourceChoose(sourceSelect.value)">
+      <option value=null selected>-</option>
+      <option value="journal">Journal</option>
+      <option value="book">Book</option>
+    </select>
+  </label>
+  <app-proposal-book-source *ngIf="displaySource('book')" [model]="bookSourceComponentModel"></app-proposal-book-source>
+  <app-proposal-journal-source *ngIf="displaySource('journal')" [model]="journalSourceComponentModel"></app-proposal-journal-source>
 </div>

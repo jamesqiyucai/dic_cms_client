@@ -1,9 +1,9 @@
-import {AbstractProposalSourceComponentModel} from '../abstract-proposal-source-component-model';
+import {AbstractExampleProposalSourceComponentModel} from '../abstract-example-proposal-source-component-model';
 import {BehaviorSubject} from 'rxjs';
-import {ProposalSourceType} from '../../../../service/proposal/proposal-source-type';
+import {ProposalSourceType} from '../../../../service/proposal';
 import {ProposalBookSourceHandle} from '../../../../service/proposal';
 
-export class ProposalBookSourceComponentModel extends AbstractProposalSourceComponentModel {
+export class ExampleProposalBookSourceComponentModel extends AbstractExampleProposalSourceComponentModel {
   private _handle: ProposalBookSourceHandle;
   private _author: string;
   private readonly _author$: BehaviorSubject<string>;
@@ -13,6 +13,8 @@ export class ProposalBookSourceComponentModel extends AbstractProposalSourceComp
   private readonly _page$: BehaviorSubject<string>;
   private _initialPublishingYear: string;
   private readonly _initialPublishingYear$: BehaviorSubject<string>;
+  private _publishedYear: string;
+  private readonly _publishedYear$: BehaviorSubject<string>;
   private _publishedPlace: string;
   private readonly _publishedPlace$: BehaviorSubject<string>;
   constructor(handle: ProposalBookSourceHandle) {
@@ -26,8 +28,17 @@ export class ProposalBookSourceComponentModel extends AbstractProposalSourceComp
     this._page$ = new BehaviorSubject<string>('');
     this._initialPublishingYear = '';
     this._initialPublishingYear$ = new BehaviorSubject<string>('');
+    this._publishedYear = '';
+    this._publishedYear$ = new BehaviorSubject<string>('');
     this._publishedPlace = '';
     this._publishedPlace$ = new BehaviorSubject<string>('');
+
+    this._handle.authorObservable.subscribe(author => this.author = author);
+    this._handle.titleObservable.subscribe(title => this.title = title);
+    this._handle.pageObservable.subscribe(page => this.page = page);
+    this._handle.initialPublishingYearObservable.subscribe(year => this.initialPublishingYear = year);
+    this._handle.publishedYearObservable.subscribe(year => this.publishedYear = year);
+    this._handle.publishedPlaceObservable.subscribe(place => this.publishedPlace = place);
   }
   public get author$() {
     return this._author$.asObservable();
@@ -63,6 +74,15 @@ export class ProposalBookSourceComponentModel extends AbstractProposalSourceComp
     if (this._initialPublishingYear !== newYear) {
       this._initialPublishingYear = newYear;
       this._initialPublishingYear$.next(newYear);
+    }
+  }
+  public get publishedYear$() {
+    return this._publishedYear$.asObservable();
+  }
+  public set publishedYear(newYear: string) {
+    if (this._publishedYear !== newYear) {
+      this._publishedYear = newYear;
+      this._publishedYear$.next(newYear);
     }
   }
   public get publishedPlace$() {

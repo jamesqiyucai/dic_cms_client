@@ -1,6 +1,6 @@
-import {ProposalSourceType} from '../../../service/proposal/proposal-source-type';
+import {ProposalSourceType} from '../../../service/proposal';
 
-export abstract class AbstractProposalSourceComponentModel {
+export abstract class AbstractExampleProposalSourceComponentModel {
   private readonly _type: ProposalSourceType;
   public editable: boolean;
   protected constructor(type: ProposalSourceType) {

@@ -7,9 +7,9 @@
 // import {ExampleProposalApproverComponentDto} from './example-proposal-approver.component.dto';
 // import {List} from 'immutable';
 // import {map} from 'rxjs/operators';
-// import {ExampleSourceBookComponentDto} from '../source_component/example_source_book/example-source-book.component.dto';
-// import {ExampleSourceJournalComponentDto} from '../source_component/example_source_journal/example-source-journal.component.dto';
-// import {ExampleSourceComponentTypes} from '../source_component/example-source.component.types';
+// import {ExampleSourceBookComponentDto} from '../example_proposal_source_component/book_source/example-source-book.component.dto';
+// import {ExampleSourceJournalComponentDto} from '../example_proposal_source_component/journal-source/example-source-journal.component.dto';
+// import {ExampleSourceComponentTypes} from '../example_proposal_source_component/example-source.component.types';
 //
 // @Component({
 //   selector: 'app-example-proposal-approver',

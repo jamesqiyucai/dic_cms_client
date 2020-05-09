@@ -6,11 +6,12 @@ import {List} from 'immutable';
   selector: '[appEditable]'
 })
 export class EditableDivDirective implements OnChanges, OnInit {
-  @Input() enabled: true;
+  @Input() enabled: boolean;
   @Input() text = '';
   @Output() valueChange = new EventEmitter<string>();
   @Output() italicizedRanges = new EventEmitter<List<[number, number]>>();
   constructor(private el: ElementRef, private renderer: Renderer2) {
+    this.enabled = true;
   }
 
   ngOnInit(): void {
@@ -39,7 +40,7 @@ export class EditableDivDirective implements OnChanges, OnInit {
     });
     this.renderer.listen(this.el.nativeElement, 'paste', (e: ClipboardEvent) => {
       e.preventDefault();
-      const text = e.clipboardData.getData('text/plain').replace(/&nbsp;/g, '').replace(/<br>/g, ' ');
+      const text = e.clipboardData?.getData('text/plain').replace(/&nbsp;/g, '').replace(/<br>/g, ' ');
       document.execCommand('insertText', false, text);
     });
     this.renderer.listen(this.el.nativeElement, 'blur', () => {

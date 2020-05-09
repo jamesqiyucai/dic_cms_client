@@ -1,9 +1,9 @@
-import {AbstractProposalSourceComponentModel} from '../abstract-proposal-source-component-model';
+import {AbstractExampleProposalSourceComponentModel} from '../abstract-example-proposal-source-component-model';
 import {BehaviorSubject} from 'rxjs';
-import {ProposalSourceType} from '../../../../service/proposal/proposal-source-type';
+import {ProposalSourceType} from '../../../../service/proposal';
 import {ProposalJournalSourceHandle} from '../../../../service/proposal';
 
-export class ProposalJournalSourceComponentModel extends AbstractProposalSourceComponentModel {
+export class ExampleProposalJournalSourceComponentModel extends AbstractExampleProposalSourceComponentModel {
   private _handle: ProposalJournalSourceHandle;
   private _author: string;
   private readonly _author$: BehaviorSubject<string>;
@@ -28,6 +28,12 @@ export class ProposalJournalSourceComponentModel extends AbstractProposalSourceC
     this._passageTitle$ = new BehaviorSubject<string>('');
     this._publishDate = '';
     this._publishDate$ = new BehaviorSubject<string>('');
+
+    this._handle.authorObservable.subscribe(author => this.author = author);
+    this._handle.titleObservable.subscribe(title => this.title = title);
+    this._handle.pageObservable.subscribe(page => this.page = page);
+    this._handle.passageTitleObservable.subscribe(passageTitle => this.passageTitle = passageTitle);
+    this._handle.publishingDateObservable.subscribe(date => this.publishDate = date);
   }
   public get author$() {
     return this._author$.asObservable();

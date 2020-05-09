@@ -23,12 +23,6 @@ export class ProposalRepositoryImpl implements ProposalRepository {
     // tslint:disable-next-line:max-line-length
     this._proposalCollectionResource = this.remoteResourceFactory.bind('proposals', new ProposalExceptionTranslator(), SessionOption.necessary);
   }
-  // public getpendingProposals() {
-  //   const pendingProposals = this._proposals
-  //     .filter(holder => holder.proposalDocument.status === 'pending')
-  //     .map(holder => holder.proposalDocument);
-  //   return List(pendingProposals);
-  // }
   public createBlankProposal(): ProposalHandle {
     const proposalBuilder = new ProposalDocumentBuilder();
     const document = proposalBuilder.buildBlankProposalDocument();
@@ -36,25 +30,4 @@ export class ProposalRepositoryImpl implements ProposalRepository {
     this._proposals.push(holder);
     return document;
   }
-  // public loadPendingProposals() {
-  //   const loadStatus = new Subject<any>();
-  //   const params = new HttpParams().set('reviewer', '1');
-  //   this._proposalCollectionResource.get<number[]>('', {params} )
-  //     .pipe(
-  //       flatMap(ids => from(ids)),
-  //       map(id => {
-  //         const holder = new ProposalDocumentHolderImpl(this._remoteResourceFactory);
-  //         holder.ID = id;
-  //         return holder;
-  //       }),
-  //       flatMap(holder => holder.load()),
-  //     )
-  //     .subscribe(
-  //       holder => this._proposals.push(holder),
-  //       err => {},
-  //       () => {
-  //         loadStatus.next();
-  //       }
-  //     );
-  // }
 }

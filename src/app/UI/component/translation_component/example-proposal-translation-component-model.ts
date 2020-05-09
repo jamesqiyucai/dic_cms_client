@@ -1,14 +1,14 @@
 import {BehaviorSubject} from 'rxjs';
-import {ListElementComponentModel} from '../list_manipulator_component/list-element-component-model';
-import {ProposalKeywordHandle} from '../../../service/proposal/proposal-keyword-handle';
+import {ListElementComponentModel} from '../list_manipulator_component';
+import {ProposalTranslationHandle} from '../../../service/proposal';
 
-export class KeywordComponentModel implements ListElementComponentModel<ProposalKeywordHandle> {
+export class ExampleProposalTranslationComponentModel implements ListElementComponentModel<ProposalTranslationHandle> {
   private _editable: boolean;
   private _text: string;
   private _text$: BehaviorSubject<string>;
-  private readonly _handle: ProposalKeywordHandle;
-  constructor(handle: ProposalKeywordHandle) {
-    this._editable = true;
+  private readonly _handle: ProposalTranslationHandle;
+  constructor(handle: ProposalTranslationHandle) {
+    this._editable = false;
     this._text = '';
     this._text$ = new BehaviorSubject<string>('');
     this._handle = handle;
@@ -27,10 +27,10 @@ export class KeywordComponentModel implements ListElementComponentModel<Proposal
       this._text = newText;
     }
   }
-  public getHandle(): ProposalKeywordHandle {
+  public getHandle(): ProposalTranslationHandle {
     return this._handle;
   }
   public save(): void {
-    this._handle.keyword = this._text;
+    this._handle.text = this._text;
   }
 }

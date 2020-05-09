@@ -1,69 +1,40 @@
-import {
-  AfterContentChecked,
-  ChangeDetectionStrategy,
-  Component,
-  ContentChild,
-  ContentChildren,
-  Input,
-  OnInit,
-  QueryList,
-  TemplateRef
-} from '@angular/core';
+import {AfterContentInit, ChangeDetectionStrategy, Component, ContentChild, ContentChildren, Input, QueryList, TemplateRef} from '@angular/core';
+import {ListManipulatorComponentModel} from './list-manipulator-component-model';
 import {ListElementComponent} from './list-element-component';
-import {List} from 'immutable';
-import {ListManipulatorHandle} from './list-manipulator-handle';
 
 @Component({
   selector: 'app-list-manipulator',
   templateUrl: './list-manipulator-component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListManipulatorComponent implements OnInit, AfterContentChecked {
-  private _array: any[] = [];
-  private _handle: ListManipulatorHandle;
-  private _draggable: boolean;
-  @ContentChild(TemplateRef, {static: false}) private template: TemplateRef<any>;
-  @ContentChildren('child', {descendants: true}) private components: QueryList<ListElementComponent>;
-  @Input()
-  public set draggable(newVal) {
-    this._draggable = newVal;
-  }
-  @Input()
-  public set handle(newHandle: ListManipulatorHandle) {
-    this._handle = newHandle;
-  }
-  public set list(newList: List<any>) {
-    if (!this.list.equals(newList)) {
-      this._array = newList.toArray();
-      this._handle.list = this.list;
+export class ListManipulatorComponent implements AfterContentInit {
+  @Input() public model?: ListManipulatorComponentModel<any>;
+  @ContentChild(TemplateRef, {static: false}) template?: TemplateRef<any>;
+  @ContentChildren('child', {descendants: true}) components?: QueryList<ListElementComponent>;
+  public ngAfterContentInit() {
+    if (this.model) {
+      this.model.array$.subscribe(models => {
+        if (this.components) {
+          this.components.forEach((component, index) => {
+            component.model = models.get(index);
+          });
+        }
+      });
     }
   }
-  public get list() {
-    return List(this._array);
+  public onDelete(index: number) {
+    if (this.model) {
+      this.model.delete(index);
+    }
   }
-  public get draggingDisabled() {
-    return !this._draggable;
+  public onMove(from: number, to: number) {
+    if (this.model) {
+      this.model.move(from, to);
+    }
   }
-  ngOnInit(): void {
-    this._handle.$list.subscribe(list => this.list = list);
-  }
-  onDelete(index: number) {
-    this.list = this.list.remove(index);
-  }
-  onMove(from: number, to: number) {
-    this._handle.move(from, to);
-  }
-  onAdd() {
-    this._handle.add();
-  }
-  ngAfterContentChecked(): void {
-    this.components.forEach(
-      (component, index) => {
-        if (!component.hasHandle()) {
-          component.handle = this._array[index];
-        }
-        component.index = index;
-      }
-    );
+  public onAdd() {
+    if (this.model) {
+      this.model.add();
+    }
   }
 }
