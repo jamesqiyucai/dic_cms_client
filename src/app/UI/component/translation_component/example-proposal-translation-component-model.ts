@@ -6,12 +6,14 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   private _editable: boolean;
   private _text: string;
   private _text$: BehaviorSubject<string>;
-  private readonly _handle: ProposalTranslationHandle;
-  constructor(handle: ProposalTranslationHandle) {
+  private readonly _handle?: ProposalTranslationHandle;
+  constructor(handle?: ProposalTranslationHandle) {
     this._editable = false;
     this._text = '';
     this._text$ = new BehaviorSubject<string>('');
-    this._handle = handle;
+    if (handle) {
+      this._handle = handle;
+    }
   }
   public get editable() {
     return this._editable;
@@ -28,9 +30,17 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
     }
   }
   public getHandle(): ProposalTranslationHandle {
-    return this._handle;
+    if (this._handle) {
+      return this._handle;
+    } else {
+      throw new Error('handle is undefined');
+    }
   }
   public save(): void {
-    this._handle.text = this._text;
+    if (this._handle) {
+      this._handle.text = this._text;
+    } else {
+      throw new Error('handle is undefined');
+    }
   }
 }

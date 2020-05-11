@@ -8,6 +8,10 @@ export class TextInputComponent {
   @Input() text: string;
   @Input() editable: boolean;
   @Output() textChange = new EventEmitter<string>();
+  constructor() {
+    this.text = '';
+    this.editable = true;
+  }
   onInput(newText: string) {
     this.text = newText;
     this.textChange.emit(this.text);

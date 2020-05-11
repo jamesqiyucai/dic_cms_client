@@ -9,18 +9,20 @@ import {ProposalTranslationDocument} from './proposal-translation-document';
 import {ProposalStatus} from './proposal-status';
 import {ProposalDocumentBuilder} from './proposal-document-builder';
 import {ProposalResourceContent} from './proposal-resource-content';
-import {ProposalTranslationFactory} from './proposal-translation-factory';
-import {ProposalTranslationFactoryImpl} from './proposal-translation-factory-impl';
-import {ProposalKeywordFactory} from './proposal-keyword-factory';
-import {ProposalKeywordFactoryImpl} from './proposal-keyword-factory-impl';
 import {ProposalSourceFactory} from './proposal-source-factory';
 import {ProposalSourceFactoryImpl} from './proposal-source-factory-impl';
+import {ProposalTranslationHandle} from './proposal-translation-handle';
+import {ProposalKeywordHandle} from './proposal-keyword-handle';
+import {ProposalTranslationDocumentBuilder} from './proposal-translation-document-builder';
+import {ProposalKeywordDocumentBuilder} from './proposal-keyword-document-builder';
+import {ProposalSourceType} from './proposal-source-type';
+import {ProposalBookSourceDocumentBuilder} from './proposal-book-source-document-builder';
+import {ProposalJournalSourceDocumentBuilder} from './proposal-journal-source-document-builder';
 
 export class ProposalDocumentImpl implements ProposalDocument {
   private _ID?: number;
   private _IDObservable?: BehaviorSubject<number>;
   private _exampleID?: number;
-  private _exampleIDObservable?: BehaviorSubject<number>;
   private readonly _initiator: number;
   private _initiatorObservable: BehaviorSubject<number>;
   private readonly _reviewer: number;
@@ -133,10 +135,6 @@ export class ProposalDocumentImpl implements ProposalDocument {
       return this._translationMark.toString();
     };
   }
-  // private getTranslationMark() {
-  //   this._translationMark += 1;
-  //   return this._translationMark.toString();
-  // }
 
   public set ID(newID: number) {
     this._ID = newID;
@@ -215,14 +213,33 @@ export class ProposalDocumentImpl implements ProposalDocument {
     this._source = newSource;
     this._sourceObservable.next(newSource);
   }
-  public getProposalTranslationFactory(): ProposalTranslationFactory {
-    return new ProposalTranslationFactoryImpl(this.getTranslationMark);
+  public addTranslation(): ProposalTranslationHandle {
+    const translationBuilder = new ProposalTranslationDocumentBuilder();
+    const translation = translationBuilder.buildBlankTranslationDocument(this.getTranslationMark());
+    this._translations.push(translation);
+    this._translationsObservable.next(List(this._translations));
+    return translation;
   }
-  public getProposalKeywordFactory(): ProposalKeywordFactory {
-    return new ProposalKeywordFactoryImpl();
+  public addKeyword(): ProposalKeywordHandle {
+    const keywordBuilder = new ProposalKeywordDocumentBuilder();
+    const keyword = keywordBuilder.buildBlankKeywordDocument();
+    this._keywords.push(keyword);
+    this._keywordsObservable.next(List(this._keywords));
+    return keyword;
   }
   public getProposalSourceFactory(): ProposalSourceFactory {
     return new ProposalSourceFactoryImpl();
+  }
+  public getSource(type: ProposalSourceType): ProposalSourceHandle {
+    if (type === ProposalSourceType.Book) {
+      const builder = new ProposalBookSourceDocumentBuilder();
+      return builder.buildBlankBookSource();
+    } else if (type === ProposalSourceType.Journal) {
+      const builder = new ProposalJournalSourceDocumentBuilder();
+      return builder.buildBlankJournalSource();
+    } else {
+      throw new Error('unknown source type');
+    }
   }
 
   public save(): Observable<any> {

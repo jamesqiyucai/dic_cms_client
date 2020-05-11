@@ -1,6 +1,6 @@
-import {NgModule} from "@angular/core";
-import {RouterModule, Routes} from "@angular/router";
-import {ExampleProposalConstructorComponent} from "./example-proposal-constructor-component";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {ExampleProposalConstructorComponent} from './example-proposal-constructor-component';
 
 const routes: Routes = [
   {

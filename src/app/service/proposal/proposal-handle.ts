@@ -3,8 +3,6 @@ import {ProposalTranslationHandle} from './proposal-translation-handle';
 import {List} from 'immutable';
 import {ProposalKeywordHandle} from './proposal-keyword-handle';
 import {ProposalSourceHandle} from './proposal-source-handle';
-import {ProposalTranslationFactory} from './proposal-translation-factory';
-import {ProposalKeywordFactory} from './proposal-keyword-factory';
 import {ProposalSourceFactory} from './proposal-source-factory';
 import {ProposalSourceType} from './proposal-source-type';
 
@@ -31,7 +29,7 @@ export interface ProposalHandle {
   sourceObservable: Observable<ProposalSourceHandle | null>;
   addTranslation(): ProposalTranslationHandle;
   addKeyword(): ProposalKeywordHandle;
-  switchSource(type: ProposalSourceType): void;
+  getSource(type: ProposalSourceType): ProposalSourceHandle;
   getProposalSourceFactory(): ProposalSourceFactory;
   save(): Observable<any>;
   approve(): Observable<any>;

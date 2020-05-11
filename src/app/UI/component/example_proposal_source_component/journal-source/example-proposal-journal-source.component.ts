@@ -7,8 +7,10 @@ import {ExampleProposalJournalSourceComponentModel} from './example-proposal-jou
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalJournalSourceComponent {
-  @Input() public model?: ExampleProposalJournalSourceComponentModel;
-  constructor() {}
+  @Input() public model: ExampleProposalJournalSourceComponentModel;
+  constructor() {
+    this.model = new ExampleProposalJournalSourceComponentModel();
+  }
   public onAuthorChange(newAuthor: string) {
     if (this.model) {
       this.model.author = newAuthor;

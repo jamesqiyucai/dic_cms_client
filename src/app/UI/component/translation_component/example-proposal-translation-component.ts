@@ -7,7 +7,10 @@ import {ExampleProposalTranslationComponentModel} from './example-proposal-trans
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalTranslationComponent {
-  @Input() public model?: ExampleProposalTranslationComponentModel;
+  @Input() public model: ExampleProposalTranslationComponentModel;
+  constructor() {
+    this.model = new ExampleProposalTranslationComponentModel();
+  }
   public onTextChange(newText: string) {
     if (this.model) {
       this.model.text = newText;

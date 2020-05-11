@@ -8,6 +8,7 @@ import {map, mergeMap} from 'rxjs/operators';
 import {SessionService} from './session-service';
 import {ValidationResponseBody} from './validation-response-body';
 import {SessionOption} from './session-option';
+import {SessionEstablisher} from './session-establisher';
 
 interface ValidationRequestBody {
   challenge: string;
@@ -16,13 +17,13 @@ interface ValidationRequestBody {
 }
 
 @Injectable()
-export class SessionServiceImpl implements SessionService {
+export class SessionServiceImpl implements SessionService, SessionEstablisher {
   private readonly _identifier: string;
   private ongoingSessionEstablishment: Observable<string> | undefined;
-  // private _session: string;
   private sessionResource: Resource;
   constructor(@Inject(REMOTE_RESOURCE_FACTORY) private rrf: RemoteResourceFactory) {
     this._identifier = `${Math.random()}`;
+    this.rrf.sessionEstablisher = this;
     this.sessionResource = rrf.bind('api/sessions', new SessionExceptionTranslator(), SessionOption.none);
   }
   private get identifier() {

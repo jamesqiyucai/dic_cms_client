@@ -1,19 +1,19 @@
-.selectBox {
-    width: 15vw;
-    margin-left: 40%;
-    font-family: inherit;
-    font-size: inherit;
-    text-align: center;
-}
+/*.selectBox {*/
+/*    width: 15vw;*/
+/*    margin-left: 40%;*/
+/*    font-family: inherit;*/
+/*    font-size: inherit;*/
+/*    text-align: center;*/
+/*}*/
 
-.optionList {
-    display: inline-block;
-    box-sizing: content-box;
-    border: solid 1px black;
-    margin-left: 40%;
-    margin-right: 40%;
-    font-family: inherit;
-    font-size: inherit;
-    text-align: center;
-    width: 15vw;
-}
+/*.optionList {*/
+/*    display: inline-block;*/
+/*    box-sizing: content-box;*/
+/*    border: solid 1px black;*/
+/*    margin-left: 40%;*/
+/*    margin-right: 40%;*/
+/*    font-family: inherit;*/
+/*    font-size: inherit;*/
+/*    text-align: center;*/
+/*    width: 15vw;*/
+/*}*/

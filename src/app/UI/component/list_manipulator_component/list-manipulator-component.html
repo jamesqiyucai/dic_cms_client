@@ -12,7 +12,7 @@
         <path d="M0 0h24v24H0z" fill="none"></path>
       </svg>
     </div>
-    <ng-container [ngTemplateOutlet]="template"></ng-container>
+    <app-list-manipulator-content [projectedView]="template" [model]="item"></app-list-manipulator-content>
   </div>
   <button (click)="onAdd()">Add</button>
   <div

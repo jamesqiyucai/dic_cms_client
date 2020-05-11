@@ -7,8 +7,10 @@ import {ExampleProposalBookSourceComponentModel} from './example-proposal-book-s
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalBookSourceComponent {
-  @Input() public model?: ExampleProposalBookSourceComponentModel;
-  constructor() {}
+  @Input() public model: ExampleProposalBookSourceComponentModel;
+  constructor() {
+    this.model = new ExampleProposalBookSourceComponentModel();
+  }
   public onAuthorChange(newAuthor: string) {
     if (this.model) {
       this.model.author = newAuthor;

@@ -13,9 +13,10 @@ import {getProposalSourceType} from '../../../service/proposal/proposal-source-t
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalEditorComponent {
-  @Input() public model?: ExampleProposalEditorComponentModel;
-
-  constructor() {}
+  @Input() public model: ExampleProposalEditorComponentModel;
+  constructor() {
+    this.model = new ExampleProposalEditorComponentModel();
+  }
   public onItalicsChange(newRanges: List<[number, number]>) {
     if (this.model) {
       this.model.italics = newRanges;

@@ -3,8 +3,10 @@ import {ExceptionTranslator} from './exception-translator';
 import {Resource} from './resource';
 import {InjectionToken} from '@angular/core';
 import {SessionOption} from './session-option';
+import {SessionEstablisher} from './session-establisher';
 
 export interface RemoteResourceFactory {
+  sessionEstablisher: SessionEstablisher;
   register(notifier: ExceptionNotifier): void;
   bind(url: string, et: ExceptionTranslator, sessionOption: SessionOption): Resource;
   setSession(session: string): void;

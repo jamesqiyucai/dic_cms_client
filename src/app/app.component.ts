@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ExceptionNotifier, REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './service/remote_resource';
-import {SESSION_SERVICE, SessionService} from './service/remote_resource/session-service';
+import {SESSION_SERVICE, SessionService} from './service/remote_resource';
 
 @Component({
   selector: 'app-root',

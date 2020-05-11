@@ -15,7 +15,7 @@ import {ExampleProposalBookSourceComponentModel} from '../example_proposal_sourc
 import {italicizeText} from './italicize-text';
 
 export class ExampleProposalEditorComponentModel {
-  private _handle: ProposalHandle;
+  private readonly _handle?: ProposalHandle;
   private _editable: boolean;
   private _text: string;
   private readonly _text$: BehaviorSubject<string>;
@@ -28,7 +28,7 @@ export class ExampleProposalEditorComponentModel {
   public keywordsComponentModel: ListManipulatorComponentModel<ProposalKeywordHandle>;
   public translationsComponentModel: ListManipulatorComponentModel<ProposalTranslationHandle>;
   public sourceComponentModel: AbstractExampleProposalSourceComponentModel | null;
-  constructor(handle: ProposalHandle) {
+  constructor(handle?: ProposalHandle) {
     this._editable = true;
     this._text = '';
     this._text$ = new BehaviorSubject<string>(this._text);
@@ -38,18 +38,23 @@ export class ExampleProposalEditorComponentModel {
     this._note$ = new BehaviorSubject<string>(this._note);
     this._italics = [];
     this._italics$ = new BehaviorSubject<List<[number, number]>>(List(this._italics));
-    this.keywordsComponentModel = new ListManipulatorComponentModel<ProposalKeywordHandle>(new ExampleProposalKeywordListHandle(handle), () => {
-      return new ExampleProposalKeywordComponentModel(handle.addKeyword());
-    });
-    this.translationsComponentModel = new ListManipulatorComponentModel<ProposalTranslationHandle>(new ExampleProposalTranslationsListHandle(handle), () => {
-      return new ExampleProposalTranslationComponentModel(handle.addTranslation());
-    });
+    if (handle) {
+      this._handle = handle;
+      this.keywordsComponentModel = new ListManipulatorComponentModel<ProposalKeywordHandle>(() => {
+        return new ExampleProposalKeywordComponentModel(handle.addKeyword());
+      }, new ExampleProposalKeywordListHandle(handle));
+      this.translationsComponentModel = new ListManipulatorComponentModel<ProposalTranslationHandle>(() => {
+        return new ExampleProposalTranslationComponentModel(handle.addTranslation());
+      }, new ExampleProposalTranslationsListHandle(handle));
+      this._handle.textObservable.subscribe(text => this.text = text);
+      this._handle.commentObservable.subscribe(comment => this.comment = comment);
+      this._handle.noteObservable.subscribe(note => this.note = note);
+      this._handle.italicsObservable.subscribe(italics => this.italics = italics);
+    } else {
+      this.keywordsComponentModel = new ListManipulatorComponentModel();
+      this.translationsComponentModel = new ListManipulatorComponentModel();
+    }
     this.sourceComponentModel = null;
-    this._handle = handle;
-    this._handle.textObservable.subscribe(text => this.text = text);
-    this._handle.commentObservable.subscribe(comment => this.comment = comment);
-    this._handle.noteObservable.subscribe(note => this.note = note);
-    this._handle.italicsObservable.subscribe(italics => this.italics = italics);
   }
   public get editable() {
     return this._editable;
@@ -103,23 +108,29 @@ export class ExampleProposalEditorComponentModel {
     return this._italics$.asObservable();
   }
   public switchSource(type: ProposalSourceType | null) {
-    // tslint:disable-next-line:triple-equals
-    if (type != this.sourceComponentModel?.type) {
-      if (type == null) {
-        this._handle.source = null;
-        this.sourceComponentModel = null;
-      } else if (type === ProposalSourceType.Book) {
-        this._handle.switchSource(type);
-        // tslint:disable-next-line:no-non-null-assertion
-        this.sourceComponentModel = new ExampleProposalBookSourceComponentModel(<ProposalBookSourceHandle>this._handle.source!);
-      } else if (type === ProposalSourceType.Journal) {
-        this._handle.switchSource(type);
-        // tslint:disable-next-line:no-non-null-assertion
-        this.sourceComponentModel = new ExampleProposalJournalSourceComponentModel(<ProposalJournalSourceHandle>this._handle.source!);
+    if (this._handle) {
+      // tslint:disable-next-line:triple-equals
+      if (type != this.sourceComponentModel?.type) {
+        if (type == null) {
+          this._handle.source = null;
+          this.sourceComponentModel = null;
+        } else if (type === ProposalSourceType.Book) {
+          this._handle.source = this._handle.getSource(type);
+          // tslint:disable-next-line:no-non-null-assertion
+          this.sourceComponentModel = new ExampleProposalBookSourceComponentModel(<ProposalBookSourceHandle>this._handle.source!);
+        } else if (type === ProposalSourceType.Journal) {
+          this._handle.source = this._handle.getSource(type);
+          // tslint:disable-next-line:no-non-null-assertion
+          this.sourceComponentModel = new ExampleProposalJournalSourceComponentModel(<ProposalJournalSourceHandle>this._handle.source!);
+        }
       }
+    } else {
+      throw new Error('handle is undefined');
     }
   }
-  public reset(): void {}
+  public reset(): void {
+
+  }
   public save(): void {
     this.keywordsComponentModel.save();
     this.translationsComponentModel.save();

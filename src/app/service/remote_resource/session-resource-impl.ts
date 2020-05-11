@@ -5,23 +5,23 @@ import {ExceptionNotifier} from './exception-notifier';
 import {Observable, throwError} from 'rxjs';
 import {catchError, filter, first, mergeMap} from 'rxjs/operators';
 import {ExpiredSessionError} from './expired-session-error';
-import {SessionService} from './session-service';
 import {SessionRetryFailureError} from './session-retry-failure-error';
+import {SessionEstablisher} from './session-establisher';
 
 export class SessionResourceImpl extends ResourceImpl {
-  private session: Observable<string>;
-  private sessionService: SessionService;
+  private session: Observable<string | undefined>;
+  private sessionEstablisher: SessionEstablisher;
   constructor(
-    sessionService: SessionService,
+    sessionEstablisher: SessionEstablisher,
     httpClient: HttpClient,
     url: string,
     et: ExceptionTranslator,
     notifiers: ExceptionNotifier[],
-    session: Observable<string>
+    session: Observable<string | undefined>
   ) {
     super(httpClient, url, et, notifiers);
     this.session = session;
-    this.sessionService = sessionService;
+    this.sessionEstablisher = sessionEstablisher;
   }
   protected handleError(error: HttpErrorResponse): Observable<never> {
     const statusCode = error.status.toString();
@@ -44,17 +44,19 @@ export class SessionResourceImpl extends ResourceImpl {
           }),
           first(),
           mergeMap(session => {
-            options.headers = {
-              headers: new HttpHeaders({
-                'X-Protovrsdict-Session': session
-              })
-            };
+            if (session) {
+              options.headers = {
+                headers: new HttpHeaders({
+                  'X-Protovrsdict-Session': session
+                })
+              };
+            }
             return this._httpClient.get<Content>(finalUrl, options);
           }),
           catchError(this.handleError),
           catchError((err) => {
             if (count > 0 && (err instanceof ExpiredSessionError)) {
-              return this.sessionService.establishSession()
+              return this.sessionEstablisher.establishSession()
                 .pipe(
                   mergeMap(() => {
                     -- count;
@@ -73,7 +75,7 @@ export class SessionResourceImpl extends ResourceImpl {
     let count = 5;
     const doPost = (): Observable<any> => {
       const finalUrl = urlSupplement ? this._url + urlSupplement : this._url;
-      let httpOptions;
+      let httpOptions: any;
       return this.session
         .pipe(
           filter((val) => {
@@ -81,17 +83,19 @@ export class SessionResourceImpl extends ResourceImpl {
           }),
           first(),
           mergeMap(session => {
-            httpOptions = {
-              headers: new HttpHeaders({
-                'X-Protovrsdict-Session': session
-              })
-            };
+            if (session) {
+              httpOptions = {
+                headers: new HttpHeaders({
+                  'X-Protovrsdict-Session': session
+                })
+              };
+            }
             return this._httpClient.post<Response>(finalUrl, body, httpOptions);
           }),
           catchError(this.handleError),
           catchError((err) => {
             if (count > 0 && (err instanceof ExpiredSessionError)) {
-              return this.sessionService.establishSession()
+              return this.sessionEstablisher.establishSession()
                 .pipe(
                   mergeMap(() => {
                     -- count;

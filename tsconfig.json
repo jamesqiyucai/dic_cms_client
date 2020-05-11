@@ -1,5 +1,10 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": false,
+    "strictNullInputTypes": false
+  },
   "compilerOptions": {
     "baseUrl": "./",
     "downlevelIteration": true,
@@ -19,7 +24,6 @@
       "es2017",
       "dom"
     ],
-    "alwaysStrict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitReturns": false,

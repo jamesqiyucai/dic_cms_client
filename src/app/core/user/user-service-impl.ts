@@ -3,7 +3,7 @@ import {UserService} from './user-service';
 
 @Injectable()
 export class UserServiceImpl implements UserService {
-  private user: number;
+  private user?: number;
   private userNames: Map<number, string>;
 
   constructor() {
@@ -17,10 +17,19 @@ export class UserServiceImpl implements UserService {
   }
 
   public getCurrentUser(): number {
-    return this.user;
+    if (this.user) {
+      return this.user;
+    } else {
+      throw new Error('user not designated');
+    }
   }
 
   public getUser(id: number) {
-    return this.userNames.get(id);
+    const userName = this.userNames.get(id);
+    if (userName) {
+      return userName;
+    } else {
+      throw new Error('can not get user name');
+    }
   }
 }

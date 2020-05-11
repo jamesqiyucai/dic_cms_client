@@ -7,7 +7,10 @@ import {ExampleProposalKeywordComponentModel} from './example-proposal-keyword-c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalKeywordComponent {
-  @Input() public model?: ExampleProposalKeywordComponentModel;
+  @Input() public model: ExampleProposalKeywordComponentModel;
+  constructor() {
+    this.model = new ExampleProposalKeywordComponentModel();
+  }
   public onTextChange(newText: string) {
     if (this.model) {
       this.model.text = newText;

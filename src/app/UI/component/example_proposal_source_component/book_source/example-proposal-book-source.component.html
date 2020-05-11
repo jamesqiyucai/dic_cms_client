@@ -1,16 +1,16 @@
 <div>
   <input
     #authorInput
-    [disabled]="!model.editable"
+    [disabled]="!model!.editable"
     placeholder="Author"
-    [value]="model.author$ | async"
+    [value]="model!.author$ | async"
     (input)="onAuthorChange(authorInput.value)"
   >
   <input
     [disabled]="!model.editable"
     #bookTitleInput
     placeholder="BookTitle"
-    [value]="model.title$ | async"
+    [value]="model!.title$ | async"
     (input)="onTitleChange(bookTitleInput.value)"
   >
   <input
@@ -18,14 +18,14 @@
     #pageInput
     placeholder="PageNumber"
     type="number"
-    [value]="model.page$ | async"
+    [value]="model!.page$ | async"
     (input)="onPageChange(pageInput.value)"
   >
   <input
     [disabled]="!model.editable"
     #publishedPlaceInput
     placeholder="PublishedPlace"
-    [value]="model.publishedPlace$ | async"
+    [value]="model!.publishedPlace$ | async"
     (input)="onPublishedPlaceChange(publishedPlaceInput.value)"
   >
   <input

@@ -4,7 +4,7 @@ import {ProposalSourceType} from '../../../../service/proposal';
 import {ProposalJournalSourceHandle} from '../../../../service/proposal';
 
 export class ExampleProposalJournalSourceComponentModel extends AbstractExampleProposalSourceComponentModel {
-  private _handle: ProposalJournalSourceHandle;
+  private _handle?: ProposalJournalSourceHandle;
   private _author: string;
   private readonly _author$: BehaviorSubject<string>;
   private _title: string;
@@ -15,9 +15,16 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
   private readonly _passageTitle$: BehaviorSubject<string>;
   private _publishDate: string;
   private readonly _publishDate$: BehaviorSubject<string>;
-  constructor(handle: ProposalJournalSourceHandle) {
+  constructor(handle?: ProposalJournalSourceHandle) {
     super(ProposalSourceType.Journal);
-    this._handle = handle;
+    if (handle) {
+      this._handle = handle;
+      this._handle.authorObservable.subscribe(author => this.author = author);
+      this._handle.titleObservable.subscribe(title => this.title = title);
+      this._handle.pageObservable.subscribe(page => this.page = page);
+      this._handle.passageTitleObservable.subscribe(passageTitle => this.passageTitle = passageTitle);
+      this._handle.publishingDateObservable.subscribe(date => this.publishDate = date);
+    }
     this._author = '';
     this._author$ = new BehaviorSubject<string>('');
     this._title = '';
@@ -29,11 +36,6 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     this._publishDate = '';
     this._publishDate$ = new BehaviorSubject<string>('');
 
-    this._handle.authorObservable.subscribe(author => this.author = author);
-    this._handle.titleObservable.subscribe(title => this.title = title);
-    this._handle.pageObservable.subscribe(page => this.page = page);
-    this._handle.passageTitleObservable.subscribe(passageTitle => this.passageTitle = passageTitle);
-    this._handle.publishingDateObservable.subscribe(date => this.publishDate = date);
   }
   public get author$() {
     return this._author$.asObservable();

@@ -1,5 +1,5 @@
 import {RemoteResourceFactory} from './remote-resource-factory';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ExceptionNotifier} from './exception-notifier';
 import {Resource} from './resource';
 import {ExceptionTranslator} from './exception-translator';
@@ -8,16 +8,19 @@ import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 import {SessionOption} from './session-option';
 import {SessionResourceImpl} from './session-resource-impl';
-import {SESSION_SERVICE, SessionService} from './session-service';
+import {SessionEstablisher} from './session-establisher';
 
 @Injectable()
 export class RemoteResourceFactoryImpl implements RemoteResourceFactory {
+  private _sessionEstablisher?: SessionEstablisher;
   private _notifiers: ExceptionNotifier[] = [];
-  private _session: BehaviorSubject<string>;
+  private _session: BehaviorSubject<string | undefined>;
   constructor(
-    @Inject(SESSION_SERVICE) private sessionService: SessionService,
     private http: HttpClient) {
-    this._session = new BehaviorSubject<string>(undefined);
+    this._session = new BehaviorSubject(undefined);
+  }
+  public set sessionEstablisher(establisher: SessionEstablisher) {
+    this._sessionEstablisher = establisher;
   }
   public register(notifier: ExceptionNotifier): void {
     this._notifiers.push(notifier);
@@ -26,7 +29,13 @@ export class RemoteResourceFactoryImpl implements RemoteResourceFactory {
     if (sessionOption === SessionOption.none) {
       return new ResourceImpl(this.http, url, et, this._notifiers);
     } else if (sessionOption === SessionOption.necessary) {
-      return new SessionResourceImpl(this.sessionService, this.http, url, et, this._notifiers, this._session.asObservable());
+      if (this._sessionEstablisher) {
+        return new SessionResourceImpl(this._sessionEstablisher, this.http, url, et, this._notifiers, this._session.asObservable());
+      } else {
+        throw new Error('establish session function is undefined');
+      }
+    } else {
+      throw new Error('unmatched resource');
     }
   }
   public setSession(session: string): void {
