@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ExceptionNotifier, REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './service/remote_resource';
-import {SESSION_SERVICE, SessionService} from './service/remote_resource';
+import {SESSION_ESTABLISHER, SessionEstablisher} from './service/remote_resource/session-establisher';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import {SESSION_SERVICE, SessionService} from './service/remote_resource';
 export class AppComponent implements OnInit {
   constructor(
     private router: Router,
-    @Inject(SESSION_SERVICE)private sessionService: SessionService,
+    @Inject(SESSION_ESTABLISHER) private sessionEstablisher: SessionEstablisher,
     @Inject(REMOTE_RESOURCE_FACTORY) rrf: RemoteResourceFactory,
     ) {
     // register a listener into RRF
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.router.navigate(['']);
-    this.sessionService.establishSession();
+    this.sessionEstablisher.establishSession();
   }
 
 }

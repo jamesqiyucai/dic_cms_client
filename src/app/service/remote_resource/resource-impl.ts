@@ -12,7 +12,7 @@ export class ResourceImpl implements Resource {
     protected _et: ExceptionTranslator,
     protected _notifiers: ExceptionNotifier[],
   ) {}
-  protected handleError(error: HttpErrorResponse): Observable<never> {
+  protected handleError (error: HttpErrorResponse): Observable<never> {
     const statusCode = error.status.toString();
     if (statusCode.startsWith('5')) {
       this._notifiers.forEach(notifier => {
@@ -31,14 +31,14 @@ export class ResourceImpl implements Resource {
     const finalUrl = urlSupplement ? this._url + urlSupplement : this._url;
     return this._httpClient.get<Content>(finalUrl, options)
       .pipe(
-        catchError(this.handleError)
+        catchError((error) => this.handleError(error))
       );
   }
   public post<Request, Response>(body: Request, urlSupplement?: string): Observable<Response> {
     const finalUrl = urlSupplement ? this._url + urlSupplement : this._url;
     return this._httpClient.post<Response>(finalUrl, body)
       .pipe(
-        catchError(this.handleError)
+        catchError((error) => this.handleError(error))
       );
   }
 }

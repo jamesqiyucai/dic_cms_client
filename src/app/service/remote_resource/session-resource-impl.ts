@@ -53,7 +53,7 @@ export class SessionResourceImpl extends ResourceImpl {
             }
             return this._httpClient.get<Content>(finalUrl, options);
           }),
-          catchError(this.handleError),
+          catchError((error) => this.handleError(error)),
           catchError((err) => {
             if (count > 0 && (err instanceof ExpiredSessionError)) {
               return this.sessionEstablisher.establishSession()
@@ -92,7 +92,7 @@ export class SessionResourceImpl extends ResourceImpl {
             }
             return this._httpClient.post<Response>(finalUrl, body, httpOptions);
           }),
-          catchError(this.handleError),
+          catchError((error) => this.handleError(error)),
           catchError((err) => {
             if (count > 0 && (err instanceof ExpiredSessionError)) {
               return this.sessionEstablisher.establishSession()
