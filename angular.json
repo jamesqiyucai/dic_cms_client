@@ -51,6 +51,14 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "mock": {
+              "fileReplacements": [
+                {
+                  "replace": "src/app/service/remote_resource/remote-resource-factory-provider.ts",
+                  "with": "src/mock/remote-resource-factory-provider.mock.ts"
+                }
+              ]
             }
           }
         },
@@ -63,6 +71,9 @@
           "configurations": {
             "production": {
               "browserTarget": "dic-cms-client:build:production"
+            },
+            "mock": {
+              "browserTarget": "dic-cms-client:build:mock"
             }
           }
         },
