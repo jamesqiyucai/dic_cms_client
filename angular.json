@@ -55,8 +55,8 @@
             "mock": {
               "fileReplacements": [
                 {
-                  "replace": "src/app/service/remote_resource/remote-resource-factory-provider.ts",
-                  "with": "src/mock/remote-resource-factory-provider.mock.ts"
+                  "replace": "src/app/service/remote_resource/remote-resource-module.ts",
+                  "with": "src/mock/service/remote_resource/remote-resource-module.mock.ts"
                 }
               ]
             }
