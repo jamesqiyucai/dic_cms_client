@@ -1,6 +1,6 @@
-import * as base64 from 'base64-js';
 import {Inject, Injectable} from '@angular/core';
-import {REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './remote-resource-factory';
+import {REMOTE_RESOURCE_FACTORY} from './remote-resource-factory';
+import {RemoteResourceFactory} from './remote-resource-factory';
 import {Resource} from './resource';
 import {from, Observable} from 'rxjs';
 import {SessionExceptionTranslator} from './session-exception-translator';
@@ -9,6 +9,8 @@ import {SessionService} from './session-service';
 import {ValidationResponseBody} from './validation-response-body';
 import {SessionOption} from './session-option';
 import {SessionEstablisher} from './session-establisher';
+import {toByteArray} from 'base64-js';
+import {fromByteArray} from 'base64-js';
 
 interface ValidationRequestBody {
   challenge: string;
@@ -31,7 +33,7 @@ export class SessionServiceImpl implements SessionService, SessionEstablisher {
   }
   private async respond(challenge: string) {
     challenge = challenge + '==';
-    const tuple = new Int8Array(base64.toByteArray(challenge).buffer);
+    const tuple = new Int8Array(toByteArray(challenge).buffer);
     const answer = new Int8Array(32);
     let buffer = new Int8Array(32);
     let base = Int8Array.from(tuple.subarray(0, 32));
@@ -60,7 +62,7 @@ export class SessionServiceImpl implements SessionService, SessionEstablisher {
         }
       base = Int8Array.from(buffer.subarray(0, 32));
     }
-    const respond = base64.fromByteArray(new Uint8Array(answer.buffer));
+    const respond = fromByteArray(new Uint8Array(answer.buffer));
     return respond.substring(0, respond.length - 1);
   }
   private getChallenge(): Observable<{challenge: string}> {

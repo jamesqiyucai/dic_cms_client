@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ExceptionNotifier, REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './service/remote_resource';
+import {ExceptionNotifier, REMOTE_RESOURCE_FACTORY, RemoteResourceFactory} from './service/remote_resource/index1';
 import {SESSION_ESTABLISHER, SessionEstablisher} from './service/remote_resource/session-establisher';
 
 @Component({

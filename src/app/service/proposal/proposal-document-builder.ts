@@ -3,7 +3,7 @@ import {ProposalKeywordDocument} from './proposal-keyword-document';
 import {ProposalTranslationDocument} from './proposal-translation-document';
 import {ProposalSourceDocument} from './proposal-source-document';
 import {ProposalDocumentImpl} from './proposal-document-impl';
-import {Resource} from '../remote_resource';
+import {Resource} from '../remote_resource/index1';
 
 export class ProposalDocumentBuilder {
   ID?: number;

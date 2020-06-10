@@ -1,6 +1,6 @@
 import {ProposalDocument} from './proposal-document';
 import {ProposalSourceDocument} from './proposal-source-document';
-import {Resource} from '../remote_resource';
+import {Resource} from '../remote_resource/index1';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {ProposalSourceHandle} from './proposal-source-handle';
 import {ProposalKeywordDocument} from './proposal-keyword-document';

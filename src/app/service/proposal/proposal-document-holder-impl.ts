@@ -1,7 +1,7 @@
 import {ProposalDocumentHolder} from './proposal-document-holder';
 import {ProposalDocument} from './proposal-document';
 import {Observable, Subject} from 'rxjs';
-import {RemoteResourceFactory, SessionOption} from '../remote_resource';
+import {RemoteResourceFactory, SessionOption} from '../remote_resource/index1';
 import {ProposalExceptionTranslator} from './proposal-exception-translator';
 import {ProposalResourceContent} from './proposal-resource-content';
 import {ProposalSourceSerializerService} from './proposal-source-serializer-service';

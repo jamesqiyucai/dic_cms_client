@@ -1,5 +1,5 @@
 import {ProposalRepository} from './proposal-repository';
-import {REMOTE_RESOURCE_FACTORY, RemoteResourceFactory, Resource, SessionOption} from '../remote_resource';
+import {REMOTE_RESOURCE_FACTORY, RemoteResourceFactory, Resource, SessionOption} from '../remote_resource/index1';
 import {ProposalHandle} from './proposal-handle';
 import {Inject, Injectable} from '@angular/core';
 import {ProposalExceptionTranslator} from './proposal-exception-translator';
