@@ -4,6 +4,7 @@ import {ProposalTranslationDocument} from './proposal-translation-document';
 import {ProposalSourceDocument} from './proposal-source-document';
 import {ProposalDocumentImpl} from './proposal-document-impl';
 import {Resource} from '../remote_resource/index1';
+import {UserService} from '../../core';
 
 export class ProposalDocumentBuilder {
   ID?: number;
@@ -20,7 +21,10 @@ export class ProposalDocumentBuilder {
   comment?: string;
   source?: ProposalSourceDocument | null;
   resource?: Resource;
-  constructor() {}
+  constructor(private userService: UserService) {
+    this.initiator = userService.getCurrentUser();
+    this.reviewer = 1;
+  }
   buildBlankProposalDocument() {
     this.status = ProposalStatus.draft;
     this.text = '';

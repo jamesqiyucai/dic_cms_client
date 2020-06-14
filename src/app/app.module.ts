@@ -8,6 +8,7 @@ import {AppRoutingModule} from './routing/app-routing.module';
 import {CommonModule} from '@angular/common';
 import {ExampleProposalServiceModule} from './service/proposal';
 import {RemoteResourceModule} from './service/remote_resource/index1';
+import {UserDesignatorModule} from './UI/component/user_designator/user-designator.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {RemoteResourceModule} from './service/remote_resource/index1';
     ToolkitModule,
     RemoteResourceModule,
     ExampleProposalServiceModule,
+    UserDesignatorModule,
     AppRoutingModule,
   ],
   providers: [],

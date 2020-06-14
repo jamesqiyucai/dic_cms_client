@@ -8,11 +8,16 @@ import {ProposalSourceSerializerService} from './proposal-source-serializer-serv
 import {ProposalDocumentBuilder} from './proposal-document-builder';
 import {ProposalKeywordDocumentBuilder} from './proposal-keyword-document-builder';
 import {ProposalTranslationDocumentBuilder} from './proposal-translation-document-builder';
+import {UserService} from '../../core';
 
 export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
   private _ID?: number;
   public proposalDocument: ProposalDocument | undefined;
-  constructor(private remoteResourceFactory: RemoteResourceFactory, private sourceDocumentSerializerService: ProposalSourceSerializerService) {}
+  constructor(
+    private remoteResourceFactory: RemoteResourceFactory,
+    private sourceDocumentSerializerService: ProposalSourceSerializerService,
+    private userService: UserService
+    ) {}
   public get ID() {
     return this.proposalDocument?.ID ? this.proposalDocument.ID : this._ID;
   }
@@ -28,7 +33,7 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
     resource.get<ProposalResourceContent>('', {})
       .subscribe(
         response => {
-          const documentBuilder = new ProposalDocumentBuilder();
+          const documentBuilder = new ProposalDocumentBuilder(this.userService);
           documentBuilder.ID = response.id;
           documentBuilder.exampleID = response.exampleId;
           documentBuilder.initiator = response.initiator;
