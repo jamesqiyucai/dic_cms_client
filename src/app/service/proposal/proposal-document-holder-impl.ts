@@ -29,11 +29,12 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
       throw new Error('Proposal document holder must have an ID for it to load');
     }
     const loadStatus = new Subject<ProposalDocumentHolder>();
+    // todo give rrf parameter a proper exception translator
     const resource = this.remoteResourceFactory.bind(`proposal/${this.ID}`, new ProposalExceptionTranslator(), SessionOption.necessary);
     resource.get<ProposalResourceContent>('', {})
       .subscribe(
         response => {
-          const documentBuilder = new ProposalDocumentBuilder(this.userService);
+          const documentBuilder = new ProposalDocumentBuilder(this.userService, this.remoteResourceFactory.bind('sessions', new ProposalExceptionTranslator(), SessionOption.none));
           documentBuilder.ID = response.id;
           documentBuilder.exampleID = response.exampleId;
           documentBuilder.initiator = response.initiator;

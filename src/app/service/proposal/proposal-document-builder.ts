@@ -21,7 +21,8 @@ export class ProposalDocumentBuilder {
   comment?: string;
   source?: ProposalSourceDocument | null;
   resource?: Resource;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, resource: Resource) {
+    this.resource = resource;
     this.initiator = userService.getCurrentUser();
     this.reviewer = 1;
   }
