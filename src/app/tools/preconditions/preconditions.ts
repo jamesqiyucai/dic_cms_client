@@ -1,7 +1,7 @@
 export class Preconditions {
-  static checkArgument(checker: boolean, errorMessage: string) {
-    if (checker) {
-      throw new Error(errorMessage);
+  static checkArgumentNullOrUndefined(argument: any) {
+    if (argument === null || argument === undefined) {
+      throw new Error('Argument Shall Not be Undefined or Null');
     }
   }
 }

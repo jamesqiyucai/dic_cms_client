@@ -12,7 +12,16 @@ export class ProposalJournalSourceDocumentImpl extends ProposalSourceDocumentImp
   private _publishingDate: string;
   private _publishingDateObservable: BehaviorSubject<string>;
   constructor(builder: ProposalJournalSourceDocumentBuilder) {
-    if (builder.type && builder.author && builder.title && builder.page && builder.publishingDate && builder.passageTitle) {
+    if (
+      builder.type == null ||
+      builder.author == null ||
+      builder.title == null ||
+      builder.page == null ||
+      builder.publishingDate == null ||
+      builder.passageTitle == null
+  ) {
+      throw new Error('Proposal journal source document properties should not be null or undefined');
+    } else {
       super(builder.type, builder.author, builder.title);
       this._page = builder.page;
       this._pageObservable = new BehaviorSubject<string>(builder.page);
@@ -20,8 +29,6 @@ export class ProposalJournalSourceDocumentImpl extends ProposalSourceDocumentImp
       this._passageTitleObservable = new BehaviorSubject<string>(builder.passageTitle);
       this._publishingDate = builder.publishingDate;
       this._publishingDateObservable = new BehaviorSubject<string>(builder.publishingDate);
-    } else {
-      throw new Error('Proposal journal source document properties should not be null or undefined');
     }
   }
   public get pageObservable() {
