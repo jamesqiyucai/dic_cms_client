@@ -14,7 +14,17 @@ export class ProposalBookSourceDocumentImpl extends ProposalSourceDocumentImpl i
   private _publishedYear: string;
   private _publishedYearObservable: BehaviorSubject<string>;
   constructor(builder: ProposalBookSourceDocumentBuilder) {
-    if (builder.type && builder.author && builder.page && builder.title && builder.initialPublishingYear && builder.publishedPlace && builder.publishedYear) {
+    if (
+      builder.type == null ||
+      builder.author == null ||
+      builder.page == null ||
+      builder.title == null ||
+      builder.initialPublishingYear == null ||
+      builder.publishedPlace == null ||
+      builder.publishedYear == null
+    ) {
+      throw new Error('Proposal source book properties must not be null or undefined');
+    } else {
       super(builder.type, builder.author, builder.title);
       this._page = builder.page;
       this._initialPublishingYear = builder.initialPublishingYear;
@@ -24,8 +34,6 @@ export class ProposalBookSourceDocumentImpl extends ProposalSourceDocumentImpl i
       this._pageObservable = new BehaviorSubject<string>(builder.page);
       this._publishedPlaceObservable = new BehaviorSubject<string>(builder.publishedPlace);
       this._publishedYearObservable = new BehaviorSubject<string>(builder.publishedYear);
-    } else {
-      throw new Error('Proposal source book properties must not be null or undefined');
     }
   }
   public get pageObservable() {

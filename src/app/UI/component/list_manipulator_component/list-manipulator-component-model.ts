@@ -2,7 +2,7 @@ import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs';
 import {ListManipulatorHandle} from './list-manipulator-handle';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import {ListElementComponentModel} from './list_manipulator_element/list-element-component-model';
+import {ListElementComponentModel} from './list_element/list-element-component-model';
 
 export class ListManipulatorComponentModel<ElementHandle> {
   private _editable: boolean;

@@ -8,9 +8,9 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   private _text$: BehaviorSubject<string>;
   private readonly _handle?: ProposalTranslationHandle;
   constructor(handle?: ProposalTranslationHandle) {
-    this._editable = false;
-    this._text = '';
-    this._text$ = new BehaviorSubject<string>('');
+    this._editable = true;
+    this._text = '??';
+    this._text$ = new BehaviorSubject<string>(this._text);
     if (handle) {
       this._handle = handle;
     }

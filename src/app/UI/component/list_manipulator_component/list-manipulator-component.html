@@ -1,8 +1,7 @@
 <div
   cdkDropList
   id="list"
-  cdkDropListConnectedTo="['trash']"
-  [cdkDropListDisabled]="model.editable!"
+  [cdkDropListDisabled]="!model.editable"
   (cdkDropListDropped)="onMove($event.previousIndex, $event.currentIndex)"
 >
   <div *ngFor="let item of model.array$ | async" cdkDrag>
@@ -12,13 +11,13 @@
         <path d="M0 0h24v24H0z" fill="none"></path>
       </svg>
     </div>
-    <app-list-manipulator-content [projectedView]="template" [model]="item"></app-list-manipulator-content>
+    <app-list-element [projectedView]="template" [model]="item"></app-list-element>
   </div>
   <button (click)="onAdd()">Add</button>
-  <div
-    cdkDropList
-    id="trash"
-    cdkDropListConnectedTo="['list']"
-    (cdkDropListDropped)="onDelete($event.previousIndex)"
-  ></div>
+<!--  <div-->
+<!--    cdkDropList-->
+<!--    id="trash"-->
+<!--    cdkDropListConnectedTo="['list']"-->
+<!--    (cdkDropListDropped)="onDelete($event.previousIndex)"-->
+<!--  ></div>-->
 </div>
