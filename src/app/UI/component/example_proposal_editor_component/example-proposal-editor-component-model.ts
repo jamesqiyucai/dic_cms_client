@@ -63,12 +63,23 @@ export class ExampleProposalEditorComponentModel {
     if (this.sourceComponentModel) {
       this.sourceComponentModel.editable = val;
     }
+    if (this.keywordsComponentModel) {
+      this.keywordsComponentModel.editable = val;
+    }
+    if (this.translationsComponentModel) {
+      this.translationsComponentModel.editable = val;
+    }
     this._editable = val;
   }
   public set text(newText: string) {
     if (this._text !== newText) {
       this._text = newText;
       this._text$.next(this._text);
+      if (this._handle) {
+        this._handle.text = this._text;
+      } else {
+        console.log()
+      }
     }
   }
   public get text$() {
@@ -134,5 +145,11 @@ export class ExampleProposalEditorComponentModel {
   public save(): void {
     this.keywordsComponentModel.save();
     this.translationsComponentModel.save();
+
+    if (this._handle) {
+      this._handle.save();
+    } else {
+      throw new Error('no handle thus no way to save');
+    }
   }
 }

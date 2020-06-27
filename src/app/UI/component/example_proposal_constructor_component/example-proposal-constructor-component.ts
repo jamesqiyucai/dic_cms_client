@@ -12,4 +12,6 @@ export class ExampleProposalConstructorComponent {
   constructor(@Inject(PROPOSAL_REPOSITORY) private proposalRepository: ProposalRepository) {
     this.proposalModel = new ExampleProposalEditorComponentModel(this.proposalRepository.createBlankProposal());
   }
+  public onSubmit() {
+  }
 }

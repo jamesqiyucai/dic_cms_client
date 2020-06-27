@@ -15,3 +15,6 @@ export interface RemoteResourceFactory {
 }
 
 export const REMOTE_RESOURCE_FACTORY = new InjectionToken<RemoteResourceFactory>('remote resource factory');
+
+// todo delete this code after debugging
+(window as any).rrf = REMOTE_RESOURCE_FACTORY;
