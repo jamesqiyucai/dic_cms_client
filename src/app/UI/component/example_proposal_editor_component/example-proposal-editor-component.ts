@@ -5,6 +5,7 @@ import {ExampleProposalEditorComponentModel} from './example-proposal-editor-com
 import {ExampleProposalBookSourceComponentModel} from '../example_proposal_source_component/book_source/example-proposal-book-source-component-model';
 import {ExampleProposalJournalSourceComponentModel} from '../example_proposal_source_component/journal-source/example-proposal-journal-source-component-model';
 import {getProposalSourceType} from '../../../service/proposal/proposal-source-type';
+import {ProposalDocumentFakeImpl} from '../../../service/proposal/proposal-document-fake-impl';
 
 @Component({
   selector: 'app-example-proposal-editor',
@@ -15,7 +16,7 @@ import {getProposalSourceType} from '../../../service/proposal/proposal-source-t
 export class ExampleProposalEditorComponent {
   @Input() public model: ExampleProposalEditorComponentModel;
   constructor() {
-    this.model = new ExampleProposalEditorComponentModel();
+    this.model = new ExampleProposalEditorComponentModel(new ProposalDocumentFakeImpl());
   }
   public onItalicsChange(newRanges: List<[number, number]>) {
     if (this.model) {
