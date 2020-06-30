@@ -28,6 +28,7 @@ export class ProposalRepositoryImpl implements ProposalRepository {
     const proposalBuilder = new ProposalDocumentBuilder(this.userService, this.remoteResourceFactory.bind('sessions', new ProposalExceptionTranslator(), SessionOption.none));
     const document = proposalBuilder.buildBlankProposalDocument();
     const holder = new ProposalDocumentHolderImpl(this.remoteResourceFactory, this.proposalSourceSerializerService, this.userService);
+    holder.proposalDocument = document;
     this._proposals.push(holder);
     return document;
   }

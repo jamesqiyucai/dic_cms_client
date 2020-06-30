@@ -24,14 +24,10 @@ export class ExampleProposalEditorComponent {
     }
   }
   public onTextChange(newText: string) {
-    if (this.model) {
-      this.model.text = newText;
-    }
+    this.model.text = newText;
   }
   public onNoteChange(newNote: string) {
-    if (this.model) {
-      this.model.note = newNote;
-    }
+    this.model.note = newNote;
   }
   public onCommentChange(newComment: string) {
     if (this.model) {
