@@ -13,18 +13,12 @@ export class ListManipulatorComponent {
     this.model = new ListManipulatorComponentModel<any>();
   }
   public onDelete(index: number) {
-    if (this.model) {
-      this.model.delete(index);
-    }
+    this.model.delete(index);
   }
   public onMove(from: number, to: number) {
-    if (this.model) {
-      this.model.move(from, to);
-    }
+    this.model.move(from, to);
   }
   public onAdd() {
-    if (this.model) {
-      this.model.add();
-    }
+    this.model.add();
   }
 }

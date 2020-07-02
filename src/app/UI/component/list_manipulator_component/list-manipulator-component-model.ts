@@ -48,10 +48,12 @@ export class ListManipulatorComponentModel<ElementHandle> {
   }
   public delete(index: number) {
     this.array = List(this._array).remove(index);
+    this.save();
   }
   public move(from: number, to: number) {
     moveItemInArray(this._array, from, to);
     this._array$.next(List(this._array));
+    this.save();
   }
   public save() {
     this._array.forEach(element => element.save());
