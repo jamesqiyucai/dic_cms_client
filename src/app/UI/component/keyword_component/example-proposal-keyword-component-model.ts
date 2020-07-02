@@ -27,6 +27,7 @@ export class ExampleProposalKeywordComponentModel implements ListElementComponen
   public set text(newText: string) {
     if (this._text !== newText) {
       this._text = newText;
+      this.save();
     }
   }
   public getHandle(): ProposalKeywordHandle {

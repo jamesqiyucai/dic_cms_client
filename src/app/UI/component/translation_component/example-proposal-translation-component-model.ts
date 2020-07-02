@@ -9,7 +9,7 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   private readonly _handle?: ProposalTranslationHandle;
   constructor(handle?: ProposalTranslationHandle) {
     this._editable = true;
-    this._text = '??';
+    this._text = '';
     this._text$ = new BehaviorSubject<string>(this._text);
     if (handle) {
       this._handle = handle;
@@ -27,6 +27,7 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   public set text(newText: string) {
     if (this._text !== newText) {
       this._text = newText;
+      this.save();
     }
   }
   public getHandle(): ProposalTranslationHandle {

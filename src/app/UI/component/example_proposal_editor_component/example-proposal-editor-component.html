@@ -8,16 +8,20 @@
       (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
-  <app-list-manipulator [model]="model.translationsComponentModel">
-    <ng-template let-elementModel="elementModel">
-      <app-translation [model]="elementModel"></app-translation>
-    </ng-template>
-  </app-list-manipulator>
-  <app-list-manipulator [model]="model.keywordsComponentModel">
-    <ng-template let-elementModel="elementModel">
-      <app-keyword [model]="elementModel"></app-keyword>
-    </ng-template>
-  </app-list-manipulator>
+  <div>Keywords:
+    <app-list-manipulator [model]="model.keywordsComponentModel">
+      <ng-template let-elementModel="elementModel">
+        <app-keyword [model]="elementModel"></app-keyword>
+      </ng-template>
+    </app-list-manipulator>
+  </div>
+  <div>Translations:
+    <app-list-manipulator [model]="model.translationsComponentModel">
+      <ng-template let-elementModel="elementModel">
+        <app-translation [model]="elementModel"></app-translation>
+      </ng-template>
+    </app-list-manipulator>
+  </div>
   <div>
     <label>Comment:
       <input #commentInput placeholder="Note Goes Here." [disabled]="!model.editable" [value]="model.comment$ | async" (input)="onCommentChange(commentInput.value)">
