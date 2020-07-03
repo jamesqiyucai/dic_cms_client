@@ -4,7 +4,7 @@ import {ProposalSourceType} from '../../../../service/proposal';
 import {ProposalJournalSourceHandle} from '../../../../service/proposal';
 
 export class ExampleProposalJournalSourceComponentModel extends AbstractExampleProposalSourceComponentModel {
-  private _handle?: ProposalJournalSourceHandle;
+  private _handle: ProposalJournalSourceHandle;
   private _author: string;
   private readonly _author$: BehaviorSubject<string>;
   private _title: string;
@@ -15,16 +15,8 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
   private readonly _passageTitle$: BehaviorSubject<string>;
   private _publishDate: string;
   private readonly _publishDate$: BehaviorSubject<string>;
-  constructor(handle?: ProposalJournalSourceHandle) {
+  constructor(handle: ProposalJournalSourceHandle) {
     super(ProposalSourceType.Journal);
-    if (handle) {
-      this._handle = handle;
-      this._handle.authorObservable.subscribe(author => this.author = author);
-      this._handle.titleObservable.subscribe(title => this.title = title);
-      this._handle.pageObservable.subscribe(page => this.page = page);
-      this._handle.passageTitleObservable.subscribe(passageTitle => this.passageTitle = passageTitle);
-      this._handle.publishingDateObservable.subscribe(date => this.publishDate = date);
-    }
     this._author = '';
     this._author$ = new BehaviorSubject<string>('');
     this._title = '';
@@ -35,6 +27,12 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     this._passageTitle$ = new BehaviorSubject<string>('');
     this._publishDate = '';
     this._publishDate$ = new BehaviorSubject<string>('');
+    this._handle = handle;
+    this._handle.authorObservable.subscribe(author => this.author = author);
+    this._handle.titleObservable.subscribe(title => this.title = title);
+    this._handle.pageObservable.subscribe(page => this.page = page);
+    this._handle.passageTitleObservable.subscribe(passageTitle => this.passageTitle = passageTitle);
+    this._handle.publishingDateObservable.subscribe(date => this.publishDate = date);
 
   }
   public get author$() {
@@ -44,6 +42,7 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     if (this._author !== newAuthor) {
       this._author = newAuthor;
       this._author$.next(newAuthor);
+      this._handle.author = this._author;
     }
   }
   public get title$() {
@@ -53,6 +52,7 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     if (this._title !== newTitle) {
       this._title = newTitle;
       this._title$.next(newTitle);
+      this._handle.title = this._title;
     }
   }
   public get page$() {
@@ -62,6 +62,7 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     if (this._page !== newPage) {
       this._page = newPage;
       this._page$.next(newPage);
+      this._handle.page = this._page;
     }
   }
   public get passageTitle$() {
@@ -71,6 +72,7 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     if (this._passageTitle !== newPassageTitle) {
       this._passageTitle = newPassageTitle;
       this._passageTitle$.next(newPassageTitle);
+      this._handle.passageTitle = this._passageTitle;
     }
   }
   public get publishDate$() {
@@ -80,6 +82,7 @@ export class ExampleProposalJournalSourceComponentModel extends AbstractExampleP
     if (this._publishDate !== newPublishDate) {
       this._publishDate = newPublishDate;
       this._publishDate$.next(newPublishDate);
+      this._handle.publishingDate = this._publishDate;
     }
   }
 }

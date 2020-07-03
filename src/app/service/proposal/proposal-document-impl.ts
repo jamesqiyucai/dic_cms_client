@@ -209,7 +209,10 @@ export class ProposalDocumentImpl implements ProposalDocument {
   public get sourceObservable() {
     return this._sourceObservable.asObservable();
   }
-  public set source(newSource: ProposalSourceDocument) {
+  public get source() {
+    return this._source;
+  }
+  public set source(newSource: ProposalSourceDocument | null) {
     this._source = newSource;
     this._sourceObservable.next(newSource);
   }

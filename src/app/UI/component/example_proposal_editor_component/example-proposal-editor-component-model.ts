@@ -122,10 +122,10 @@ export class ExampleProposalEditorComponentModel {
         this.sourceComponentModel = null;
       } else if (type === ProposalSourceType.Book) {
         this._handle.source = this._handle.getSource(type);
-        this.sourceComponentModel = new ExampleProposalBookSourceComponentModel(<ProposalBookSourceHandle>this._handle.source);
+        this.sourceComponentModel = new ExampleProposalBookSourceComponentModel(this._handle.source as ProposalBookSourceHandle);
       } else if (type === ProposalSourceType.Journal) {
         this._handle.source = this._handle.getSource(type);
-        this.sourceComponentModel = new ExampleProposalJournalSourceComponentModel(<ProposalJournalSourceHandle>this._handle.source);
+        this.sourceComponentModel = new ExampleProposalJournalSourceComponentModel(this._handle.source as ProposalJournalSourceHandle);
       }
     }
   }

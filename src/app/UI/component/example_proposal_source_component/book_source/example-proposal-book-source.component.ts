@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ExampleProposalBookSourceComponentModel} from './example-proposal-book-source-component-model';
+import {ProposalBookSourceDocumentFakeImpl} from '../../../../service/proposal/proposal-book-source-document-fake-impl';
 
 @Component({
   selector: 'app-proposal-book-source',
@@ -9,7 +10,7 @@ import {ExampleProposalBookSourceComponentModel} from './example-proposal-book-s
 export class ExampleProposalBookSourceComponent {
   @Input() public model: ExampleProposalBookSourceComponentModel;
   constructor() {
-    this.model = new ExampleProposalBookSourceComponentModel();
+    this.model = new ExampleProposalBookSourceComponentModel(new ProposalBookSourceDocumentFakeImpl());
   }
   public onAuthorChange(newAuthor: string) {
     if (this.model) {

@@ -1,5 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ExampleProposalJournalSourceComponentModel} from './example-proposal-journal-source-component-model';
+import {ProposalJournalSourceDocumentFakeImpl} from '../../../../service/proposal/proposal-journal-source-document-fake-impl';
 
 @Component({
   selector: 'app-proposal-journal-source',
@@ -9,7 +10,7 @@ import {ExampleProposalJournalSourceComponentModel} from './example-proposal-jou
 export class ExampleProposalJournalSourceComponent {
   @Input() public model: ExampleProposalJournalSourceComponentModel;
   constructor() {
-    this.model = new ExampleProposalJournalSourceComponentModel();
+    this.model = new ExampleProposalJournalSourceComponentModel(new ProposalJournalSourceDocumentFakeImpl());
   }
   public onAuthorChange(newAuthor: string) {
     if (this.model) {

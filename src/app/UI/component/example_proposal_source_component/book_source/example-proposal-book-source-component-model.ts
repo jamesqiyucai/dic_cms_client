@@ -4,7 +4,7 @@ import {ProposalSourceType} from '../../../../service/proposal';
 import {ProposalBookSourceHandle} from '../../../../service/proposal';
 
 export class ExampleProposalBookSourceComponentModel extends AbstractExampleProposalSourceComponentModel {
-  private _handle?: ProposalBookSourceHandle;
+  private _handle: ProposalBookSourceHandle;
   private _author: string;
   private readonly _author$: BehaviorSubject<string>;
   private _title: string;
@@ -17,17 +17,8 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
   private readonly _publishedYear$: BehaviorSubject<string>;
   private _publishedPlace: string;
   private readonly _publishedPlace$: BehaviorSubject<string>;
-  constructor(handle?: ProposalBookSourceHandle) {
+  constructor(handle: ProposalBookSourceHandle) {
     super(ProposalSourceType.Book);
-    if (handle) {
-      this._handle = handle;
-      this._handle.authorObservable.subscribe(author => this.author = author);
-      this._handle.titleObservable.subscribe(title => this.title = title);
-      this._handle.pageObservable.subscribe(page => this.page = page);
-      this._handle.initialPublishingYearObservable.subscribe(year => this.initialPublishingYear = year);
-      this._handle.publishedYearObservable.subscribe(year => this.publishedYear = year);
-      this._handle.publishedPlaceObservable.subscribe(place => this.publishedPlace = place);
-    }
     this._author = '';
     this._author$ = new BehaviorSubject<string>('');
     this._title = '';
@@ -40,7 +31,13 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     this._publishedYear$ = new BehaviorSubject<string>('');
     this._publishedPlace = '';
     this._publishedPlace$ = new BehaviorSubject<string>('');
-
+    this._handle = handle;
+    this._handle.authorObservable.subscribe(author => this.author = author);
+    this._handle.titleObservable.subscribe(title => this.title = title);
+    this._handle.pageObservable.subscribe(page => this.page = page);
+    this._handle.initialPublishingYearObservable.subscribe(year => this.initialPublishingYear = year);
+    this._handle.publishedYearObservable.subscribe(year => this.publishedYear = year);
+    this._handle.publishedPlaceObservable.subscribe(place => this.publishedPlace = place);
   }
   public get author$() {
     return this._author$.asObservable();
@@ -49,6 +46,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._author !== newAuthor) {
       this._author = newAuthor;
       this._author$.next(newAuthor);
+      this._handle.author = this._author;
     }
   }
   public get title$() {
@@ -58,6 +56,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._title !== newTitle) {
       this._title = newTitle;
       this._title$.next(newTitle);
+      this._handle.title = this._title;
     }
   }
   public get page$() {
@@ -67,6 +66,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._page !== newPage) {
       this._page = newPage;
       this._page$.next(newPage);
+      this._handle.page = this._page;
     }
   }
   public get initialPublishingYear$() {
@@ -76,6 +76,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._initialPublishingYear !== newYear) {
       this._initialPublishingYear = newYear;
       this._initialPublishingYear$.next(newYear);
+      this._handle.initialPublishingYear = this._initialPublishingYear;
     }
   }
   public get publishedYear$() {
@@ -85,6 +86,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._publishedYear !== newYear) {
       this._publishedYear = newYear;
       this._publishedYear$.next(newYear);
+      this._handle.publishedYear = this._publishedYear;
     }
   }
   public get publishedPlace$() {
@@ -94,6 +96,7 @@ export class ExampleProposalBookSourceComponentModel extends AbstractExampleProp
     if (this._publishedPlace !== newPlace) {
       this._publishedPlace = newPlace;
       this._publishedPlace$.next(newPlace);
+      this._handle.publishedPlace = this._publishedPlace;
     }
   }
 }
