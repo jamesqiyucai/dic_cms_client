@@ -49,8 +49,9 @@ export class ExampleProposalEditorComponentModel {
     this._handle.commentObservable.subscribe(comment => this.comment = comment);
     this._handle.noteObservable.subscribe(note => this.note = note);
     this._handle.italicsObservable.subscribe(italics => this.italics = italics);
-
     this.sourceComponentModel = null;
+
+    this.text = 'lorem ipsum';
   }
   public get editable() {
     return this._editable;
