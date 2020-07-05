@@ -35,7 +35,7 @@ export class ExampleProposalBookSourceComponent {
 
   public onPublishedYearChange(newYear: string) {
     if (this.model) {
-      this.model.initialPublishingYear = newYear;
+      this.model.publishedYear = newYear;
     }
   }
 

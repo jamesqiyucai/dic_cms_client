@@ -25,7 +25,7 @@ export class ProposalRepositoryImpl implements ProposalRepository {
   }
   public createBlankProposal(): ProposalHandle {
     // todo: give rrf parameter a proper exception translator
-    const proposalBuilder = new ProposalDocumentBuilder(this.userService, this.remoteResourceFactory.bind('sessions', new ProposalExceptionTranslator(), SessionOption.none));
+    const proposalBuilder = new ProposalDocumentBuilder(this.userService, this.remoteResourceFactory.bind('api/proposals', new ProposalExceptionTranslator(), SessionOption.none));
     const document = proposalBuilder.buildBlankProposalDocument();
     const holder = new ProposalDocumentHolderImpl(this.remoteResourceFactory, this.proposalSourceSerializerService, this.userService);
     holder.proposalDocument = document;

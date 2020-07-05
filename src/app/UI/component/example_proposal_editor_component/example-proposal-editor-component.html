@@ -41,4 +41,5 @@
   </label>
   <app-proposal-book-source *ngIf="displaySource('book')" [model]="bookSourceComponentModel"></app-proposal-book-source>
   <app-proposal-journal-source *ngIf="displaySource('journal')" [model]="journalSourceComponentModel"></app-proposal-journal-source>
+  <button (click)="save()">Submit</button>
 </div>

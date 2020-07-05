@@ -133,13 +133,6 @@ export class ExampleProposalEditorComponentModel {
 
   }
   public save(): void {
-    this.keywordsComponentModel.save();
-    this.translationsComponentModel.save();
-
-    if (this._handle) {
-      this._handle.save();
-    } else {
-      throw new Error('no handle thus no way to save');
-    }
+    this._handle.save();
   }
 }
