@@ -251,7 +251,6 @@ export class ProposalDocumentImpl implements ProposalDocument {
       id: this._ID,
       initiator: this._initiator,
       reviewer: this._reviewer,
-      status: this._status,
       exampleId: this._exampleID,
       version: this._version,
       text: this._text,
