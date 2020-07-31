@@ -1,8 +1,8 @@
 import {ProposalSourceFactory} from './proposal-source-factory';
 import {ProposalSourceHandle} from './proposal-source-handle';
 import {ProposalSourceType} from './proposal-source-type';
-import {ProposalJournalSourceDocumentBuilder} from './proposal-journal-source-document-builder';
-import {ProposalBookSourceDocumentBuilder} from './proposal-book-source-document-builder';
+import {ProposalJournalSourceDocumentBuilder} from './proposal_journal_source/proposal-journal-source-document-builder';
+import {ProposalBookSourceDocumentBuilder} from './proposal_book_source/proposal-book-source-document-builder';
 
 export class ProposalSourceFactoryImpl implements ProposalSourceFactory {
   public getProposalSource(type: ProposalSourceType): ProposalSourceHandle {

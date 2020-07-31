@@ -1,5 +1,5 @@
 import {ProposalBookSourceHandle} from './proposal-book-source-handle';
-import {ProposalSourceDocumentFakeImpl} from './proposal-source-document-fake-impl';
+import {ProposalSourceDocumentFakeImpl} from '../proposal-source-document-fake-impl';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 export class ProposalBookSourceDocumentFakeImpl extends ProposalSourceDocumentFakeImpl implements ProposalBookSourceHandle {

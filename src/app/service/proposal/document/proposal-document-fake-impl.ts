@@ -1,15 +1,15 @@
-import {ProposalHandle} from './proposal-handle';
+import {ProposalHandle} from '../proposal-handle';
 import {Observable} from 'rxjs';
 import {List} from 'immutable';
-import {ProposalKeywordHandle} from './proposal-keyword-handle';
-import {ProposalTranslationHandle} from './proposal-translation-handle';
-import {ProposalSourceHandle} from './proposal-source-handle';
-import {ProposalSourceType} from './proposal-source-type';
-import {ProposalSourceFactory} from './proposal-source-factory';
-import {ProposalKeywordDocumentFakeImpl} from './proposal-keyword-document-fake-impl';
-import {ProposalTranslationDocumentFakeImpl} from './proposal-translation-document-fake-impl';
-import {ProposalSourceFactoryImpl} from './proposal-source-factory-impl';
-import {ProposalSourceDocumentFakeImpl} from './proposal-source-document-fake-impl';
+import {ProposalKeywordHandle} from './keyword/proposal-keyword-handle';
+import {ProposalTranslationHandle} from './translation/proposal-translation-handle';
+import {ProposalSourceHandle} from './source/proposal-source-handle';
+import {ProposalSourceType} from './source/proposal-source-type';
+import {ProposalSourceFactory} from './source/proposal-source-factory';
+import {ProposalKeywordDocumentFakeImpl} from './keyword/proposal-keyword-document-fake-impl';
+import {ProposalTranslationDocumentFakeImpl} from './translation/proposal-translation-document-fake-impl';
+import {ProposalSourceFactoryImpl} from './source/proposal-source-factory-impl';
+import {ProposalSourceDocumentFakeImpl} from './source/proposal-source-document-fake-impl';
 
 export class ProposalDocumentFakeImpl implements ProposalHandle {
   comment = '';

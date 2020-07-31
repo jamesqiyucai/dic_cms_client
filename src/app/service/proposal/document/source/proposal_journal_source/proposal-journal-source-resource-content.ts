@@ -1,4 +1,4 @@
-import {ProposalSourceResourceContent} from './proposal-source-resource-content';
+import {ProposalSourceResourceContent} from '../proposal-source-resource-content';
 
 export interface ProposalJournalSourceResourceContent extends ProposalSourceResourceContent {
   author: string;

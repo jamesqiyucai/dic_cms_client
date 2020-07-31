@@ -1,6 +1,6 @@
 import {BehaviorSubject} from 'rxjs';
 import {ListElementComponentModel} from '../list_manipulator_component';
-import {ProposalKeywordHandle} from '../../../service/proposal/proposal-keyword-handle';
+import {ProposalKeywordHandle} from '../../../service/proposal/document/keyword/proposal-keyword-handle';
 
 export class ExampleProposalKeywordComponentModel implements ListElementComponentModel<ProposalKeywordHandle> {
   private _editable: boolean;

@@ -1,6 +1,6 @@
 import {ProposalBookSourceDocument} from './proposal-book-source-document';
 import {ProposalBookSourceResourceContent} from './proposal-book-source-resource-content';
-import {ProposalSourceDocumentImpl} from './proposal-source-document-impl';
+import {ProposalSourceDocumentImpl} from '../proposal-source-document-impl';
 import {BehaviorSubject} from 'rxjs';
 import {ProposalBookSourceDocumentBuilder} from './proposal-book-source-document-builder';
 

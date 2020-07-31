@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ExampleProposalJournalSourceComponentModel} from './example-proposal-journal-source-component-model';
-import {ProposalJournalSourceDocumentFakeImpl} from '../../../../service/proposal/proposal-journal-source-document-fake-impl';
+import {ProposalJournalSourceDocumentFakeImpl} from '../../../../service/proposal/document/source/proposal_journal_source/proposal-journal-source-document-fake-impl';
 
 @Component({
   selector: 'app-proposal-journal-source',

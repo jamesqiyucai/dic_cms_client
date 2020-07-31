@@ -4,8 +4,8 @@ import {ProposalSourceType} from '../../../service/proposal';
 import {ExampleProposalEditorComponentModel} from './example-proposal-editor-component-model';
 import {ExampleProposalBookSourceComponentModel} from '../example_proposal_source_component/book_source/example-proposal-book-source-component-model';
 import {ExampleProposalJournalSourceComponentModel} from '../example_proposal_source_component/journal-source/example-proposal-journal-source-component-model';
-import {getProposalSourceType} from '../../../service/proposal/proposal-source-type';
-import {ProposalDocumentFakeImpl} from '../../../service/proposal/proposal-document-fake-impl';
+import {getProposalSourceType} from '../../../service/proposal/document/source/proposal-source-type';
+import {ProposalDocumentFakeImpl} from '../../../service/proposal/document/proposal-document-fake-impl';
 
 @Component({
   selector: 'app-example-proposal-editor',

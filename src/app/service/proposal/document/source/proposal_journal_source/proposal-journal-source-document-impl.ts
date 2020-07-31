@@ -1,6 +1,6 @@
 import {ProposalJournalSourceDocument} from './proposal-journal-source-document';
 import {ProposalJournalSourceResourceContent} from './proposal-journal-source-resource-content';
-import {ProposalSourceDocumentImpl} from './proposal-source-document-impl';
+import {ProposalSourceDocumentImpl} from '../proposal-source-document-impl';
 import {BehaviorSubject} from 'rxjs';
 import {ProposalJournalSourceDocumentBuilder} from './proposal-journal-source-document-builder';
 

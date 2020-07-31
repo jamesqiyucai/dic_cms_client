@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {ExampleProposalBookSourceComponentModel} from './example-proposal-book-source-component-model';
-import {ProposalBookSourceDocumentFakeImpl} from '../../../../service/proposal/proposal-book-source-document-fake-impl';
+import {ProposalBookSourceDocumentFakeImpl} from '../../../../service/proposal/document/source/proposal_book_source/proposal-book-source-document-fake-impl';
 
 @Component({
   selector: 'app-proposal-book-source',

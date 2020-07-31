@@ -1,4 +1,4 @@
-import {ProposalSourceType} from './proposal-source-type';
+import {ProposalSourceType} from '../proposal-source-type';
 import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
 
 export class ProposalJournalSourceDocumentBuilder {

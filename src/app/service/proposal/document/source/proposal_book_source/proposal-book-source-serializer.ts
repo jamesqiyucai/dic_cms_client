@@ -1,6 +1,6 @@
 import {ProposalBookSourceDocumentBuilder} from './proposal-book-source-document-builder';
-import {ProposalSourceType} from './proposal-source-type';
-import {ProposalSourceSerializer} from './proposal-source-serializer';
+import {ProposalSourceType} from '../proposal-source-type';
+import {ProposalSourceSerializer} from '../proposal-source-serializer';
 import {ProposalBookSourceResourceContent} from './proposal-book-source-resource-content';
 
 export class ProposalBookSourceSerializer implements ProposalSourceSerializer {

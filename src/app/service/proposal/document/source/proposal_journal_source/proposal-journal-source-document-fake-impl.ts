@@ -1,4 +1,4 @@
-import {ProposalSourceDocumentFakeImpl} from './proposal-source-document-fake-impl';
+import {ProposalSourceDocumentFakeImpl} from '../proposal-source-document-fake-impl';
 import {ProposalJournalSourceHandle} from './proposal-journal-source-handle';
 import {Observable} from 'rxjs';
 

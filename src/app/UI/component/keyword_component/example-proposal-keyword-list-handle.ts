@@ -1,5 +1,5 @@
 import {ListManipulatorHandle} from '../list_manipulator_component/list-manipulator-handle';
-import {ProposalKeywordHandle} from '../../../service/proposal/proposal-keyword-handle';
+import {ProposalKeywordHandle} from '../../../service/proposal/document/keyword/proposal-keyword-handle';
 import {ProposalHandle} from '../../../service/proposal';
 import {List} from 'immutable';
 

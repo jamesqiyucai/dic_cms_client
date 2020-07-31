@@ -1,10 +1,10 @@
 import {Observable} from 'rxjs';
-import {ProposalTranslationHandle} from './proposal-translation-handle';
+import {ProposalTranslationHandle} from './document/translation/proposal-translation-handle';
 import {List} from 'immutable';
-import {ProposalKeywordHandle} from './proposal-keyword-handle';
-import {ProposalSourceHandle} from './proposal-source-handle';
-import {ProposalSourceFactory} from './proposal-source-factory';
-import {ProposalSourceType} from './proposal-source-type';
+import {ProposalKeywordHandle} from './document/keyword/proposal-keyword-handle';
+import {ProposalSourceHandle} from './document/source/proposal-source-handle';
+import {ProposalSourceFactory} from './document/source/proposal-source-factory';
+import {ProposalSourceType} from './document/source/proposal-source-type';
 
 export interface ProposalHandle {
   IDObservable?: Observable<number>;

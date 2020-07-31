@@ -1,4 +1,4 @@
-import {ProposalSourceResourceContent} from './proposal-source-resource-content';
+import {ProposalSourceResourceContent} from './document/source/proposal-source-resource-content';
 import {ProposalStatus} from './proposal-status';
 
 export interface ProposalResourceContent {

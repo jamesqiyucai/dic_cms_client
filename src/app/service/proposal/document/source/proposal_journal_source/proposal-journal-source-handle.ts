@@ -1,4 +1,4 @@
-import {ProposalSourceHandle} from './proposal-source-handle';
+import {ProposalSourceHandle} from '../proposal-source-handle';
 import {Observable} from 'rxjs';
 
 export interface ProposalJournalSourceHandle extends ProposalSourceHandle {

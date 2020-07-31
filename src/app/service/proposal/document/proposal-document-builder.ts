@@ -1,10 +1,10 @@
-import {ProposalStatus} from './proposal-status';
-import {ProposalKeywordDocument} from './proposal-keyword-document';
-import {ProposalTranslationDocument} from './proposal-translation-document';
-import {ProposalSourceDocument} from './proposal-source-document';
+import {ProposalStatus} from '../proposal-status';
+import {ProposalKeywordDocument} from './keyword/proposal-keyword-document';
+import {ProposalTranslationDocument} from './translation/proposal-translation-document';
+import {ProposalSourceDocument} from './source/proposal-source-document';
 import {ProposalDocumentImpl} from './proposal-document-impl';
-import {Resource} from '../remote_resource/index1';
-import {UserService} from '../../core';
+import {Resource} from '../../remote_resource/index1';
+import {UserService} from '../../../core';
 
 export class ProposalDocumentBuilder {
   ID?: number;

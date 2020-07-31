@@ -1,10 +1,10 @@
 import {ProposalSourceSerializerService} from './proposal-source-serializer-service';
 import {Injectable} from '@angular/core';
 import {ProposalSourceSerializer} from './proposal-source-serializer';
-import {ProposalBookSourceSerializer} from './proposal-book-source-serializer';
-import {ProposalJournalSourceSerializer} from './proposal-journal-source-serializer';
 import {ProposalSourceDocument} from './proposal-source-document';
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
+import {ProposalBookSourceSerializer} from './proposal_book_source/proposal-book-source-serializer';
+import {ProposalJournalSourceSerializer} from './proposal_journal_source/proposal-journal-source-serializer';
 
 @Injectable()
 export class ProposalSourceSerializerServiceImpl implements ProposalSourceSerializerService {

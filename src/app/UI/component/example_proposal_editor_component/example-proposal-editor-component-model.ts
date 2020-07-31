@@ -6,7 +6,7 @@ import {ExampleProposalTranslationComponentModel} from '../translation_component
 import {List} from 'immutable';
 import {AbstractExampleProposalSourceComponentModel} from '../example_proposal_source_component/abstract-example-proposal-source-component-model';
 import {ProposalBookSourceHandle, ProposalHandle, ProposalJournalSourceHandle, ProposalTranslationHandle} from '../../../service/proposal';
-import {ProposalKeywordHandle} from '../../../service/proposal/proposal-keyword-handle';
+import {ProposalKeywordHandle} from '../../../service/proposal/document/keyword/proposal-keyword-handle';
 import {ExampleProposalTranslationsListHandle} from '../translation_component';
 import {ExampleProposalKeywordListHandle} from '../keyword_component';
 import {ProposalSourceType} from '../../../service/proposal';
