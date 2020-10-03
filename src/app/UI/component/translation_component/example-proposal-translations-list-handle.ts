@@ -1,16 +1,16 @@
-import {ListManipulatorHandle} from '../list_manipulator_component/list-manipulator-handle';
-import {ProposalHandle, ProposalTranslationHandle} from '../../../service/proposal';
+import {ListManipulatorHandle} from '../list_manipulator/list-manipulator-handle';
+import {ProposalEditorHandle, ProposalTranslationHandle} from '../../../service/proposal';
 import {List} from 'immutable';
 
 export class ExampleProposalTranslationsListHandle implements ListManipulatorHandle<ProposalTranslationHandle> {
-  private _proposalHandle: ProposalHandle;
-  constructor(handle: ProposalHandle) {
+  private _proposalHandle: ProposalEditorHandle;
+  constructor(handle: ProposalEditorHandle) {
     this._proposalHandle = handle;
   }
   public get list$() {
-    return this._proposalHandle.translationsObservable;
+    return this._proposalHandle.translations$;
   }
-  public set list(newList: List<ProposalTranslationHandle>) {
-    this._proposalHandle.translations = newList;
+  public setList(newList: List<ProposalTranslationHandle>) {
+    this._proposalHandle.setTranslations(newList);
   }
 }

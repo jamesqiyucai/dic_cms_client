@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 
 export interface ProposalKeywordHandle {
-  keyword: string;
-  keywordObservable: Observable<string>;
+  readonly keyword$: Observable<string>;
+  setKeyword(newKeyWord: string): void;
 }

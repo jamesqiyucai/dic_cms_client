@@ -1,34 +1,34 @@
-import {ProposalHandle} from '../proposal-handle';
+import {ProposalEditorHandle} from '../proposal-editor-handle';
 import {Observable} from 'rxjs';
 import {List} from 'immutable';
 import {ProposalKeywordHandle} from './keyword/proposal-keyword-handle';
 import {ProposalTranslationHandle} from './translation/proposal-translation-handle';
 import {ProposalSourceHandle} from './source/proposal-source-handle';
-import {ProposalSourceType} from './source/proposal-source-type';
+import {SourceType} from '../../../source-type';
 import {ProposalSourceFactory} from './source/proposal-source-factory';
 import {ProposalKeywordDocumentFakeImpl} from './keyword/proposal-keyword-document-fake-impl';
 import {ProposalTranslationDocumentFakeImpl} from './translation/proposal-translation-document-fake-impl';
 import {ProposalSourceFactoryImpl} from './source/proposal-source-factory-impl';
 import {ProposalSourceDocumentFakeImpl} from './source/proposal-source-document-fake-impl';
 
-export class ProposalDocumentFakeImpl implements ProposalHandle {
+export class ProposalDocumentFakeImpl implements ProposalEditorHandle {
   comment = '';
-  commentObservable = new Observable<string>();
-  initiatorObservable = new Observable<number>();
+  comment$ = new Observable<string>();
+  initiator$ = new Observable<number>();
   italics = List();
-  italicsObservable = new Observable<any>();
+  italics$ = new Observable<any>();
   keywords = List();
-  keywordsObservable = new Observable<any>();
+  keywords$ = new Observable<any>();
   note = '';
-  noteObservable = new Observable<any>();
-  reviewerObservable = new Observable<any>();
-  source = null;
-  sourceObservable = new Observable<any>();
-  statusObservable = new Observable<any>();
+  note$ = new Observable<any>();
+  reviewer$ = new Observable<any>();
+  currentSource = null;
+  source$ = new Observable<any>();
+  status$ = new Observable<any>();
   text = '';
-  textObservable = new Observable<any>();
+  text$ = new Observable<any>();
   translations = List();
-  translationsObservable = new Observable<any>();
+  translations$ = new Observable<any>();
 
   addKeyword(): ProposalKeywordHandle {
     return new ProposalKeywordDocumentFakeImpl();
@@ -46,7 +46,7 @@ export class ProposalDocumentFakeImpl implements ProposalHandle {
     return new ProposalSourceFactoryImpl();
   }
 
-  getSource(type: ProposalSourceType): ProposalSourceHandle {
+  getNewSource(type: SourceType): ProposalSourceHandle {
     return new ProposalSourceDocumentFakeImpl();
   }
 

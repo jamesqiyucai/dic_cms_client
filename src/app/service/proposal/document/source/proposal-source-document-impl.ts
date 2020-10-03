@@ -1,16 +1,16 @@
 import {ProposalSourceDocument} from './proposal-source-document';
 import {BehaviorSubject} from 'rxjs';
-import {ProposalSourceType} from './proposal-source-type';
 import {ProposalSourceResourceContent} from './proposal-source-resource-content';
+import {SourceType} from '../../../../source-type';
 
 export abstract class ProposalSourceDocumentImpl implements ProposalSourceDocument {
-  protected _type: ProposalSourceType;
+  protected _type: SourceType;
   protected _author: string;
   protected _authorObservable: BehaviorSubject<string>;
   protected _title: string;
   protected _titleObservable: BehaviorSubject<string>;
 
-  protected constructor(type: ProposalSourceType, author: string, title: string) {
+  protected constructor(type: SourceType, author: string, title: string) {
     this._type = type;
     this._author = author;
     this._authorObservable = new BehaviorSubject<string>(author);
@@ -18,26 +18,26 @@ export abstract class ProposalSourceDocumentImpl implements ProposalSourceDocume
     this._titleObservable = new BehaviorSubject<string>(title);
   }
 
-  public getType(): ProposalSourceType {
+  public getType(): SourceType {
     return this._type;
   }
 
-  public get authorObservable() {
+  public get author$() {
     return this._authorObservable.asObservable();
   }
 
-  public set author(newAuthor: string) {
+  public setAuthor(newAuthor: string) {
     if (this._author !== newAuthor) {
       this._author = newAuthor;
       this._authorObservable.next(newAuthor);
     }
   }
 
-  public get titleObservable() {
+  public get title$() {
     return this._titleObservable.asObservable();
   }
 
-  public set title(newTitle: string) {
+  public setTitle(newTitle: string) {
     if (this._title !== newTitle) {
       this._title = newTitle;
       this._titleObservable.next(newTitle);

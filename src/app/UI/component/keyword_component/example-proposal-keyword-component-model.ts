@@ -1,8 +1,8 @@
 import {BehaviorSubject} from 'rxjs';
-import {ListElementComponentModel} from '../list_manipulator_component';
+import {ListElementModel} from '../list_manipulator';
 import {ProposalKeywordHandle} from '../../../service/proposal/document/keyword/proposal-keyword-handle';
 
-export class ExampleProposalKeywordComponentModel implements ListElementComponentModel<ProposalKeywordHandle> {
+export class ExampleProposalKeywordComponentModel implements ListElementModel<ProposalKeywordHandle> {
   private _editable: boolean;
   private _text: string;
   private _text$: BehaviorSubject<string>;
@@ -18,8 +18,11 @@ export class ExampleProposalKeywordComponentModel implements ListElementComponen
   public get editable() {
     return this._editable;
   }
-  public set editable(val) {
-    this._editable = val;
+  public enableEditing() {
+    this._editable = true;
+  }
+  public disableEditing() {
+    this._editable = false;
   }
   public get text$() {
     return this._text$.asObservable();
@@ -39,7 +42,7 @@ export class ExampleProposalKeywordComponentModel implements ListElementComponen
   }
   public save(): void {
     if (this._handle) {
-      this._handle.keyword = this._text;
+      this._handle.setKeyword(this._text);
     } else {
       throw new Error('handle is undefined');
     }

@@ -3,20 +3,20 @@
     <div
       appEditable
       [enabled]="model.editable"
-      [text]="model.italicizedText$ | async"
+      [text]="model.formattedText$ | async"
       (valueChange)="onTextChange($event)"
       (italicizedRanges)="onItalicsChange($event)"
     ></div>
   </label>
   <div>Keywords:
-    <app-list-manipulator [model]="model.keywordsComponentModel">
+    <app-list-manipulator [model]="model.keywordsModel">
       <ng-template let-elementModel="elementModel">
         <app-keyword [model]="elementModel"></app-keyword>
       </ng-template>
     </app-list-manipulator>
   </div>
   <div>Translations:
-    <app-list-manipulator [model]="model.translationsComponentModel">
+    <app-list-manipulator [model]="model.translationsModel">
       <ng-template let-elementModel="elementModel">
         <app-translation [model]="elementModel"></app-translation>
       </ng-template>

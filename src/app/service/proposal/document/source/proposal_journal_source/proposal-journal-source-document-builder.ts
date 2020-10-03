@@ -1,15 +1,15 @@
-import {ProposalSourceType} from '../proposal-source-type';
 import {ProposalJournalSourceDocumentImpl} from './proposal-journal-source-document-impl';
+import {SourceType} from '../../../../../source-type';
 
 export class ProposalJournalSourceDocumentBuilder {
-  type?: ProposalSourceType;
+  type?: SourceType;
   author?: string;
   title?: string;
   page?: string;
   passageTitle?: string;
   publishingDate?: string;
   buildBlankJournalSource() {
-    this.type = ProposalSourceType.Journal;
+    this.type = SourceType.Journal;
     this.author = '';
     this.title = '';
     this.page = '';

@@ -28,6 +28,24 @@
     "noImplicitThis": true,
     "noImplicitReturns": false,
     "strictPropertyInitialization": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "paths": {
+      "ui-source": [
+        "dist/ui-source/ui-source",
+        "dist/ui-source"
+      ],
+      "dictcms-service-source": [
+        "dist/dictcms-service-source/dictcms-service-source",
+        "dist/dictcms-service-source"
+      ],
+      "dictcms-ui-source": [
+        "dist/dictcms-ui-source/dictcms-ui-source",
+        "dist/dictcms-ui-source"
+      ],
+      "wow": [
+        "dist/wow/wow",
+        "dist/wow"
+      ]
+    }
   }
 }

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import {PROPOSAL_REPOSITORY, ProposalRepository} from '../../../service/proposal';
-import {ExampleProposalEditorComponentModel} from '../example_proposal_editor_component/example-proposal-editor-component-model';
+import {ExampleProposalEditorModelImpl} from '../example_proposal_editor_component/example-proposal-editor-model-impl';
 
 @Component({
   selector: 'app-proposal-constructor',
@@ -8,9 +8,9 @@ import {ExampleProposalEditorComponentModel} from '../example_proposal_editor_co
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalConstructorComponent {
-  public proposalModel: ExampleProposalEditorComponentModel;
+  public proposalModel: ExampleProposalEditorModelImpl;
   constructor(@Inject(PROPOSAL_REPOSITORY) private proposalRepository: ProposalRepository) {
-    this.proposalModel = new ExampleProposalEditorComponentModel(this.proposalRepository.createBlankProposal());
+    this.proposalModel = new ExampleProposalEditorModelImpl(this.proposalRepository.createBlankProposal());
   }
   public onSubmit() {
   }

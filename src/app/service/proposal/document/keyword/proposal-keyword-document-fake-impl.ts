@@ -3,5 +3,5 @@ import {Observable} from 'rxjs';
 
 export class ProposalKeywordDocumentFakeImpl implements ProposalKeywordHandle {
   keyword = '';
-  keywordObservable = new Observable<any>();
+  keyword$ = new Observable<any>();
 }

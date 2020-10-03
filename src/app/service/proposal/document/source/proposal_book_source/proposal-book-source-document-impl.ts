@@ -36,37 +36,37 @@ export class ProposalBookSourceDocumentImpl extends ProposalSourceDocumentImpl i
       this._publishedYearObservable = new BehaviorSubject<string>(builder.publishedYear);
     }
   }
-  public get pageObservable() {
+  public get page$() {
     return this._pageObservable.asObservable();
   }
-  public set page(newPage: string) {
+  public setPage(newPage: string) {
     if (this._page !== newPage) {
       this._page = newPage;
       this._pageObservable.next(newPage);
     }
   }
-  public get initialPublishingYearObservable() {
+  public get initialPublishYear$() {
     return this._initialPublishingYearObservable.asObservable();
   }
-  public set initialPublishingYear(newYear: string) {
+  public setInitialPublishYear(newYear: string) {
     if (this._initialPublishingYear !== newYear) {
       this._initialPublishingYear = newYear;
       this._initialPublishingYearObservable.next(newYear);
     }
   }
-  public get publishedPlaceObservable() {
+  public get publishPlace$() {
     return this._publishedPlaceObservable.asObservable();
   }
-  public set publishedPlace(newPlace: string) {
+  public setPublishPlace(newPlace: string) {
     if (this._publishedPlace !== newPlace) {
       this._publishedPlace = newPlace;
       this._publishedPlaceObservable.next(newPlace);
     }
   }
-  public get publishedYearObservable() {
+  public get publishYear$() {
     return this._publishedYearObservable.asObservable();
   }
-  public set publishedYear(newYear: string) {
+  public setPublishYear(newYear: string) {
     if (this._publishedYear !== newYear) {
       this._publishedYear = newYear;
       this._publishedYearObservable.next(newYear);

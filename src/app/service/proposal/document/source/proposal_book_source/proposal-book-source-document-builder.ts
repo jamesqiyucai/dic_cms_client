@@ -1,8 +1,8 @@
-import {ProposalSourceType} from '../proposal-source-type';
 import {ProposalBookSourceDocumentImpl} from './proposal-book-source-document-impl';
+import {SourceType} from '../../../../../source-type';
 
 export class ProposalBookSourceDocumentBuilder {
-  type?: ProposalSourceType;
+  type?: SourceType;
   author?: string;
   title?: string;
   page?: string;
@@ -10,7 +10,7 @@ export class ProposalBookSourceDocumentBuilder {
   publishedYear?: string;
   publishedPlace?: string;
   buildBlankBookSource() {
-    this.type = ProposalSourceType.Book;
+    this.type = SourceType.Book;
     this.author = '';
     this.title = '';
     this.page = '';

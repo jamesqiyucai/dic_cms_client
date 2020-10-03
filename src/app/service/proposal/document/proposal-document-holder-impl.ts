@@ -9,7 +9,7 @@ import {ProposalDocumentBuilder} from './proposal-document-builder';
 import {ProposalKeywordDocumentBuilder} from './keyword/proposal-keyword-document-builder';
 import {ProposalTranslationDocumentBuilder} from './translation/proposal-translation-document-builder';
 import {UserService} from '../../../core';
-import {ProposalHandle} from '../proposal-handle';
+import {ProposalEditorHandle} from '../proposal-editor-handle';
 import {map, tap} from 'rxjs/operators';
 
 export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
@@ -26,7 +26,7 @@ export class ProposalDocumentHolderImpl implements ProposalDocumentHolder {
   public set ID(newID: number | undefined) {
     this._ID = newID;
   }
-  public load(): Observable<ProposalHandle> {
+  public load(): Observable<ProposalEditorHandle> {
     if (!this.ID) {
       throw new Error('Proposal document holder must have an ID for it to load');
     }

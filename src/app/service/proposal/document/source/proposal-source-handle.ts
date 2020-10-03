@@ -1,10 +1,10 @@
 import {Observable} from 'rxjs';
-import {ProposalSourceType} from './proposal-source-type';
+import {SourceType} from '../../../../source-type';
 
 export interface ProposalSourceHandle {
-  author: string;
-  authorObservable: Observable<string>;
-  title: string;
-  titleObservable: Observable<string>;
-  getType(): ProposalSourceType;
+  readonly author$: Observable<string>;
+  readonly title$: Observable<string>;
+  getType(): SourceType;
+  setAuthor(newAuthor: string): void;
+  setTitle(newTitle: string): void;
 }

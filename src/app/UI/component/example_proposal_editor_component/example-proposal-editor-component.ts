@@ -1,10 +1,10 @@
 import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {List} from 'immutable';
-import {ProposalSourceType} from '../../../service/proposal';
-import {ExampleProposalEditorComponentModel} from './example-proposal-editor-component-model';
-import {ExampleProposalBookSourceComponentModel} from '../example_proposal_source_component/book_source/example-proposal-book-source-component-model';
-import {ExampleProposalJournalSourceComponentModel} from '../example_proposal_source_component/journal-source/example-proposal-journal-source-component-model';
-import {getProposalSourceType} from '../../../service/proposal/document/source/proposal-source-type';
+import {SourceType} from '../../../service/proposal';
+import {ExampleProposalEditorModelImpl} from './example-proposal-editor-model-impl';
+import {ExampleProposalEditorBookSourceModelImpl} from '../example_proposal_editor_source/book_source/example-proposal-editor-book-source-model-impl';
+import {ExampleProposalEditorJournalSourceModelImpl} from '../example_proposal_editor_source/journal-source/example-proposal-editor-journal-source-model-impl';
+import {getProposalSourceType} from '../../../source-type';
 import {ProposalDocumentFakeImpl} from '../../../service/proposal/document/proposal-document-fake-impl';
 
 @Component({
@@ -14,9 +14,9 @@ import {ProposalDocumentFakeImpl} from '../../../service/proposal/document/propo
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExampleProposalEditorComponent {
-  @Input() public model: ExampleProposalEditorComponentModel;
+  @Input() public model: ExampleProposalEditorModelImpl;
   constructor() {
-    this.model = new ExampleProposalEditorComponentModel(new ProposalDocumentFakeImpl());
+    this.model = new ExampleProposalEditorModelImpl(new ProposalDocumentFakeImpl());
   }
   public onItalicsChange(newRanges: List<[number, number]>) {
     if (this.model) {
@@ -37,21 +37,21 @@ export class ExampleProposalEditorComponent {
   public onSourceChoose(type: string | null) {
     if (this.model) {
       if (type) {
-        this.model.switchSource(getProposalSourceType(type));
+        this.model.setSource(getProposalSourceType(type));
       } else {
-        this.model.switchSource(null);
+        this.model.setSource(null);
       }
     } else {
       throw new Error('model is not defined');
     }
   }
   public displaySource(type: string) {
-    return this.model?.sourceComponentModel?.type.toString() === type;
+    return this.model?._sourceModel?.type.toString() === type;
   }
   public get bookSourceComponentModel() {
     if (this.model) {
-      if (this.model.sourceComponentModel?.type === ProposalSourceType.Book) {
-        return <ExampleProposalBookSourceComponentModel>this.model.sourceComponentModel;
+      if (this.model._sourceModel?.type === SourceType.Book) {
+        return <ExampleProposalEditorBookSourceModelImpl>this.model._sourceModel;
       } else {
         throw new Error('wrong type of source');
       }
@@ -59,8 +59,8 @@ export class ExampleProposalEditorComponent {
   }
   public get journalSourceComponentModel() {
     if (this.model) {
-      if (this.model.sourceComponentModel?.type === ProposalSourceType.Journal) {
-        return <ExampleProposalJournalSourceComponentModel>this.model.sourceComponentModel;
+      if (this.model._sourceModel?.type === SourceType.Journal) {
+        return <ExampleProposalEditorJournalSourceModelImpl>this.model._sourceModel;
       } else {
         throw new Error('wrong type of source');
       }

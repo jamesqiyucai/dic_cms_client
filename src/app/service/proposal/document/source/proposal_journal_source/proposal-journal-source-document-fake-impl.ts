@@ -7,9 +7,9 @@ export class ProposalJournalSourceDocumentFakeImpl extends ProposalSourceDocumen
     super();
   }
   page = '';
-  pageObservable = new Observable<string>();
+  page$ = new Observable<string>();
   passageTitle = '';
-  passageTitleObservable = new Observable<string>();
-  publishingDate = '';
-  publishingDateObservable = new Observable<string>();
+  passageTitle$ = new Observable<string>();
+  publishDate = '';
+  publishingDate$ = new Observable<string>();
 }

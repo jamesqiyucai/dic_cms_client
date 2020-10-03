@@ -31,28 +31,28 @@ export class ProposalJournalSourceDocumentImpl extends ProposalSourceDocumentImp
       this._publishingDateObservable = new BehaviorSubject<string>(builder.publishingDate);
     }
   }
-  public get pageObservable() {
+  public get page$() {
     return this._pageObservable.asObservable();
   }
-  public set page(newPage: string) {
+  public setPage(newPage: string) {
     if (this._page !== newPage) {
       this._page = newPage;
       this._pageObservable.next(newPage);
     }
   }
-  public get passageTitleObservable() {
+  public get passageTitle$() {
     return this._passageTitleObservable.asObservable();
   }
-  public set passageTitle(newTitle: string) {
+  public setPassageTitle(newTitle: string) {
     if (this._passageTitle !== newTitle) {
       this._passageTitle = newTitle;
       this._passageTitleObservable.next(newTitle);
     }
   }
-  public get publishingDateObservable() {
+  public get publishingDate$() {
     return this._publishingDateObservable.asObservable();
   }
-  public set publishingDate(newDate: string) {
+  public setPublishDate(newDate: string) {
     if (this._publishingDate !== newDate) {
       this._publishingDate = newDate;
       this._publishingDateObservable.next(newDate);

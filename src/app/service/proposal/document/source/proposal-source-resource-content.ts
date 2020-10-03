@@ -1,5 +1,5 @@
-import {ProposalSourceType} from './proposal-source-type';
+import {SourceType} from '../../../../source-type';
 
 export interface ProposalSourceResourceContent {
-  type: ProposalSourceType;
+  type: SourceType;
 }

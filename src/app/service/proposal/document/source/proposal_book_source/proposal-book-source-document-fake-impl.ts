@@ -7,11 +7,11 @@ export class ProposalBookSourceDocumentFakeImpl extends ProposalSourceDocumentFa
     super();
   }
   initialPublishingYear = '';
-  initialPublishingYearObservable = new BehaviorSubject<string>('').asObservable();
+  initialPublishYear$ = new BehaviorSubject<string>('').asObservable();
   page = '';
-  pageObservable = new BehaviorSubject<string>('').asObservable();
+  page$ = new BehaviorSubject<string>('').asObservable();
   publishedPlace = '';
-  publishedPlaceObservable = new BehaviorSubject<string>('').asObservable();
+  publishPlace$ = new BehaviorSubject<string>('').asObservable();
   publishedYear = '';
-  publishedYearObservable = new BehaviorSubject<string>('').asObservable();
+  publishYear$ = new BehaviorSubject<string>('').asObservable();
 }

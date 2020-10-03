@@ -145,6 +145,166 @@
           }
         }
       }
+    },
+    "ui-source": {
+      "projectType": "library",
+      "root": "projects/ui-source",
+      "sourceRoot": "projects/ui-source/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ui-source/tsconfig.lib.json",
+            "project": "projects/ui-source/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui-source/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ui-source/src/test.ts",
+            "tsConfig": "projects/ui-source/tsconfig.spec.json",
+            "karmaConfig": "projects/ui-source/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ui-source/tsconfig.lib.json",
+              "projects/ui-source/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "dictcms-service-source": {
+      "projectType": "library",
+      "root": "projects/dictcms-service-source",
+      "sourceRoot": "projects/dictcms-service-source/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/dictcms-service-source/tsconfig.lib.json",
+            "project": "projects/dictcms-service-source/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dictcms-service-source/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dictcms-service-source/src/test.ts",
+            "tsConfig": "projects/dictcms-service-source/tsconfig.spec.json",
+            "karmaConfig": "projects/dictcms-service-source/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dictcms-service-source/tsconfig.lib.json",
+              "projects/dictcms-service-source/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "dictcms-ui-source": {
+      "projectType": "library",
+      "root": "projects/dictcms-ui-source",
+      "sourceRoot": "projects/dictcms-ui-source/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/dictcms-ui-source/tsconfig.lib.json",
+            "project": "projects/dictcms-ui-source/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/dictcms-ui-source/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/dictcms-ui-source/src/test.ts",
+            "tsConfig": "projects/dictcms-ui-source/tsconfig.spec.json",
+            "karmaConfig": "projects/dictcms-ui-source/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/dictcms-ui-source/tsconfig.lib.json",
+              "projects/dictcms-ui-source/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "wow": {
+      "projectType": "library",
+      "root": "projects/wow",
+      "sourceRoot": "projects/wow/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/wow/tsconfig.lib.json",
+            "project": "projects/wow/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/wow/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/wow/src/test.ts",
+            "tsConfig": "projects/wow/tsconfig.spec.json",
+            "karmaConfig": "projects/wow/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/wow/tsconfig.lib.json",
+              "projects/wow/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "dic-cms-client",

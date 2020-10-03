@@ -1,6 +1,6 @@
 import {Observable} from 'rxjs';
 
 export interface ProposalTranslationHandle {
-  text: string;
-  textObservable: Observable<string>;
+  readonly translation$: Observable<string>;
+  setTranslation(newTranslation: string): void;
 }

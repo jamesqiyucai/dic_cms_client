@@ -2,12 +2,12 @@ import {Observable} from 'rxjs';
 import {ProposalSourceHandle} from '../proposal-source-handle';
 
 export interface ProposalBookSourceHandle extends ProposalSourceHandle {
-  page: string;
-  pageObservable: Observable<string>;
-  initialPublishingYear: string;
-  initialPublishingYearObservable: Observable<string>;
-  publishedYear: string;
-  publishedYearObservable: Observable<string>;
-  publishedPlace: string;
-  publishedPlaceObservable: Observable<string>;
+  readonly page$: Observable<string>;
+  readonly initialPublishYear$: Observable<string>;
+  readonly publishYear$: Observable<string>;
+  readonly publishPlace$: Observable<string>;
+  setPage(newPage: string): void;
+  setInitialPublishYear(newYear: string): void;
+  setPublishYear(newYear: string): void;
+  setPublishPlace(newPlace: string): void;
 }

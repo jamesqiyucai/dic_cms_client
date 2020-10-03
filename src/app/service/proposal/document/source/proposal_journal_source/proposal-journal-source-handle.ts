@@ -2,10 +2,10 @@ import {ProposalSourceHandle} from '../proposal-source-handle';
 import {Observable} from 'rxjs';
 
 export interface ProposalJournalSourceHandle extends ProposalSourceHandle {
-  page: string;
-  pageObservable: Observable<string>;
-  passageTitle: string;
-  passageTitleObservable: Observable<string>;
-  publishingDate: string;
-  publishingDateObservable: Observable<string>;
+  readonly page$: Observable<string>;
+  readonly passageTitle$: Observable<string>;
+  readonly publishingDate$: Observable<string>;
+  setPage(newPage: string): void;
+  setPassageTitle(newTitle: string): void;
+  setPublishDate(newDate: string): void;
 }

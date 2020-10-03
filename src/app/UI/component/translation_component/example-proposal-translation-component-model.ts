@@ -1,8 +1,8 @@
 import {BehaviorSubject} from 'rxjs';
-import {ListElementComponentModel} from '../list_manipulator_component';
+import {ListElementModel} from '../list_manipulator';
 import {ProposalTranslationHandle} from '../../../service/proposal';
 
-export class ExampleProposalTranslationComponentModel implements ListElementComponentModel<ProposalTranslationHandle> {
+export class ExampleProposalTranslationComponentModel implements ListElementModel<ProposalTranslationHandle> {
   private _editable: boolean;
   private _text: string;
   private _text$: BehaviorSubject<string>;
@@ -18,8 +18,11 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   public get editable() {
     return this._editable;
   }
-  public set editable(val) {
-    this._editable = val;
+  public enableEditing() {
+    this._editable = true;
+  }
+  public disableEditing() {
+    this._editable = false;
   }
   public get text$() {
     return this._text$.asObservable();
@@ -39,7 +42,7 @@ export class ExampleProposalTranslationComponentModel implements ListElementComp
   }
   public save(): void {
     if (this._handle) {
-      this._handle.text = this._text;
+      this._handle.translation = this._text;
     } else {
       throw new Error('handle is undefined');
     }

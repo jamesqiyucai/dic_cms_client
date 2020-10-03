@@ -22,13 +22,13 @@ export class ProposalTranslationDocumentImpl implements ProposalTranslationDocum
       throw new Error('Mark shall not be null or undefined in proposal translation');
     }
   }
-  public get textObservable() {
+  public get translation$() {
     return this._textObservable.asObservable();
   }
-  public set text(newText: string) {
-    if (this._text !== newText) {
-      this._text = newText;
-      this._textObservable.next(newText);
+  public setTranslation(newTranslation: string) {
+    if (this._text !== newTranslation) {
+      this._text = newTranslation;
+      this._textObservable.next(newTranslation);
     }
   }
   public get $markObservable() {

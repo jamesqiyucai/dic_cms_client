@@ -1,12 +1,12 @@
 import {ProposalJournalSourceDocumentBuilder} from './proposal-journal-source-document-builder';
-import {ProposalSourceType} from '../proposal-source-type';
+import {SourceType} from '../../../../../source-type';
 import {ProposalSourceSerializer} from '../proposal-source-serializer';
 import {ProposalJournalSourceResourceContent} from './proposal-journal-source-resource-content';
 import {ProposalSourceResourceContent} from '../proposal-source-resource-content';
 
 export class ProposalJournalSourceSerializer implements ProposalSourceSerializer {
   public getSourceDocument(response: ProposalSourceResourceContent) {
-    if (response.type !== ProposalSourceType.Journal) {
+    if (response.type !== SourceType.Journal) {
       return undefined;
     } else {
       const journalResponse = <ProposalJournalSourceResourceContent>response;

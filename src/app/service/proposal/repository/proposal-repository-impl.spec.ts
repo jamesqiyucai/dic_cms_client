@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 import {Resource} from '../../remote_resource/resource';
 import {Observable, of} from 'rxjs';
 import {ProposalDocumentHolder} from '../document/proposal-document-holder';
-import {ProposalHandle} from '../proposal-handle';
+import {ProposalEditorHandle} from '../proposal-editor-handle';
 import {RemoteResourceFactory} from '../../remote_resource/remote-resource-factory';
 import {SessionEstablisher} from '../../remote_resource/session-establisher';
 import {ExceptionNotifier} from '../../remote_resource/exception-notifier';
@@ -33,7 +33,7 @@ class CollectionResourceMock implements Resource {
 class ProposalDocumentHolderMock implements ProposalDocumentHolder {
   constructor(private userService: UserService) {}
   public id?: number;
-  load(): Observable<ProposalHandle> {
+  load(): Observable<ProposalEditorHandle> {
     if (this.id === 1) {
       const documentBuilder = new ProposalDocumentBuilder(this.userService, new ResourceMock());
       documentBuilder.status = ProposalStatus.pending;

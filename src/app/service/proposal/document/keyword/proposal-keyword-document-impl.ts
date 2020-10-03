@@ -13,13 +13,13 @@ export class ProposalKeywordDocumentImpl implements ProposalKeywordDocument {
       throw new Error('Keyword must not be null or undefined');
     }
   }
-  public set keyword(newKeyword: string) {
+  public setKeyword(newKeyword: string) {
     if (this._keyword !== newKeyword) {
       this._keyword = newKeyword;
       this._keywordObservable.next(newKeyword);
     }
   }
-  public get keywordObservable() {
+  public get keyword$() {
     return this._keywordObservable.asObservable();
   }
 }

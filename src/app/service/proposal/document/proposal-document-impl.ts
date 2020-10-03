@@ -9,15 +9,13 @@ import {ProposalTranslationDocument} from './translation/proposal-translation-do
 import {ProposalStatus} from '../proposal-status';
 import {ProposalDocumentBuilder} from './proposal-document-builder';
 import {ProposalResourceContent} from '../proposal-resource-content';
-import {ProposalSourceFactory} from './source/proposal-source-factory';
-import {ProposalSourceFactoryImpl} from './source/proposal-source-factory-impl';
 import {ProposalTranslationHandle} from './translation/proposal-translation-handle';
 import {ProposalKeywordHandle} from './keyword/proposal-keyword-handle';
 import {ProposalTranslationDocumentBuilder} from './translation/proposal-translation-document-builder';
 import {ProposalKeywordDocumentBuilder} from './keyword/proposal-keyword-document-builder';
-import {ProposalSourceType} from './source/proposal-source-type';
 import {ProposalBookSourceDocumentBuilder} from './source/proposal_book_source/proposal-book-source-document-builder';
 import {ProposalJournalSourceDocumentBuilder} from './source/proposal_journal_source/proposal-journal-source-document-builder';
+import {SourceType} from '../../../source-type';
 
 export class ProposalDocumentImpl implements ProposalDocument {
   private _ID?: number;
@@ -30,7 +28,6 @@ export class ProposalDocumentImpl implements ProposalDocument {
   private _status: ProposalStatus;
   private _statusObservable: BehaviorSubject<ProposalStatus>;
   private _version?: number;
-  private _versionObservable?: BehaviorSubject<number>;
   private _text: string;
   private _textObservable: BehaviorSubject<string>;
   private _keywords: ProposalKeywordDocument[];
@@ -140,79 +137,76 @@ export class ProposalDocumentImpl implements ProposalDocument {
     this._ID = newID;
     this._proposalResource.setID(newID);
   }
-  public get initiatorObservable() {
+  public get initiator$() {
     return this._initiatorObservable.asObservable();
   }
-  public get reviewerObservable() {
+  public get reviewer$() {
     return this._reviewerObservable.asObservable();
   }
-  public get versionObservable() {
-    return this._versionObservable?.asObservable();
-  }
-  public get statusObservable() {
+  public get status$() {
     return this._statusObservable.asObservable();
   }
-  public get textObservable() {
+  public get text$() {
     return this._textObservable.asObservable();
   }
-  public set text(newText: string) {
+  public setText(newText: string) {
     if (this._text !== newText) {
       this._text = newText;
       this._textObservable.next(newText);
     }
   }
-  public get keywordsObservable() {
+  public get keywords$() {
     return this._keywordsObservable.asObservable();
   }
-  public set keywords(newKeywords: List<ProposalKeywordDocument>) {
+  public setKeywords(newKeywords: List<ProposalKeywordDocument>) {
     if (!newKeywords.equals(List(this._keywords))) {
       this._keywords = newKeywords.toArray();
       this._keywordsObservable.next(newKeywords);
     }
   }
-  public get translationsObservable() {
+  public get translations$() {
     return this._translationsObservable.asObservable();
   }
-  public set translations(newTranslations: List<ProposalTranslationDocument>) {
+  public setTranslations(newTranslations: List<ProposalTranslationDocument>) {
     if (!newTranslations.equals(List(this._translations))) {
       this._translations = newTranslations.toArray();
       this._translationsObservable.next(newTranslations);
     }
   }
-  public get italicsObservable() {
+  public get italics$() {
     return this._italicsObservable.asObservable();
   }
-  public set italics(newItalics: List<[number, number]>) {
+  public setItalics(newItalics: List<[number, number]>) {
     if (!newItalics.equals(List(this._italics))) {
       this._italics = newItalics.toArray();
       this._italicsObservable.next(newItalics);
     }
   }
-  public get noteObservable() {
+  public get note$() {
     return this._noteObservable.asObservable();
   }
-  public set note(newNote: string) {
+  public setNote(newNote: string) {
     if (newNote !== this._note) {
       this._note = newNote;
       this._noteObservable.next(newNote);
     }
   }
-  public get commentObservable() {
+  public get comment$() {
     return this._commentObservable.asObservable();
   }
-  public set comment(newComment: string) {
+  public setComment(newComment: string) {
     if (newComment !== this._comment) {
       this._comment = newComment;
       this._commentObservable.next(newComment);
     }
   }
-  public get sourceObservable() {
+  public get source$() {
     return this._sourceObservable.asObservable();
   }
-  public get source() {
+  public get currentSource() {
     return this._source;
   }
-  public set source(newSource: ProposalSourceDocument | null) {
+  public setSource(newSource: ProposalSourceDocument | null) {
     this._source = newSource;
     this._sourceObservable.next(newSource);
   }
@@ -230,14 +224,11 @@ export class ProposalDocumentImpl implements ProposalDocument {
     this._keywordsObservable.next(List(this._keywords));
     return keyword;
   }
-  public getProposalSourceFactory(): ProposalSourceFactory {
-    return new ProposalSourceFactoryImpl();
-  }
-  public getSource(type: ProposalSourceType): ProposalSourceHandle {
-    if (type === ProposalSourceType.Book) {
+  public getNewSource(type: SourceType): ProposalSourceHandle {
+    if (type === SourceType.Book) {
       const builder = new ProposalBookSourceDocumentBuilder();
       return builder.buildBlankBookSource();
-    } else if (type === ProposalSourceType.Journal) {
+    } else if (type === SourceType.Journal) {
       const builder = new ProposalJournalSourceDocumentBuilder();
       return builder.buildBlankJournalSource();
     } else {
@@ -258,7 +249,7 @@ export class ProposalDocumentImpl implements ProposalDocument {
         italic: this._italics
       },
       translations: this._translations,
-      keywords: this._keywords.map(keyword => keyword.keyword),
+      keywords: this._keywords,
       note: this._note,
       comment: this._comment,
       source: this._source?.mapToRequest(),
@@ -276,7 +267,7 @@ export class ProposalDocumentImpl implements ProposalDocument {
     return saveStatus;
   }
 
-  public approve(): Observable<any> {
+  public approve(): Observable<unknown> {
     const approveStatus = new Subject();
     this._proposalResource.post(null, '/approve')
       .subscribe(
@@ -287,7 +278,7 @@ export class ProposalDocumentImpl implements ProposalDocument {
     return approveStatus;
   }
 
-  public reject(): Observable<any> {
+  public reject(): Observable<unknown> {
     const rejectStatus = new Subject();
     this._proposalResource.post(null, '/reject')
       .subscribe(
